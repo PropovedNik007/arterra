@@ -1,0 +1,244 @@
+@import '@fontsource/fira-mono';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+Background: #263238
+Foreground: #B0BEC5
+
+Text: #607D8B
+Selection Background: #546E7A
+Selection Foreground: #FFFFFF
+Buttons: #2E3C43
+Second Background: #32424A
+Disabled: #415967
+Contrast: #1E272C
+Active: #314549
+Border: #2A373E
+Highlight: #425B67
+Tree: #546E7A70
+Notifications: #1E272C
+Accent Color: #009688
+Excluded Files Color: #2E3C43 */
+
+:root {
+	--font-body: 'Roboto', sans-serif;
+	--font-mono: 'Fira Mono', monospace;
+
+	--color-bg-0: #263238;
+	--color-bg-1: #B0BEC5;
+
+	--color-bg-2: #32424A;
+	
+	--color-text: rgba(0, 0, 0, 0.7);
+	--column-width: 42rem;
+	--column-margin-top: 4rem;
+	
+	--color-theme-1: #546E7A70;
+	--color-theme-2: #4075a6;
+
+	--color-text: #607D8B;
+	--color-text-or: #425B67;
+	--color-text-2: #1E272C;
+
+	font-family: var(--font-body);
+	color: var(--color-text);
+}
+
+html, body {
+	/* min-height: 100vh; */
+	padding: 0;
+	margin: 0;
+
+	/* overflow: hidden; */
+	/* background-attachment: fixed; */
+	background-color: var(--color-bg-0);
+	/* background-size: 100vw 100vh; */
+	/* background-image: radial-gradient(
+			50% 50% at 50% 50%,
+			rgba(255, 255, 255, 0.75) 0%,
+			rgba(255, 255, 255, 0) 100%
+		),
+		linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 15%, var(--color-bg-2) 50%); */
+}
+
+h1,
+h2,
+p {
+	font-weight: 400;
+}
+
+p {
+	line-height: 1.5;
+}
+
+a {
+	color: var(--color-theme-1);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h1 {
+	font-size: 2rem;
+	text-align: center;
+}
+
+h2 {
+	font-size: 1rem;
+}
+
+pre {
+	font-size: 16px;
+	font-family: var(--font-mono);
+	background-color: rgba(255, 255, 255, 0.45);
+	border-radius: 3px;
+	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
+	padding: 0.5em;
+	overflow-x: auto;
+	color: var(--color-text);
+}
+
+.text-column {
+	display: flex;
+	max-width: 48rem;
+	flex: 0.6;
+	flex-direction: column;
+	justify-content: center;
+	margin: 0 auto;
+}
+
+input,
+button {
+	font-size: inherit;
+	font-family: inherit;
+}
+
+button:focus:not(:focus-visible) {
+	outline: none;
+}
+
+@media (min-width: 720px) {
+	h1 {
+		font-size: 2.4rem;
+	}
+}
+
+.visually-hidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: auto;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	white-space: nowrap;
+}
+
+.menu {
+	display: flex;
+	justify-content: space-evenly;
+	/* background-color: var(--color-bg-0); */
+	height: 8vh;
+	margin-top: -8vh;
+	margin-bottom: -1rem;
+	position: relative;
+	z-index: 15;
+	
+}
+
+.menu .menu-tab {
+	/* margin: 0 1rem; */
+	font-size: 2rem !important;
+	height: 100%;
+	
+}
+
+.menu .menu-tab button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+	font-size: 1.5rem;
+	color: var(--color-text);
+	/* box-shadow: 0px 14px 55px #4075a6; */
+}
+
+.menu .menu-tab button:hover {
+	box-shadow: 0px -14px 55px #7dc0ff;
+	clip-path: inset(-100px -100px 1px -100px);
+	color: white;
+}
+
+
+.menu .menu-tab:hover {
+	color: white;
+	scale: 1.5;
+	transition: 0.5s;
+}
+
+.project {
+	/* padding: 20px; */
+	/* border: 1px solid #ccc; */
+	/* border-radius: 5px; */
+	/* background-image: url('https://picsum.photos/400/200'); */
+	/* filter: blur(5px); */
+	/* height: fit-content; */
+	overflow: hidden;
+	max-width: 100%;
+	border: none;
+	/* border-radius: 0; */
+}
+
+.project:hover img {
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	scale: 1.2;
+	/* overflow: hidden; */
+	background-color: beige;
+	/* background-image: url('https://picsum.photos/400/200'); */
+	/* background-size: 125%; */
+	transition: 1s;
+	filter: blur(0px);
+}
+
+.project:not(:hover) {
+	/* background-color: rgba(255, 255, 255, 0.1); */
+	filter: brightness(50%);
+	/* background-image: url('https://picsum.photos/400/200'); */
+	/* background-size: 125%; */
+	transition: 1s;
+}
+
+footer {
+	/* display: flex; */
+	/* flex-direction: column; */
+	/* justify-content: center; */
+	/* align-items: center; */
+	/* padding: 12px; */
+	/* border-top: 1px solid rgba(166, 69, 0, 1); */
+	/* position: absolute; */
+	/* /* left: 0; */
+	/* bottom: 0; */
+	/* width: 100%; */
+	min-height: 50px;
+}
+
+footer div a {
+	padding: 0 0.5rem;
+	color: var(--color-text);
+	font-weight: 700;
+	font-size: 0.8rem;
+	letter-spacing: 0.1em;
+	text-decoration: none;
+	height: 42px;
+}
+
+/* footer div a * {
+	padding: 0 0.5rem;
+} */
