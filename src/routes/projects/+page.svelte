@@ -4,7 +4,7 @@
 
 	import rail4future from '$lib/images/rail4future.jpg';
 
-	let vCard = false;
+	import { base } from '$app/paths';
 </script>
 
 
@@ -16,8 +16,8 @@
 
 <div class="content">
 	<Breadcrumb color="primary" aria-label="Default breadcrumb example">
-		<BreadcrumbItem color="primary" href="/" home>Home</BreadcrumbItem>
-		<BreadcrumbItem href="/projects">Projects</BreadcrumbItem>
+		<BreadcrumbItem color="primary" href="{base}/" home>Home</BreadcrumbItem>
+		<BreadcrumbItem href="{base}/projects">Projects</BreadcrumbItem>
 		<!-- <BreadcrumbItem>Flowbite Svelte</BreadcrumbItem> -->
 	</Breadcrumb>
 </div>
