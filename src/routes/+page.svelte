@@ -37,7 +37,8 @@
 			<p>Data Scientist </p>
 			<p> Machine Learning Engineer</p>
 			<p>Computer Vision</p>
-			<p>Experienced in Deep Learning and full-stack development</p>
+			<p>Experienced in Deep Learning</p>
+			<p>Full-stack development</p>
 			<!-- <p class="orange">Let's build the future together!</p> -->
 			<!-- <div class="contact">
 				<a href="mailto:arthur.sogomonyan@gmail.com" target="_blank">Email</a> |
@@ -46,11 +47,13 @@
 			</div> -->
 		
 		<!-- <button>Download CV</button> -->
+		<a href="https://wa.me/4367764114581?text=Dear Artur%20I'm%20interested%20to%20work%20with%20you" target="_blank">
 			<button
 			class="blueShadow relative overflow-hidden px-6 py-3 group rounded-full bg-white text-slate-950"
 			>
 				<h5 class="relative z-9">Get in touch</h5>
 			</button>
+		</a>
 		</div>
 		<!-- <div class="contact">
 			<a href="mailto:arthur.sogomonyan@gmail.com" target="_blank">Email</a> |
@@ -291,7 +294,7 @@ h1 {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	width: 40vw;
+	width: fit-content;
 	height: 90vh;
 	margin: 0;
 	position: relative;
@@ -301,6 +304,12 @@ h1 {
 	color: white;
 	font-size: 1.6rem;
 	transition: 0.7s;
+}
+
+.description a button:hover {
+	scale: 1.2;
+	transition: 0.5s;
+	color: var(--color-text-or);
 }
 
 b{
@@ -357,6 +366,7 @@ box-shadow: 0px 14px 55px #7dc0ff;
 		padding-bottom: 10vh;
 	}
 	.name-header {
+		padding-top: 5vh;
 		width: 100vw;
 		height: 50vh;
 	}
