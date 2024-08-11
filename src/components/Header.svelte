@@ -13,6 +13,14 @@
 	// const { triggerAnimation, animationAction } = createAnimationTriggerAction()
 
 	let scrollHeight = 0;
+
+	onMount(() => {
+		// Set initial scroll position
+		scrollHeight = window.scrollY;
+	});
+
+	// $: console.log('Scroll Height:', scrollHeight);
+	// $: console.log('Page Pathname:', $page.url.pathname);
 </script>
 
 <svelte:window bind:scrollY={scrollHeight} />
@@ -117,6 +125,7 @@
 		z-index: 1000;
 		background-color: rgba(0, 0, 0, 0.9);
 		animation: slideDown 0.5s ease-out forwards;
+		transition: background-color 0.3s ease-in-out;
 	}
 
 	.nav-scroll .logo-container {
