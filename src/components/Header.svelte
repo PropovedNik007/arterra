@@ -14,18 +14,14 @@
 
 	let scrollHeight = 0;
 
-	onMount(() => {
-		// Set initial scroll position
-		scrollHeight = window.scrollY;
-	});
-
 	// $: console.log('Scroll Height:', scrollHeight);
 	// $: console.log('Page Pathname:', $page.url.pathname);
+	// $: console.log('Base:', base);
 </script>
 
 <svelte:window bind:scrollY={scrollHeight} />
 
-<nav transition:fade class:nav-scroll={scrollHeight > 100 || $page.url.pathname !== '/'}>
+<nav transition:fade class:nav-scroll={scrollHeight > 100 || $page.url.pathname !== `${base}/`}>
 	<ul>
 		<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
 			<a href="{base}/">Home</a>
