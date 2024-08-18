@@ -6,6 +6,9 @@
 
 	import rail4future from '$lib/images/rail4future.jpg';
 	import susteam from '$lib/images/susteam.png';
+
+	import Graph from '../../components/Graph.svelte';
+  	import graphData from '../../lib/graphs/graph.json';
 </script>
 
 
@@ -69,6 +72,9 @@
 		</Button>
 	</Card>
 </section>
+
+<h1>Obsidian Vault Graph</h1>
+<Graph {graphData} />
 
 <style>
 	.content {

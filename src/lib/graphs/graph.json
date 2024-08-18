@@ -1,0 +1,156 @@
+{
+  "nodes": [
+    {
+      "id": "Fields",
+      "label": "Fields",
+      "type": "folder"
+    },
+    {
+      "id": "Fields/Data Science",
+      "label": "Fields/Data Science",
+      "type": "folder"
+    },
+    {
+      "id": "CV",
+      "label": "CV",
+      "type": "file",
+      "folder": "Fields/Data Science"
+    },
+    {
+      "id": "ML",
+      "label": "ML",
+      "type": "file",
+      "folder": "Fields/Data Science"
+    },
+    {
+      "id": "Fields/Software Development",
+      "label": "Fields/Software Development",
+      "type": "folder"
+    },
+    {
+      "id": "Back-end",
+      "label": "Back-end",
+      "type": "file",
+      "folder": "Fields/Software Development"
+    },
+    {
+      "id": "Front-end",
+      "label": "Front-end",
+      "type": "file",
+      "folder": "Fields/Software Development"
+    },
+    {
+      "id": "WEB",
+      "label": "WEB",
+      "type": "file",
+      "folder": "Fields"
+    },
+    {
+      "id": "Projects",
+      "label": "Projects",
+      "type": "folder"
+    },
+    {
+      "id": "Cryptex",
+      "label": "Cryptex",
+      "type": "file",
+      "folder": "Projects"
+    },
+    {
+      "id": "Rail4Future",
+      "label": "Rail4Future",
+      "type": "file",
+      "folder": "Projects"
+    },
+    {
+      "id": "susteam",
+      "label": "susteam",
+      "type": "file",
+      "folder": "Projects"
+    },
+    {
+      "id": "TU Wien",
+      "label": "TU Wien",
+      "type": "file",
+      "folder": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "Fields",
+      "target": "Fields/Data Science"
+    },
+    {
+      "source": "Fields/Data Science",
+      "target": "CV"
+    },
+    {
+      "source": "Fields/Data Science",
+      "target": "ML"
+    },
+    {
+      "source": "Fields",
+      "target": "Fields/Software Development"
+    },
+    {
+      "source": "Fields/Software Development",
+      "target": "Back-end"
+    },
+    {
+      "source": "Fields/Software Development",
+      "target": "Front-end"
+    },
+    {
+      "source": "Fields",
+      "target": "WEB"
+    },
+    {
+      "source": "Projects",
+      "target": "Cryptex"
+    },
+    {
+      "source": "Projects",
+      "target": "Rail4Future"
+    },
+    {
+      "source": "Rail4Future",
+      "target": "ML"
+    },
+    {
+      "source": "Rail4Future",
+      "target": "Front-end"
+    },
+    {
+      "source": "Projects",
+      "target": "susteam"
+    },
+    {
+      "source": "susteam",
+      "target": "Back-end"
+    },
+    {
+      "source": "susteam",
+      "target": "Front-end"
+    },
+    {
+      "source": "susteam",
+      "target": "WEB"
+    },
+    {
+      "source": "susteam",
+      "target": "ML"
+    },
+    {
+      "source": "TU Wien",
+      "target": "Rail4Future"
+    },
+    {
+      "source": "TU Wien",
+      "target": "ML"
+    },
+    {
+      "source": "TU Wien",
+      "target": "CV"
+    }
+  ]
+}

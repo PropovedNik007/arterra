@@ -1,0 +1,161 @@
+{
+  "main": {
+    "id": "f5f964358f8967e5",
+    "type": "split",
+    "children": [
+      {
+        "id": "e636bc17bab1b4fc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ce712cce0356de3e",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "447d1c24eddecb3c",
+    "type": "split",
+    "children": [
+      {
+        "id": "af2086b616503e4d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c90639948f138f7a",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "186946628ca11572",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "3be32e84b172df11",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "9505b810679039ca",
+    "type": "split",
+    "children": [
+      {
+        "id": "ec9a2b0da33e63d5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0f41a84678f085de",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3f9528246486f72c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "70845effb0d74128",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "4b9753b8adbfd94d",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "ce712cce0356de3e",
+  "lastOpenFiles": [
+    "Welcome.md",
+    "Untitled.canvas",
+    "Projects/susteam.md",
+    "Fields/Data Science/ML.md",
+    "create a link.md",
+    "Projects/Cryptex.md",
+    "Fields/Data Science/CV.md",
+    "Fields/Software Development/Back-end.md",
+    "Fields/Data Science",
+    "Fields/Software Development",
+    "Projects/Rail4Future.md",
+    "TU Wien.md",
+    "Fields/Software Development/Front-end.md",
+    "Fields/WEB.md",
+    "Projects",
+    "Fields",
+    "Untitled"
+  ]
+}
