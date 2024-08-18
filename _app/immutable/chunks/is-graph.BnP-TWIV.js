@@ -1,0 +1,1 @@
+import{g as t}from"./_commonjsHelpers.CqkleIqs.js";var r=function(o){return o!==null&&typeof o=="object"&&typeof o.addUndirectedEdgeWithKey=="function"&&typeof o.dropNode=="function"&&typeof o.multi=="boolean"};const n=t(r);export{r as a,n as i};
