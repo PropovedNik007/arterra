@@ -27,6 +27,12 @@ pnpm run dev -- --open
 
 ## Building
 
+Extract new nodes from the obsidian vault:
+
+```bash
+node parseVault.js
+```
+
 To create a production version of your app:
 
 ```bash

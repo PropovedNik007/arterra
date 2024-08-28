@@ -4,11 +4,9 @@
 
 	import { base } from '$app/paths';
 
-	import rail4future from '$lib/images/rail4future.jpg';
-	import susteam from '$lib/images/susteam.png';
-
 	import Graph from '../../components/Graph.svelte';
   	import graphData from '../../lib/graphs/graph.json';
+	import Projects from '../../components/projects/Projects.svelte';
 </script>
 
 
@@ -26,52 +24,7 @@
 	</Breadcrumb>
 </div>
 
-<section class="projects">
-	<Card img={rail4future} class="project">
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white">Rail4Future Data Science Project 2024</h5>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Analyzing rail irregularities for industrial partners Siemens and ÖBB.
-		</p>
-		<p>
-			<Badge border rounded color="yellow">LSTM</Badge>
-			<Badge border rounded color="red">Tensorflow</Badge>
-			<Badge border rounded color="green">Data Science</Badge>
-		</p>
-		<br>
-
-		<Button class="bg-primary-600" href="https://www.rail4future.com/en/" target="_blank">
-		Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-		</Button>
-	</Card>
-	<Card img={susteam} class="project">
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white">susteam</h5>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">Full-stack development of ESG platform. Generation of the Reports for hospitality industry.</p>
-		
-		<p>
-			<Badge border rounded color="yellow">React.js</Badge>
-			<Badge border rounded color="blue">FastAPI</Badge>
-			<Badge border rounded color="red">Bert, LLama3</Badge>
-		</p>
-		<br>
-		<Button class="bg-primary-600" href="https://susteam.at/" target="_blank">
-		Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-		</Button>
-	</Card>
-	<Card img={rail4future} class="project">
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-		<Button class="bg-primary-600">
-		Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-		</Button>
-	</Card>
-	<Card img={rail4future} class="project">
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white">Noteworthy technology fffffffffffffffffffffacquisitions 2021</h5>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">Here are the biggest enffffffffffffffffffffffffffffffffgfgfg gfgfgfgf g fgf fg gf gfg gffffffffffffffffterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-		<Button class="bg-primary-600">
-		Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-		</Button>
-	</Card>
-</section>
+<Projects />
 
 <h1>Obsidian Vault Graph</h1>
 <Graph {graphData} />
@@ -81,15 +34,5 @@
 		padding: 20px;
 		margin-top: 5vh;
 	}
-
-	.projects {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-		grid-gap: 20px;
-		/* justify-content: center; */
-		/* align-items: center; */
-		/* height: 100vh; */
-	}
-
 
 </style>

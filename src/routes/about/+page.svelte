@@ -2,8 +2,6 @@
 	import { Breadcrumb, BreadcrumbItem, Card, Button, Toggle } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 
-	import rail4future from '$lib/images/rail4future.jpg';
-
 	import { base } from '$app/paths';
 </script>
 

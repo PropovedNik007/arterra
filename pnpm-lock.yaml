@@ -11,6 +11,9 @@ importers:
       '@sigma/edge-curve':
         specifier: 3.0.0-beta.13
         version: 3.0.0-beta.13(sigma@3.0.0-beta.26(graphology-types@0.24.7))
+      chart.js:
+        specifier: ^4.4.4
+        version: 4.4.4
       chroma-js:
         specifier: ^3.0.0
         version: 3.0.0
@@ -35,9 +38,15 @@ importers:
       markdown-link-extractor:
         specifier: ^4.0.2
         version: 4.0.2
+      mdbsvelte:
+        specifier: ^1.0.12
+        version: 1.0.12
       sigma:
         specifier: 3.0.0-beta.26
         version: 3.0.0-beta.26(graphology-types@0.24.7)
+      svelte-chartjs:
+        specifier: ^3.1.5
+        version: 3.1.5(chart.js@4.4.4)(svelte@4.2.18)
     devDependencies:
       '@fontsource/fira-mono':
         specifier: ^4.5.10
@@ -351,6 +360,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@kurkle/color@0.3.2':
+    resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
 
   '@material/animation@14.0.0':
     resolution: {integrity: sha512-VlYSfUaIj/BBVtRZI8Gv0VvzikFf+XgK0Zdgsok5c1v5DDnNz5tpB8mnGrveWz0rHbp1X4+CWLKrTwNmjrw3Xw==}
@@ -810,6 +822,10 @@ packages:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
 
+  chart.js@4.4.4:
+    resolution: {integrity: sha512-emICKGBABnxhMjUjlYRR12PmOXhJ2eJjEHL2/dZlWjxRAZT1D8xplLFq5M0tMQK8ja+wBS/tuVEJB5C6r7VxJA==}
+    engines: {pnpm: '>=8'}
+
   cheerio-select@2.1.0:
     resolution: {integrity: sha512-9v9kG0LvzrlcungtnJtpGNxY+fzECQKhK4EGJX2vByejiMX84MFNQw4UxPJl3bFbTMw+Dfs37XaIkCwTZfLh4g==}
 
@@ -1148,6 +1164,9 @@ packages:
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
 
+  fuzzysort@1.9.0:
+    resolution: {integrity: sha512-MOxCT0qLTwLqmEwc7UtU045RKef7mc8Qz8eR4r2bLNEq9dy/c3ZKMEFp6IEst69otkQdFZ4FfgH2dmZD+ddX1g==}
+
   gh-pages@6.1.1:
     resolution: {integrity: sha512-upnohfjBwN5hBP9w2dPE7HO5JJTHzSGMV1JrLrHvNuqmjoYHg6TBrCcnEoorjG/e0ejbuvnwyKMdTyM40PEByw==}
     engines: {node: '>=10'}
@@ -1406,6 +1425,9 @@ packages:
     engines: {node: '>= 18'}
     hasBin: true
 
+  mdbsvelte@1.0.12:
+    resolution: {integrity: sha512-mXYpSQtcRWS7A5jRVaTUDVk0Rd7lmPL+grm+uWGhOzDQP5x5oDE/kyAm5ib3zUFJjW6ojKzgaBvxwsCiJm5Jbw==}
+
   mdn-data@2.0.30:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
 
@@ -1470,6 +1492,9 @@ packages:
 
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
+
+  node-waves@0.7.6:
+    resolution: {integrity: sha512-tVUIzekLZb7xMTxE4llCivOCE3ECg/Rlf4KfUD2FS3PI4Awk1I8j8xmPaFUAIEZVI6Io3132JQRYxLetR2NYUQ==}
 
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -1820,6 +1845,12 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  svelte-chartjs@3.1.5:
+    resolution: {integrity: sha512-ka2zh7v5FiwfAX1oMflZ0HkNkgjHjFqANgRyC+vNYXfxtx2ku68Zo+2KgbKeBH2nS1ThDqkIACPzGxy4T0UaoA==}
+    peerDependencies:
+      chart.js: ^3.5.0 || ^4.0.0
+      svelte: ^4.0.0
 
   svelte-check@3.8.5:
     resolution: {integrity: sha512-3OGGgr9+bJ/+1nbPgsvulkLC48xBsqsgtc8Wam281H4G9F5v3mYGa2bHRsPuwHC5brKl4AxJH95QF73kmfihGQ==}
@@ -2233,6 +2264,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@kurkle/color@0.3.2': {}
 
   '@material/animation@14.0.0':
     dependencies:
@@ -2859,6 +2892,10 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
+  chart.js@4.4.4:
+    dependencies:
+      '@kurkle/color': 0.3.2
+
   cheerio-select@2.1.0:
     dependencies:
       boolbase: 1.0.0
@@ -3265,6 +3302,8 @@ snapshots:
 
   function-bind@1.1.2: {}
 
+  fuzzysort@1.9.0: {}
+
   gh-pages@6.1.1:
     dependencies:
       async: 3.2.5
@@ -3520,6 +3559,11 @@ snapshots:
 
   marked@12.0.2: {}
 
+  mdbsvelte@1.0.12:
+    dependencies:
+      fuzzysort: 1.9.0
+      node-waves: 0.7.6
+
   mdn-data@2.0.30: {}
 
   merge2@1.4.1: {}
@@ -3571,6 +3615,8 @@ snapshots:
       tslib: 2.6.3
 
   node-releases@2.0.18: {}
+
+  node-waves@0.7.6: {}
 
   normalize-path@3.0.0: {}
 
@@ -3905,6 +3951,11 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  svelte-chartjs@3.1.5(chart.js@4.4.4)(svelte@4.2.18):
+    dependencies:
+      chart.js: 4.4.4
+      svelte: 4.2.18
 
   svelte-check@3.8.5(postcss-load-config@4.0.2(postcss@8.4.40))(postcss@8.4.40)(sass@1.77.8)(svelte@4.2.18):
     dependencies:

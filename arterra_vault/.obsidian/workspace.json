@@ -4,15 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "e636bc17bab1b4fc",
+        "id": "2220c9c2f26f2667",
         "type": "tabs",
         "children": [
           {
-            "id": "ce712cce0356de3e",
+            "id": "2eac40f2da304fd3",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Projects/susteam.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Projects/susteam.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Projects/susteam.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Projects/susteam.md"
+              }
             }
           }
         ]
@@ -138,22 +146,35 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "ce712cce0356de3e",
+  "active": "2eac40f2da304fd3",
   "lastOpenFiles": [
-    "Welcome.md",
-    "Untitled.canvas",
+    "Projects/Printerra.md",
+    "imgs/3dprinterthesis.png",
     "Projects/susteam.md",
-    "Fields/Data Science/ML.md",
-    "create a link.md",
+    "imgs/glosav.jpg",
+    "imgs/photo_2024-08-26_02-16-43.jpg",
+    "imgs/ADCS RCE.pdf",
+    "Projects/Rail4Future.md",
     "Projects/Cryptex.md",
-    "Fields/Data Science/CV.md",
+    "Fields/Data Science/LLM.md",
+    "Fields/Data Science/NLP.md",
     "Fields/Software Development/Back-end.md",
+    "Fields/Software Development/Front-end.md",
+    "Fields/Software Development/IoT.md",
+    "Fields/Software Development/Web3.md",
+    "TU Wien.md",
+    "Untitled.canvas",
+    "Fields/WEB.md",
+    "Fields/Data Science/ML.md",
+    "Fields/Data Science/CV.md",
+    "imgs/cryptex.png",
+    "imgs/Screenshot from 2024-08-28 14-30-35.png",
+    "imgs",
+    "Screenshot from 2024-08-28 14-30-35.png",
+    "Welcome.md",
+    "create a link.md",
     "Fields/Data Science",
     "Fields/Software Development",
-    "Projects/Rail4Future.md",
-    "TU Wien.md",
-    "Fields/Software Development/Front-end.md",
-    "Fields/WEB.md",
     "Projects",
     "Fields",
     "Untitled"

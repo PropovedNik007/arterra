@@ -17,8 +17,20 @@
       "folder": "Fields/Data Science"
     },
     {
+      "id": "LLM",
+      "label": "LLM",
+      "type": "file",
+      "folder": "Fields/Data Science"
+    },
+    {
       "id": "ML",
       "label": "ML",
+      "type": "file",
+      "folder": "Fields/Data Science"
+    },
+    {
+      "id": "NLP",
+      "label": "NLP",
       "type": "file",
       "folder": "Fields/Data Science"
     },
@@ -40,10 +52,16 @@
       "folder": "Fields/Software Development"
     },
     {
-      "id": "WEB",
-      "label": "WEB",
+      "id": "IoT",
+      "label": "IoT",
       "type": "file",
-      "folder": "Fields"
+      "folder": "Fields/Software Development"
+    },
+    {
+      "id": "Web3",
+      "label": "Web3",
+      "type": "file",
+      "folder": "Fields/Software Development"
     },
     {
       "id": "Projects",
@@ -53,6 +71,12 @@
     {
       "id": "Cryptex",
       "label": "Cryptex",
+      "type": "file",
+      "folder": "Projects"
+    },
+    {
+      "id": "Printerra",
+      "label": "Printerra",
       "type": "file",
       "folder": "Projects"
     },
@@ -73,6 +97,11 @@
       "label": "TU Wien",
       "type": "file",
       "folder": null
+    },
+    {
+      "id": "imgs",
+      "label": "imgs",
+      "type": "folder"
     }
   ],
   "edges": [
@@ -86,7 +115,15 @@
     },
     {
       "source": "Fields/Data Science",
+      "target": "LLM"
+    },
+    {
+      "source": "Fields/Data Science",
       "target": "ML"
+    },
+    {
+      "source": "Fields/Data Science",
+      "target": "NLP"
     },
     {
       "source": "Fields",
@@ -101,12 +138,44 @@
       "target": "Front-end"
     },
     {
-      "source": "Fields",
-      "target": "WEB"
+      "source": "Fields/Software Development",
+      "target": "IoT"
+    },
+    {
+      "source": "Fields/Software Development",
+      "target": "Web3"
     },
     {
       "source": "Projects",
       "target": "Cryptex"
+    },
+    {
+      "source": "Cryptex",
+      "target": "Web3"
+    },
+    {
+      "source": "Cryptex",
+      "target": "Front-end"
+    },
+    {
+      "source": "Cryptex",
+      "target": "Back-end"
+    },
+    {
+      "source": "Projects",
+      "target": "Printerra"
+    },
+    {
+      "source": "Printerra",
+      "target": "IoT"
+    },
+    {
+      "source": "Printerra",
+      "target": "CV"
+    },
+    {
+      "source": "Printerra",
+      "target": "ML"
     },
     {
       "source": "Projects",
@@ -115,10 +184,6 @@
     {
       "source": "Rail4Future",
       "target": "ML"
-    },
-    {
-      "source": "Rail4Future",
-      "target": "Front-end"
     },
     {
       "source": "Projects",
@@ -134,11 +199,15 @@
     },
     {
       "source": "susteam",
-      "target": "WEB"
+      "target": "ML"
     },
     {
       "source": "susteam",
-      "target": "ML"
+      "target": "LLM"
+    },
+    {
+      "source": "susteam",
+      "target": "NLP"
     },
     {
       "source": "TU Wien",
