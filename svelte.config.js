@@ -2,6 +2,7 @@ import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 // const base = process.env.BASE_PATH ?? '/arterra';
+const dev = process.argv.includes('dev');
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -21,7 +22,8 @@ const config = {
 		}),
 		paths: {
 			// base,
-			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
+			// base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
+			base: dev ? '' : process.env.BASE_PATH ?? '/arterra'
         }
 	}
 };
