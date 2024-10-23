@@ -1,0 +1,1 @@
+.projects.svelte-ytbcck{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));grid-gap:20px}@media (max-width: 768px){.projects.svelte-ytbcck{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}}
