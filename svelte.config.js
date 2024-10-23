@@ -18,13 +18,24 @@ const config = {
 			// fallback: '404.html'
 			pages: 'build',
 			assets: 'build',
-			fallback: null
+			fallback: '404.html'
 		}),
 		paths: {
 			// base,
 			// base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
 			base: dev ? '' : process.env.BASE_PATH ?? '/arterra'
-        }
+			// base: process.env.BASE_PATH ?? '/arterra'
+        },
+		prerender: {
+			handleHttpError: ({ status, path, referrer }) => {
+				if (status === 404) {
+					console.warn(`Path not found: ${path}, referrer: ${referrer}`);
+					return {
+						ignore: true // Ignore 404s during prerendering
+					};
+				}
+			}
+		}
 	}
 };
 
