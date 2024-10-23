@@ -11,28 +11,70 @@
       "type": "folder"
     },
     {
+      "id": "Analytics",
+      "label": "Analytics",
+      "type": "file",
+      "folder": "Fields/Data Science",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
+    },
+    {
       "id": "CV",
       "label": "CV",
       "type": "file",
-      "folder": "Fields/Data Science"
+      "folder": "Fields/Data Science",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
     },
     {
       "id": "LLM",
       "label": "LLM",
       "type": "file",
-      "folder": "Fields/Data Science"
+      "folder": "Fields/Data Science",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
     },
     {
       "id": "ML",
       "label": "ML",
       "type": "file",
-      "folder": "Fields/Data Science"
+      "folder": "Fields/Data Science",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
     },
     {
       "id": "NLP",
       "label": "NLP",
       "type": "file",
-      "folder": "Fields/Data Science"
+      "folder": "Fields/Data Science",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
+    },
+    {
+      "id": "Time series",
+      "label": "Time series",
+      "type": "file",
+      "folder": "Fields/Data Science",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
     },
     {
       "id": "Fields/Software Development",
@@ -43,25 +85,45 @@
       "id": "Back-end",
       "label": "Back-end",
       "type": "file",
-      "folder": "Fields/Software Development"
+      "folder": "Fields/Software Development",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
     },
     {
       "id": "Front-end",
       "label": "Front-end",
       "type": "file",
-      "folder": "Fields/Software Development"
+      "folder": "Fields/Software Development",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
     },
     {
       "id": "IoT",
       "label": "IoT",
       "type": "file",
-      "folder": "Fields/Software Development"
+      "folder": "Fields/Software Development",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
     },
     {
       "id": "Web3",
       "label": "Web3",
       "type": "file",
-      "folder": "Fields/Software Development"
+      "folder": "Fields/Software Development",
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
     },
     {
       "id": "Projects",
@@ -69,34 +131,216 @@
       "type": "folder"
     },
     {
-      "id": "Cryptex",
-      "label": "Cryptex",
+      "id": "AIM Hackathon",
+      "label": "AIM Hackathon - TIMETOACT Group 2nd Place Winner",
       "type": "file",
-      "folder": "Projects"
+      "folder": "Projects",
+      "description": "A platform with Retrieval-Augmented Generation (RAG) to identify greenwashing in ESG reports.",
+      "tags": [
+        "RAG",
+        "ESG",
+        "LangChain",
+        "Flask",
+        "OpenAI"
+      ],
+      "img": "aim-hackathon.jpg",
+      "link": "https://medium.com/@artur.sogomonyan/building-a-greenwashing-detection-system-using-retrieval-augmented-generation-rag-11ebb2cd4afc",
+      "order": "1"
+    },
+    {
+      "id": "Arterra",
+      "label": "Portfolio Website Development",
+      "type": "file",
+      "folder": "Projects",
+      "description": "Designed and developed a portfolio website, integrating continuous integration/continuous deployment (CI/CD) pipelines for seamless updates via GitHub Pages. Utilized Obsidian vault data to create an interactive front-end that visualizes my professional journey using graphology and sigma libraries.",
+      "tags": [
+        "CI/CD",
+        "Svelte",
+        "GitHub Pages",
+        "Graphology",
+        "Sigma"
+      ],
+      "img": "arterra.png",
+      "link": "https://propovednik007.github.io/arterra/",
+      "order": "5"
+    },
+    {
+      "id": "Cryptex",
+      "label": "Full-stack Development of the NFT Platform",
+      "type": "file",
+      "folder": "Projects",
+      "description": "Implemented a secure authentication system using MetaMask, which allows users to store and manage seed phrases as encoded NFTs. Developed the platform’s backend to interact seamlessly with the Polygon blockchain, ensuring efficient and secure transactions.",
+      "tags": [
+        "NFT",
+        "MetaMask",
+        "Polygon",
+        "Solidity",
+        "Full-stack"
+      ],
+      "img": "cryptex.png",
+      "link": null,
+      "order": "4"
+    },
+    {
+      "id": "DAVU Project",
+      "label": "Document Analysis and Optical Character Recognition (OCR)",
+      "type": "file",
+      "folder": "Projects",
+      "description": "Conducted a comprehensive layout analysis of historical documents, identifying key structural elements to improve text extraction accuracy. Integrated advanced Named Entity Recognition (NER) using SpaCy and fine-tuned language models (e.g., LLaMA-3) to extract metadata from images.",
+      "tags": [
+        "OCR",
+        "Tesseract",
+        "SpaCy",
+        "LLaMA-3",
+        "Python"
+      ],
+      "img": "doc_analysis.webp",
+      "link": null,
+      "order": "5"
+    },
+    {
+      "id": "GLOSAV",
+      "label": "GLOSAV - Machine learning analyst",
+      "type": "file",
+      "folder": "Projects",
+      "description": "Engineered a sophisticated algorithm to detect railway routes with object detection and tracking mechanisms. Developed a robust way to track obstacles on the rails.",
+      "tags": [
+        "Machine Learning",
+        "YOLOv4",
+        "OpenCV",
+        "NumPy"
+      ],
+      "img": "glosav.jpg",
+      "link": null,
+      "order": "6"
+    },
+    {
+      "id": "LawSyncr",
+      "label": "LawSyncr",
+      "type": "file",
+      "folder": "Projects",
+      "description": "Led the end-to-end full-stack development of the project, including the implementation of a Minimum Viable Product (MVP) with integrated machine learning components.",
+      "tags": [
+        "Full-stack",
+        "Machine Learning",
+        "RAG",
+        "Flask",
+        "Svelte",
+        "LLM"
+      ],
+      "img": "lawsyncr.png",
+      "link": null,
+      "order": "4"
+    },
+    {
+      "id": "Lip Reading App",
+      "label": "Lip Reading app for Austrian Red Cross",
+      "type": "file",
+      "folder": "Projects",
+      "description": "Developed a lip reading app using AV-HuBERT for the Austrian Red Cross to communicate in noisy environments. Integrated the model into a web app, passing the video stream from the smartphone to the model, reading the lips, and generating text.",
+      "tags": [
+        "Lip Reading",
+        "AV-HuBERT",
+        "FastAPI",
+        "Next.js",
+        "Machine Learning"
+      ],
+      "img": "redcross.webp",
+      "link": null,
+      "order": "5"
     },
     {
       "id": "Printerra",
       "label": "Printerra",
       "type": "file",
-      "folder": "Projects"
+      "folder": "Projects",
+      "description": "Diploma thesis ”3D printer failure detection system based on computer vision detection”.",
+      "tags": [
+        "Machine Learning",
+        "OpenCV",
+        "NumPy",
+        "Python"
+      ],
+      "img": "3dprinterthesis.png",
+      "link": null,
+      "order": "0"
     },
     {
       "id": "Rail4Future",
-      "label": "Rail4Future",
+      "label": "Rail4Future Data Science Project 2024",
       "type": "file",
-      "folder": "Projects"
+      "folder": "Projects",
+      "description": "Analyzing rail irregularities for industrial partners Siemens and ÖBB.",
+      "tags": [
+        "LSTM",
+        "Tensorflow",
+        "DataScience"
+      ],
+      "img": "rail4future.jpg",
+      "link": "https://www.rail4future.com/en/",
+      "order": "1"
+    },
+    {
+      "id": "Tourism Technology Hackathon 2023",
+      "label": "Data Pipeline and Knowledge Graph for Tourism",
+      "type": "file",
+      "folder": "Projects",
+      "description": "Implemented a data pipeline mapping data from different sources and building a knowledge graph for tourism subjects. Visualized the results as an interactive map with a chatbot to analyze points of interest.",
+      "tags": [
+        "Knowledge Graph",
+        "Selenium",
+        "Geoandas",
+        "Folium"
+      ],
+      "img": "tourism.webp",
+      "link": null,
+      "order": "5"
+    },
+    {
+      "id": "TradeBot",
+      "label": "Crypto Trading Analysis and Future Trading",
+      "type": "file",
+      "folder": "Projects",
+      "description": "Engineered a bot to systematically scrape and collect trade data from Binance, allowing detailed real-time market analysis. Automated the execution of trading strategies using a custom-built bot, ensuring consistent and timely trades.",
+      "tags": [
+        "Crypto",
+        "Binance",
+        "Trading",
+        "FastAPI",
+        "AsyncIO"
+      ],
+      "img": "tradebot.webp",
+      "link": null,
+      "order": "4"
     },
     {
       "id": "susteam",
-      "label": "susteam",
+      "label": "susteam - Full-stack development of ESG platform",
       "type": "file",
-      "folder": "Projects"
+      "folder": "Projects",
+      "description": "Architecture and development of the ESG platform for generating sustainability reports in the hospitality industry.",
+      "tags": [
+        "Full-stack",
+        "ESG",
+        "React.js",
+        "FastAPI",
+        "BERT",
+        "LLama3"
+      ],
+      "img": "susteam.png",
+      "link": "https://susteam.at/",
+      "order": "2"
     },
     {
       "id": "TU Wien",
       "label": "TU Wien",
       "type": "file",
-      "folder": null
+      "folder": null,
+      "description": "",
+      "tags": [],
+      "img": null,
+      "link": null,
+      "order": 0
     },
     {
       "id": "imgs",
@@ -108,6 +352,10 @@
     {
       "source": "Fields",
       "target": "Fields/Data Science"
+    },
+    {
+      "source": "Fields/Data Science",
+      "target": "Analytics"
     },
     {
       "source": "Fields/Data Science",
@@ -124,6 +372,10 @@
     {
       "source": "Fields/Data Science",
       "target": "NLP"
+    },
+    {
+      "source": "Fields/Data Science",
+      "target": "Time series"
     },
     {
       "source": "Fields",
@@ -147,6 +399,30 @@
     },
     {
       "source": "Projects",
+      "target": "AIM Hackathon"
+    },
+    {
+      "source": "AIM Hackathon",
+      "target": "ML"
+    },
+    {
+      "source": "AIM Hackathon",
+      "target": "LLM"
+    },
+    {
+      "source": "AIM Hackathon",
+      "target": "NLP"
+    },
+    {
+      "source": "Projects",
+      "target": "Arterra"
+    },
+    {
+      "source": "Arterra",
+      "target": "Front-end"
+    },
+    {
+      "source": "Projects",
       "target": "Cryptex"
     },
     {
@@ -159,6 +435,74 @@
     },
     {
       "source": "Cryptex",
+      "target": "Back-end"
+    },
+    {
+      "source": "Projects",
+      "target": "DAVU Project"
+    },
+    {
+      "source": "DAVU Project",
+      "target": "CV"
+    },
+    {
+      "source": "DAVU Project",
+      "target": "ML"
+    },
+    {
+      "source": "DAVU Project",
+      "target": "LLM"
+    },
+    {
+      "source": "DAVU Project",
+      "target": "NLP"
+    },
+    {
+      "source": "Projects",
+      "target": "GLOSAV"
+    },
+    {
+      "source": "GLOSAV",
+      "target": "IoT"
+    },
+    {
+      "source": "GLOSAV",
+      "target": "CV"
+    },
+    {
+      "source": "GLOSAV",
+      "target": "ML"
+    },
+    {
+      "source": "Projects",
+      "target": "LawSyncr"
+    },
+    {
+      "source": "LawSyncr",
+      "target": "ML"
+    },
+    {
+      "source": "LawSyncr",
+      "target": "LLM"
+    },
+    {
+      "source": "LawSyncr",
+      "target": "NLP"
+    },
+    {
+      "source": "Projects",
+      "target": "Lip Reading App"
+    },
+    {
+      "source": "Lip Reading App",
+      "target": "CV"
+    },
+    {
+      "source": "Lip Reading App",
+      "target": "LLM"
+    },
+    {
+      "source": "Lip Reading App",
       "target": "Back-end"
     },
     {
@@ -187,6 +531,46 @@
     },
     {
       "source": "Projects",
+      "target": "Tourism Technology Hackathon 2023"
+    },
+    {
+      "source": "Tourism Technology Hackathon 2023",
+      "target": "ML"
+    },
+    {
+      "source": "Tourism Technology Hackathon 2023",
+      "target": "Analytics"
+    },
+    {
+      "source": "Tourism Technology Hackathon 2023",
+      "target": "Back-end"
+    },
+    {
+      "source": "Tourism Technology Hackathon 2023",
+      "target": "Front-end"
+    },
+    {
+      "source": "Projects",
+      "target": "TradeBot"
+    },
+    {
+      "source": "TradeBot",
+      "target": "Back-end"
+    },
+    {
+      "source": "TradeBot",
+      "target": "Web3"
+    },
+    {
+      "source": "TradeBot",
+      "target": "Analytics"
+    },
+    {
+      "source": "TradeBot",
+      "target": "Time series"
+    },
+    {
+      "source": "Projects",
       "target": "susteam"
     },
     {
@@ -208,10 +592,6 @@
     {
       "source": "susteam",
       "target": "NLP"
-    },
-    {
-      "source": "TU Wien",
-      "target": "Rail4Future"
     },
     {
       "source": "TU Wien",

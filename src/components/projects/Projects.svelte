@@ -4,70 +4,70 @@
 
 	import { base } from '$app/paths';
 
-	import rail4future from '$lib/images/projects/rail4future.jpg';
-	import susteam from '$lib/images/projects/susteam.png';
-	import cryptex from '$lib/images/projects/cryptex.png';
-	import glosav from '$lib/images/projects/glosav.jpg';
+	import graphData from '../../lib/graphs/graph.json';
 
+	const imageBasePath = `${base}/images/projects/`;
 
+	const colors = ['yellow', 'red', 'green', 'blue', 'purple', 'pink', 'indigo', 'purple', 'teal', 'cyan', 'orange'];
+
+	function getColor(index) {
+		return colors[index % colors.length]; // Cycle through the colors
+	}
+
+	// Sort the nodes by `order`, placing those with `order: 0` at the end
+	let sortedNodes = [...graphData.nodes]
+		.filter(node => node.folder === 'Projects' && node.type === 'file') // Filter only relevant nodes
+		.sort((a, b) => {
+			// Sort by order, putting those with order 0 at the end
+			// if (a.order === 0 && b.order !== 0) return 1;
+			// if (b.order === 0 && a.order !== 0) return -1;
+			const orderA = Number(a.order) || 0;
+			const orderB = Number(b.order) || 0;
+
+			// Place nodes with order 0 at the end
+			if (orderA === 0 && orderB !== 0) return 1;
+			if (orderB === 0 && orderA !== 0) return -1;
+			// Sort by ascending order if both have non-zero values
+			return orderA - orderB;
+		});
 </script>
 
-
 <section class="projects">
-	<Card img={rail4future} class="project">
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white">Rail4Future Data Science Project 2024</h5>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Analyzing rail irregularities for industrial partners Siemens and ÖBB.
-		</p>
-		<p>
-			<Badge border rounded color="yellow">LSTM</Badge>
-			<Badge border rounded color="red">Tensorflow</Badge>
-			<Badge border rounded color="green">Data Science</Badge>
-		</p>
-		<br>
+	{#each sortedNodes as node (node.id)}
+		<Card class="project" img={`${imageBasePath}${node.img}`}>
+			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white">
+				{node.label}
+			</h5>
+			<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
+				{node.description ? node.description : 'No description available.'}
+			</p>
+			<p>
+				<!-- <Badge border rounded color="green">File</Badge> -->
+				{#each node.tags as tag, index}
+					<Badge border rounded color={getColor(index)}>{tag}</Badge>
+				{/each}
+			</p>
 
-		<Button class="bg-primary-600" href="https://www.rail4future.com/en/" target="_blank">
-		Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-		</Button>
-	</Card>
-	<Card img={susteam} class="project">
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white">susteam</h5>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">Full-stack development of ESG platform. Generation of the Reports for hospitality industry.</p>
-		
-		<p>
-			<Badge border rounded color="yellow">React.js</Badge>
-			<Badge border rounded color="blue">FastAPI</Badge>
-			<Badge border rounded color="red">Bert, LLama3</Badge>
-		</p>
-		<br>
-		<Button class="bg-primary-600" href="https://susteam.at/" target="_blank">
-		Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-		</Button>
-	</Card>
-	<Card img={cryptex} class="project">
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white">Cryptex 2024</h5>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-		<Button class="bg-primary-600">
-		Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-		</Button>
-	</Card>
-	<Card img={glosav} class="project">
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white">Machine learning analyst — GLOSAV</h5>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">Engineered a sophisticated algorithm to detect railway routes with object detection and tracking mechanisms. Developed a robust
-			way to track obstacles on the rails.</p>
-		<p>
-			<Badge border rounded color="yellow">YOLOv5</Badge>
-			<Badge border rounded color="blue">OpenCV</Badge>
-			<Badge border rounded color="red">NumPy</Badge>
-		</p>
-		<br>
-		<Button class="bg-primary-600">
-		Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-		</Button>
-	</Card>
+			<br />
+
+			<Button class="bg-primary-600" href={node.link ?? '#'} target="_blank">
+				Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
+			</Button>
+		</Card>
+	{/each}
 </section>
 
 <style>
+	/* .project {
+		padding: 20px;
+		background-color: #f9f9f9;
+		border-radius: 10px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.grid {
+		margin-top: 20px;
+	} */
 	.projects {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -82,6 +82,4 @@
 			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		}
 	}
-
-
 </style>

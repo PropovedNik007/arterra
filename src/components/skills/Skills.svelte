@@ -109,6 +109,7 @@
         <li>FastAPI</li>
         <li>JavaScript</li>
         <li>React</li>
+        <li>Svelte</li>
     </ul>
     <!-- <p>
         <b>Machine Learning:</b> scikit-learn, Pandas, NumPy, Tensorflow, PyTorch, OpenCV, YOLO, NLTK,
@@ -134,6 +135,7 @@
         <li>Bert</li>
         <li>LLama3</li>
         <li>GPT</li>
+        <li>LangChain</li>
     </ul>
 
     <ul>

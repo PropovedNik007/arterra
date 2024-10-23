@@ -24,10 +24,10 @@
 	</Breadcrumb>
 </div>
 
-<Projects />
-
-<h1>Obsidian Vault Graph</h1>
+<h1>Vault Graph</h1>
 <Graph {graphData} />
+
+<Projects {graphData} />
 
 <style>
 	.content {

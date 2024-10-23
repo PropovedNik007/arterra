@@ -34,7 +34,7 @@
 			graphData.nodes.forEach((node) => {
 				if (node.type !== 'folder') {
 					const nodeAttributes = {
-						label: node.label,
+						label: node.id,
 						x: Math.random(),
 						y: Math.random(),
 						size: 10,
@@ -72,7 +72,20 @@
 			});
 
 			// Apply a layout algorithm
+			// const layout = new ForceSupervisor(graph, {
+			// 	isNodeFixed: (_, attr) => attr.highlighted
+			// });
+			// layout.start();
 			const layout = new ForceSupervisor(graph, {
+				// Adjust the force-directed layout settings
+				settings: {
+					// strongGravityMode: true, // Helps keep the nodes from drifting away
+					gravity: 0.01, // Controls the strength of the "gravity" that attracts nodes
+					// scalingRatio: 10, // Controls the repulsion between nodes (higher values push nodes further apart)
+					// nodeStrength: -50, // Increases the repulsion force between nodes
+					// centerGravity: 0.1, // Pulls nodes towards the center
+					// maxIterations: 1000 // Ensure that the layout has enough iterations to settle
+				},
 				isNodeFixed: (_, attr) => attr.highlighted
 			});
 			layout.start();

@@ -14,6 +14,7 @@
 	import Skills from '../components/skills/Skills.svelte';
 	import SkillsRadar from '../components/skills/SkillsRadar.svelte';
 	import Education from '../components/education/Education.svelte';
+	import Cv from '../components/Cv.svelte';
 
 	function scrollDown() {
 		window.scrollTo({
@@ -130,26 +131,11 @@
 
 <div class="content">
 	<section class="expirience">
-		<h1>Education</h1>
-		<!-- <div class="education">
-			<p><b>Data Science — Master of Science</b> <br /> Technische Universität Wien, 2022 - now</p>
-			<p>
-				<b>Information Technologies and Telecommunications — Bachelor of Science</b> <br /> Bauman Moscow
-				State Technical University, 2014 - 2020
-			</p>
-			<p>
-				<b>Deep Learning — Deep Learning School</b> <br /> Moscow Institute of Physics and Technology,
-				2020 - 2021
-			</p>
-			<p>
-				<b>Machine Learning — School of Data Analysis</b> <br /> Higher School of Economics University
-				and Yandex, 2020
-			</p>
-		</div> -->
+		<h2>Education</h2>
 		<Education />
 	</section>
 
-	<section class="expirience">
+	<!-- <section class="expirience">
 		<h1>Work Experience</h1>
 		<div class="work-experience">
 			<p>
@@ -229,7 +215,9 @@
 			</p>
 			<p><b>Languages:</b> English (C1), German (A2), Russian (C2), Armenian (B2)</p>
 		</div>
-	</section>
+	</section> -->
+	<Cv />
+
 </div>
 
 <style>
@@ -247,6 +235,11 @@
 
 	h1 {
 		width: 100%;
+		color: var(--color-text-or);
+		font-size: 1.8rem;
+		font-weight: bold;
+	}
+	h2 {
 		color: var(--color-text-or);
 		font-size: 1.8rem;
 		font-weight: bold;
@@ -340,17 +333,6 @@
 	.expirience {
 		display: flex;
 		flex-direction: column;
-	}
-
-	.expirience > div {
-		padding-left: 3vh;
-	}
-
-	.expirience h1 {
-		color: var(--color-text-or);
-		font-size: 2rem;
-		font-weight: bold;
-		text-align: left;
 	}
 
 	.content {

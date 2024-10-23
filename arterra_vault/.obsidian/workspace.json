@@ -4,19 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "2220c9c2f26f2667",
+        "id": "064263057949c0b6",
         "type": "tabs",
         "children": [
           {
-            "id": "2eac40f2da304fd3",
+            "id": "c708bd6b5b14c60a",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Projects/susteam.md",
+                "file": "Projects/Lip Reading App.md",
                 "mode": "source",
-                "source": false
-              }
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "Lip Reading App"
             }
           }
         ]
@@ -39,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
@@ -54,7 +58,9 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "Search"
             }
           },
           {
@@ -62,7 +68,9 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
@@ -85,7 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Projects/susteam.md",
+                "file": "Projects/Cryptex.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -93,7 +101,9 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Cryptex"
             }
           },
           {
@@ -102,10 +112,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Projects/susteam.md",
+                "file": "Projects/Cryptex.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Cryptex"
             }
           },
           {
@@ -116,7 +128,9 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              }
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           },
           {
@@ -125,8 +139,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Projects/susteam.md"
-              }
+                "file": "Projects/Cryptex.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Cryptex"
             }
           }
         ]
@@ -146,16 +162,29 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "2eac40f2da304fd3",
+  "active": "c708bd6b5b14c60a",
   "lastOpenFiles": [
-    "Projects/Printerra.md",
-    "imgs/3dprinterthesis.png",
+    "Projects/TradeBot.md",
+    "Projects/Tourism Technology Hackathon 2023.md",
+    "Projects/DAVU Project.md",
+    "Projects/Cryptex.md",
+    "Projects/Lip Reading App.md",
+    "Projects/GLOSAV.md",
+    "Projects/Arterra.md",
+    "Projects/LawSyncr.md",
+    "Projects/Rail4Future.md",
     "Projects/susteam.md",
+    "Projects/AIM Hackathon.md",
+    "Projects/Printerra.md",
+    "Fields/Data Science/Analytics.md",
+    "Fields/Data Science/Time series.md",
+    "imgs/rail4future.jpg",
+    "imgs/cryptex.png",
+    "imgs/susteam.png",
+    "imgs/3dprinterthesis.png",
     "imgs/glosav.jpg",
     "imgs/photo_2024-08-26_02-16-43.jpg",
     "imgs/ADCS RCE.pdf",
-    "Projects/Rail4Future.md",
-    "Projects/Cryptex.md",
     "Fields/Data Science/LLM.md",
     "Fields/Data Science/NLP.md",
     "Fields/Software Development/Back-end.md",
@@ -167,7 +196,6 @@
     "Fields/WEB.md",
     "Fields/Data Science/ML.md",
     "Fields/Data Science/CV.md",
-    "imgs/cryptex.png",
     "imgs/Screenshot from 2024-08-28 14-30-35.png",
     "imgs",
     "Screenshot from 2024-08-28 14-30-35.png",

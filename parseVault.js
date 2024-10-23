@@ -23,43 +23,56 @@ function parseVault(vaultPath) {
       const stat = fs.statSync(fullPath);
 
       if (stat.isDirectory()) {
-        // Handle directory as a node
         const folderName = path.relative(vaultPath, fullPath);
         if (!folderName.startsWith('.')) {
           graph.nodes.push({ id: folderName, label: folderName, type: 'folder' });
 
-          // Create an edge between the folder and its parent folder
           if (parentFolder) {
             graph.edges.push({ source: parentFolder, target: folderName });
           }
         }
 
-        // Recurse into the folder
         traverseDirectory(fullPath, folderName);
       } else if (file.endsWith('.md')) {
-        // Handle Markdown file as a node
         const node = path.relative(vaultPath, fullPath).replace(/\.md$/, '');
         const nodeName = path.basename(node);
-        graph.nodes.push({ id: nodeName, label: nodeName, type: 'file', folder: parentFolder });
+        const fileContent = fs.readFileSync(fullPath, 'utf8');
 
-        // Create an edge between the file and its containing folder
+        const { content, data } = matter(fileContent); // Extract frontmatter
+
+        // Extract tags, name, description, img from frontmatter
+        const tags = data.tags || [];
+        const name = data.name || nodeName;
+        const description = data.description || '';
+        const img = data.img ? data.img.match(internalLinkRegex)?.[0]?.replace(/\[\[|\]\]/g, '') : null;
+        const link = data.link || null;
+        const order = data.order || 0;
+
+        graph.nodes.push({
+          id: nodeName,
+          label: name,
+          type: 'file',
+          folder: parentFolder,
+          description,
+          tags,
+          img,
+          link,
+          order
+        });
+
         if (parentFolder) {
           graph.edges.push({ source: parentFolder, target: nodeName });
         }
 
-        const content = fs.readFileSync(fullPath, 'utf8');
-        const links = [...content.matchAll(internalLinkRegex)].map(match => match[1]);
-        console.log(links);
-        // Add edges for internal links between Markdown files
+        const links = [...content.matchAll(internalLinkRegex)].map((match) => match[1]);
+
         links.forEach((link) => {
-          // Normalize the link to match the node IDs (remove .md, handle subfolder paths, etc.)
           const linkedFile = path.join(path.dirname(nodeName), link).replace(/\.md$/, '');
-          const targetNode = graph.nodes.find(node => node.label === linkedFile);
+          const targetNode = graph.nodes.find((node) => node.label === linkedFile);
 
           if (targetNode) {
             graph.edges.push({ source: nodeName, target: linkedFile });
-          }
-          else {
+          } else {
             console.warn(`Link target not found: ${linkedFile}`);
           }
         });
