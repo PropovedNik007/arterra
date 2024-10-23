@@ -1,40 +1,40 @@
-# name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages
 
-# on:
-#   push:
-#     branches: 'main'
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   build_site:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
+jobs:
+  build_site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#       # If you're using pnpm, add this step then change the commands and cache key below to use `pnpm`
-#       - name: Install pnpm
-#         uses: pnpm/action-setup@v3
-#         with:
-#           version: 8
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
-#       - name: Install Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20
-#           cache: pnpm
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
 
-#       - name: Install dependencies
-#         run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-#       - name: build
-#         env:
-#           BASE_PATH: '/${{ github.event.repository.name }}'
-#         run: |
-#           pnpm build
+      - name: Build site
+        env:
+          BASE_PATH: '/${{ github.event.repository.name }}' # Set the correct base path
+        run: |
+          pnpm build
 
-#       - name: Deploy to gh-pages
-#         uses: peaceiris/actions-gh-pages@v3.9.1
-#         with:
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
-#           publish_dir: build
-#           publish_branch: gh-pages  # Deploy to the gh-pages branch
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3.9.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build  # Directory to deploy
+          publish_branch: gh-pages  # Deploy to gh-pages branch
