@@ -32,6 +32,9 @@
 		<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
 			<a href="{base}/about">About</a>
 		</li>
+		<li aria-current={$page.url.pathname === '/contact' ? 'page' : undefined}>
+			<a href="{base}/contact">Contact</a>
+		</li>
 		<li>
 			<a href="mailto:arthur.sogomonyan@gmail.com" target="_blank"><EnvelopeOutline/></a>
 		</li>

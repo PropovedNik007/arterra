@@ -2,6 +2,7 @@
 	import Header from '../components/Header.svelte';
 	import '../app.css';
 	import { Footer, FooterCopyright, FooterLinkGroup, FooterLink } from 'flowbite-svelte';
+	import { base } from '$app/paths';
 </script>
 
 <div class="app">
@@ -13,12 +14,12 @@
 
 	<Footer>
 		<div class="bottom-0 sm:flex sm:items-center sm:justify-between">
-		<FooterCopyright href="/" by="Artur Sogomonyan" year={2024} />
+		<FooterCopyright href="{base}/" by="Artur Sogomonyan" year={2024} />
 		<FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
 			<FooterLink href="mailto:arthur.sogomonyan@gmail.com">Email</FooterLink>
 			<FooterLink href="https://linkedin.com/in/artur-sogomonyan">LinkedIn</FooterLink>
 			<FooterLink href="https://github.com/PropovedNik007">GitHub</FooterLink>
-			<FooterLink href="/contact">Contact</FooterLink>
+			<FooterLink href="{base}/contact">Contact</FooterLink>
 		</FooterLinkGroup>
 		</div>
 	</Footer>

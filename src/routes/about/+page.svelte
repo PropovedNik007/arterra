@@ -57,7 +57,7 @@
 					</div>
 					<div class="profile-image">
 						<div class="image-container">
-							<img src="/images/profile.png" alt="Artur Sogomonyan" />
+							<img src="{base}/images/profile.png" alt="Artur Sogomonyan" />
 							<div class="image-decoration"></div>
 						</div>
 					</div>
@@ -190,12 +190,6 @@
 		transform: translateY(0);
 	}
 
-	.profile-card {
-		background: linear-gradient(135deg, var(--color-surface-50) 0%, var(--color-surface-100) 100%);
-		border: none;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-
-	}
 
 	.profile-content {
 		display: grid;
