@@ -38,6 +38,9 @@ importers:
       markdown-link-extractor:
         specifier: ^4.0.2
         version: 4.0.2
+      marked:
+        specifier: ^15.0.8
+        version: 15.0.8
       mdbsvelte:
         specifier: ^1.0.12
         version: 1.0.12
@@ -73,16 +76,16 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0(svelte@4.2.18)(typescript@5.5.4)
       '@sveltejs/adapter-auto':
-        specifier: ^3.0.0
+        specifier: ^3.2.2
         version: 3.2.2(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.3.5(sass@1.77.8)))(svelte@4.2.18)(vite@5.3.5(sass@1.77.8)))
       '@sveltejs/adapter-static':
         specifier: ^3.0.2
         version: 3.0.2(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.3.5(sass@1.77.8)))(svelte@4.2.18)(vite@5.3.5(sass@1.77.8)))
       '@sveltejs/kit':
-        specifier: ^2.0.0
+        specifier: ^2.5.18
         version: 2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.3.5(sass@1.77.8)))(svelte@4.2.18)(vite@5.3.5(sass@1.77.8))
       '@sveltejs/vite-plugin-svelte':
-        specifier: ^3.0.0
+        specifier: ^3.1.1
         version: 3.1.1(svelte@4.2.18)(vite@5.3.5(sass@1.77.8))
       '@types/chroma-js':
         specifier: ^2.4.4
@@ -94,13 +97,13 @@ importers:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.40)
       eslint:
-        specifier: ^9.0.0
+        specifier: ^9.8.0
         version: 9.8.0
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@9.8.0)
       eslint-plugin-svelte:
-        specifier: ^2.36.0
+        specifier: ^2.43.0
         version: 2.43.0(eslint@9.8.0)(svelte@4.2.18)
       flowbite:
         specifier: ^2.4.1
@@ -115,34 +118,34 @@ importers:
         specifier: ^6.1.1
         version: 6.1.1
       globals:
-        specifier: ^15.0.0
+        specifier: ^15.8.0
         version: 15.8.0
       postcss:
         specifier: ^8.4.40
         version: 8.4.40
       prettier:
-        specifier: ^3.1.1
+        specifier: ^3.3.3
         version: 3.3.3
       prettier-plugin-svelte:
-        specifier: ^3.1.2
+        specifier: ^3.2.6
         version: 3.2.6(prettier@3.3.3)(svelte@4.2.18)
       svelte:
-        specifier: ^4.2.7
+        specifier: ^4.2.18
         version: 4.2.18
       svelte-check:
-        specifier: ^3.6.0
+        specifier: ^3.8.5
         version: 3.8.5(postcss-load-config@4.0.2(postcss@8.4.40))(postcss@8.4.40)(sass@1.77.8)(svelte@4.2.18)
       tailwindcss:
         specifier: ^3.4.7
         version: 3.4.7
       typescript:
-        specifier: ^5.0.0
+        specifier: ^5.5.4
         version: 5.5.4
       typescript-eslint:
-        specifier: ^8.0.0-alpha.20
+        specifier: 8.0.0-alpha.60
         version: 8.0.0-alpha.60(eslint@9.8.0)(typescript@5.5.4)
       vite:
-        specifier: ^5.0.3
+        specifier: ^5.3.5
         version: 5.3.5(sass@1.77.8)
 
 packages:
@@ -815,8 +818,8 @@ packages:
     resolution: {integrity: sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==}
     engines: {node: '>= 6'}
 
-  caniuse-lite@1.0.30001646:
-    resolution: {integrity: sha512-dRg00gudiBDDTmUhClSdv3hqRfpbOnU28IpI1T6PBTLWa+kOj0681C8uML3PifYfREuBrVjDGhL3adYpBT6spw==}
+  caniuse-lite@1.0.30001713:
+    resolution: {integrity: sha512-wCIWIg+A4Xr7NfhTuHdX+/FKh3+Op3LBbSp2N5Pfx6T/LhdQy3GTyoTg48BReaW/MyMNZAkTadsBtai3ldWK0Q==}
 
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
@@ -1425,6 +1428,11 @@ packages:
     engines: {node: '>= 18'}
     hasBin: true
 
+  marked@15.0.8:
+    resolution: {integrity: sha512-rli4l2LyZqpQuRve5C0rkn6pj3hT8EWPC+zkAxFTAJLxRbENfTAhEQq9itrmf1Y81QtAX5D/MYlGlIomNgj9lA==}
+    engines: {node: '>= 18'}
+    hasBin: true
+
   mdbsvelte@1.0.12:
     resolution: {integrity: sha512-mXYpSQtcRWS7A5jRVaTUDVk0Rd7lmPL+grm+uWGhOzDQP5x5oDE/kyAm5ib3zUFJjW6ojKzgaBvxwsCiJm5Jbw==}
 
@@ -1796,6 +1804,10 @@ packages:
 
   source-map-js@1.2.0:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
+    engines: {node: '>=0.10.0'}
+
+  source-map-js@1.2.1:
+    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
   sprintf-js@1.0.3:
@@ -2842,7 +2854,7 @@ snapshots:
   autoprefixer@10.4.19(postcss@8.4.40):
     dependencies:
       browserslist: 4.23.2
-      caniuse-lite: 1.0.30001646
+      caniuse-lite: 1.0.30001713
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.1
@@ -2872,7 +2884,7 @@ snapshots:
 
   browserslist@4.23.2:
     dependencies:
-      caniuse-lite: 1.0.30001646
+      caniuse-lite: 1.0.30001713
       electron-to-chromium: 1.5.4
       node-releases: 2.0.18
       update-browserslist-db: 1.1.0(browserslist@4.23.2)
@@ -2885,7 +2897,7 @@ snapshots:
 
   camelcase-css@2.0.1: {}
 
-  caniuse-lite@1.0.30001646: {}
+  caniuse-lite@1.0.30001713: {}
 
   chalk@4.1.2:
     dependencies:
@@ -3559,6 +3571,8 @@ snapshots:
 
   marked@12.0.2: {}
 
+  marked@15.0.8: {}
+
   mdbsvelte@1.0.12:
     dependencies:
       fuzzysort: 1.9.0
@@ -3856,7 +3870,7 @@ snapshots:
     dependencies:
       chokidar: 3.6.0
       immutable: 4.3.7
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
     optional: true
 
   section-matter@1.0.0:
@@ -3901,6 +3915,9 @@ snapshots:
       sander: 0.5.1
 
   source-map-js@1.2.0: {}
+
+  source-map-js@1.2.1:
+    optional: true
 
   sprintf-js@1.0.3: {}
 

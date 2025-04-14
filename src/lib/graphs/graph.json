@@ -145,7 +145,7 @@
       ],
       "img": "aim-hackathon.jpg",
       "link": "https://medium.com/@artur.sogomonyan/building-a-greenwashing-detection-system-using-retrieval-augmented-generation-rag-11ebb2cd4afc",
-      "order": "1"
+      "order": "2"
     },
     {
       "id": "Arterra",
@@ -278,6 +278,23 @@
       ],
       "img": "rail4future.jpg",
       "link": "https://www.rail4future.com/en/",
+      "order": "3"
+    },
+    {
+      "id": "ReelMate",
+      "label": "ReelMate",
+      "type": "file",
+      "folder": "Projects",
+      "description": "Developed an AI-driven platform that streamlines the creation and distribution of short-form video content across major social media platforms. Engineered features to transform text-based content into engaging videos, automate cross-platform scheduling, and provide analytics to optimize engagement. Integrated a Telegram bot to facilitate seamless content approval workflows. Utilized FastAPI and AsyncIO to ensure high-performance, real-time operations.​",
+      "tags": [
+        "FastAPI",
+        "AsyncIO",
+        "OpenAI",
+        "SocialMedia",
+        "Automation"
+      ],
+      "img": "reelmate.png",
+      "link": "https://propovednik007.github.io/reelmate/",
       "order": "1"
     },
     {
@@ -528,6 +545,22 @@
     {
       "source": "Rail4Future",
       "target": "ML"
+    },
+    {
+      "source": "Projects",
+      "target": "ReelMate"
+    },
+    {
+      "source": "ReelMate",
+      "target": "Back-end"
+    },
+    {
+      "source": "ReelMate",
+      "target": "LLM"
+    },
+    {
+      "source": "ReelMate",
+      "target": "Front-end"
     },
     {
       "source": "Projects",

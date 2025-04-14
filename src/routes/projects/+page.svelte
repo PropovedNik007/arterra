@@ -1,20 +1,16 @@
-<script>
-	import { Breadcrumb, BreadcrumbItem, Card, Button, Toggle, Badge } from 'flowbite-svelte';
+<script lang="ts">
+	import { Breadcrumb, BreadcrumbItem, Card, Button, Badge } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
-
 	import { base } from '$app/paths';
-
+	import graphData from '../../lib/graphs/graph.json';
 	import Graph from '../../components/Graph.svelte';
-  	import graphData from '../../lib/graphs/graph.json';
 	import Projects from '../../components/projects/Projects.svelte';
+	
 </script>
 
-
 <svelte:head>
-	<title>About</title>
-	<meta name="description" content="About this app" />
+	<title>Projects | Arterra</title>
 </svelte:head>
-
 
 <div class="content">
 	<Breadcrumb color="primary" aria-label="Default breadcrumb example">
@@ -24,7 +20,7 @@
 	</Breadcrumb>
 </div>
 
-<h1>Vault Graph</h1>
+<h1>Projects</h1>
 <Graph {graphData} />
 
 <Projects {graphData} />
@@ -34,5 +30,4 @@
 		padding: 20px;
 		margin-top: 5vh;
 	}
-
 </style>

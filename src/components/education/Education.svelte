@@ -2,7 +2,7 @@
     <div class="education">
         <p>
             <b>Data Science — Master of Science</b> <br /> Technische Universität Wien, Austria, 2022 -
-            now
+            2025
         </p>
         <p>
             <b>Information Technologies and Telecommunications — Bachelor of Science</b> <br /> Bauman

@@ -1,35 +1,76 @@
-<script>
+<script lang="ts">
 	import { Breadcrumb, BreadcrumbItem, Card, Button, Toggle, Badge } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
-
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
-
 	import graphData from '../../lib/graphs/graph.json';
 
+	// Define types for our data
+	interface ProjectNode {
+		id: string;
+		label: string;
+		type: string;
+		folder: string | null;
+		description: string;
+		tags: string[];
+		img: string | null;
+		link: string | null;
+		order: number | string;
+	}
+
+	interface GraphData {
+		nodes: ProjectNode[];
+		edges: Array<{
+			source: string;
+			target: string;
+		}>;
+	}
+
 	const imageBasePath = `${base}/images/projects/`;
+	
+	// Define color variants that match the Badge component's expected types
+	type ColorVariant = 'info' | 'gray' | 'red' | 'green' | 'yellow' | 'indigo' | 'purple' | 'pink' | 'blue' | 'teal' | 'cyan' | 'orange' | undefined;
+	
+	// Map our color names to the expected color variants
+	const colorMap: Record<string, ColorVariant> = {
+		'yellow': 'yellow',
+		'red': 'red',
+		'green': 'green',
+		'blue': 'blue',
+		'purple': 'purple',
+		'pink': 'pink',
+		'indigo': 'indigo',
+		'teal': 'teal',
+		'cyan': 'cyan',
+		'orange': 'orange'
+	};
+	
+	const colors: ColorVariant[] = ['yellow', 'red', 'green', 'blue', 'purple', 'pink', 'indigo', 'purple', 'teal', 'cyan', 'orange'];
 
-	const colors = ['yellow', 'red', 'green', 'blue', 'purple', 'pink', 'indigo', 'purple', 'teal', 'cyan', 'orange'];
-
-	function getColor(index) {
-		return colors[index % colors.length]; // Cycle through the colors
+	function getColor(index: number): ColorVariant {
+		return colors[index % colors.length] || undefined;
 	}
 
 	// Sort the nodes by `order`, placing those with `order: 0` at the end
-	let sortedNodes = [...graphData.nodes]
-		.filter(node => node.folder === 'Projects' && node.type === 'file') // Filter only relevant nodes
+	const typedGraphData = graphData as unknown as GraphData;
+	let sortedNodes = [...typedGraphData.nodes]
+		.filter(node => node.folder === 'Projects' && node.type === 'file')
 		.sort((a, b) => {
-			// Sort by order, putting those with order 0 at the end
-			// if (a.order === 0 && b.order !== 0) return 1;
-			// if (b.order === 0 && a.order !== 0) return -1;
 			const orderA = Number(a.order) || 0;
 			const orderB = Number(b.order) || 0;
 
-			// Place nodes with order 0 at the end
 			if (orderA === 0 && orderB !== 0) return 1;
 			if (orderB === 0 && orderA !== 0) return -1;
-			// Sort by ascending order if both have non-zero values
 			return orderA - orderB;
 		});
+
+	function handleProjectClick(node: ProjectNode): void {
+		if (node.link) {
+			window.open(node.link, '_blank');
+		} else {
+			goto(`${base}/projects/${node.id}`);
+		}
+	}
 </script>
 
 <section class="projects">
@@ -42,15 +83,16 @@
 				{node.description ? node.description : 'No description available.'}
 			</p>
 			<p>
-				<!-- <Badge border rounded color="green">File</Badge> -->
-				{#each node.tags as tag, index}
-					<Badge border rounded color={getColor(index)}>{tag}</Badge>
-				{/each}
+				{#if node.tags && node.tags.length > 0}
+					{#each node.tags as tag, index}
+						<Badge border rounded color={colors[index % colors.length]}>{tag}</Badge>
+					{/each}
+				{/if}
 			</p>
 
 			<br />
 
-			<Button class="bg-primary-600" href={node.link ?? '#'} target="_blank">
+			<Button class="bg-primary-600" on:click={() => handleProjectClick(node)}>
 				Read more <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
 			</Button>
 		</Card>
@@ -58,23 +100,10 @@
 </section>
 
 <style>
-	/* .project {
-		padding: 20px;
-		background-color: #f9f9f9;
-		border-radius: 10px;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-	}
-
-	.grid {
-		margin-top: 20px;
-	} */
 	.projects {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 		grid-gap: 20px;
-		/* justify-content: center; */
-		/* align-items: center; */
-		/* height: 100vh; */
 	}
 
 	@media (max-width: 768px) {

@@ -124,11 +124,6 @@
 		transition: background-color 0.3s ease-in-out;
 	}
 
-	.nav-scroll .logo-container {
-		animation: left-in-basic 1 0.8s 0s;
-		animation: fadeIn 0.5s ease-out forwards;
-	}
-
 	a:hover {
 		color: white;
 	}

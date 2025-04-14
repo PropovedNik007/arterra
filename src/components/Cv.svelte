@@ -1,7 +1,7 @@
 <section class="experience">
     <h2>Education</h2>
     <div class="education">
-        <p><b>Master of Science</b> <br /> Data Science, Technische Universität Wien, 2022 - now</p>
+        <p><b>Master of Science</b> <br /> Data Science, Technische Universität Wien, 2022 - 2025</p>
         <p><b>Bachelor of Science</b> <br /> Information technologies and telecommunications, Bauman Moscow State Technical University, 2014 - 2020</p>
         <ul>
             <li>Diploma thesis "3D printer failure detection system based on computer vision detection"</li>

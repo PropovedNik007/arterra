@@ -40,25 +40,33 @@
 		<p>Computer Vision</p>
 		<p>Deep Learning</p>
 		<p>Full-stack development</p>
-		<p>Website is under development</p>
-		<!-- <p class="orange">Let's build the future together!</p> -->
-		<!-- <div class="contact">
-				<a href="mailto:arthur.sogomonyan@gmail.com" target="_blank">Email</a> |
-				<a href="https://linkedin.com/in/artur-sogomonyan" target="_blank">LinkedIn</a> |
-				<a href="https://github.com/PropovedNik007" target="_blank">GitHub</a>
-			</div> -->
-
-		<!-- <button>Download CV</button> -->
-		<a
-			href="https://wa.me/4367764114581?text=Dear Artur%20I'm%20interested%20to%20work%20with%20you"
-			target="_blank"
-		>
-			<button
-				class="blueShadow relative overflow-hidden px-6 py-3 group rounded-full bg-white text-slate-950"
+		
+		<div class="button-container">
+			<a
+				href="https://wa.me/4367764114581?text=Dear Artur%20I'm%20interested%20to%20work%20with%20you"
+				target="_blank"
 			>
-				<h5 class="relative z-9">Get in touch</h5>
+				<button
+					class="blueShadow relative overflow-hidden px-6 py-3 group rounded-full bg-white text-slate-950"
+				>
+					<h5 class="relative z-9">Get in touch</h5>
+				</button>
+			</a>
+			
+			<button
+				class="blueShadow relative overflow-hidden px-6 py-3 group rounded-full bg-white text-slate-950 mt-4"
+				on:click={() => {
+					const link = document.createElement('a');
+					link.href = 'https://github.com/PropovedNik007/cv/raw/main/Artur_Sogomonyan_cv_long.pdf';
+					link.download = 'Artur_Sogomonyan_CV.pdf';
+					document.body.appendChild(link);
+					link.click();
+					document.body.removeChild(link);
+				}}
+			>
+				<h5 class="relative z-9">Download CV</h5>
 			</button>
-		</a>
+		</div>
 	</div>
 	<!-- <div class="contact">
 			<a href="mailto:arthur.sogomonyan@gmail.com" target="_blank">Email</a> |
@@ -130,13 +138,7 @@
 </Tabs>
 
 <div class="content">
-	<section class="expirience">
-		<h2>Education</h2>
-		<Education />
-	</section>
-	
 	<Cv />
-
 </div>
 
 <style>
@@ -158,11 +160,7 @@
 		font-size: 1.8rem;
 		font-weight: bold;
 	}
-	h2 {
-		color: var(--color-text-or);
-		font-size: 1.8rem;
-		font-weight: bold;
-	}
+
 	.name-header > h1 {
 		color: var(--color-text-or);
 		text-align: left;
@@ -171,9 +169,19 @@
 		z-index: 0;
 	}
 
-	.description > p {
-		/* text-align: left; */
-		/* text-align: center; */
+	.description {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 40vw;
+		height: 90vh;
+		margin: 0;
+		position: relative;
+	}
+
+	.description p {
+		text-align: center;
 		font-size: 1.5rem;
 		width: 100%;
 		margin-bottom: 1rem;
@@ -249,10 +257,6 @@
 		box-shadow: 0px 14px 55px #7dc0ff;
 	}
 
-	.expirience {
-		display: flex;
-		flex-direction: column;
-	}
 
 	.content {
 		padding: 20px;
@@ -317,5 +321,22 @@
 			height: 100vw;
 			width: 100vw;
 		}
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 2rem;
+		width: 100%;
+	}
+
+	.button-container button {
+		width: auto;
+		min-width: 200px;
+		transition: all 0.3s ease;
+		position: relative;
+		overflow: hidden;
+		z-index: 1;
 	}
 </style>

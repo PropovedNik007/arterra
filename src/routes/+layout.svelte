@@ -18,7 +18,7 @@
 			<FooterLink href="mailto:arthur.sogomonyan@gmail.com">Email</FooterLink>
 			<FooterLink href="https://linkedin.com/in/artur-sogomonyan">LinkedIn</FooterLink>
 			<FooterLink href="https://github.com/PropovedNik007">GitHub</FooterLink>
-			<FooterLink href="/">Contact</FooterLink>
+			<FooterLink href="/contact">Contact</FooterLink>
 		</FooterLinkGroup>
 		</div>
 	</Footer>

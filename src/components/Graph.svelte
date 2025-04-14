@@ -206,16 +206,16 @@
 <div bind:this={container} style="width: 100%; height: 500px;"></div>
 
 <style>
-	.sigma-node {
+	/* .sigma-node {
 		cursor: pointer;
-	}
+	} */
 
-	.sigma-node.highlighted {
+	/* .sigma-node.highlighted {
 		stroke: #ffffff;
 		stroke-width: 2px;
-	}
+	} */
 
-	.sigma-edge {
+	/* .sigma-edge {
 		cursor: pointer;
 	}
 
@@ -223,5 +223,5 @@
 		font-size: 10px;
 		color: white;
 		stroke: white;
-	}
+	} */
 </style>
