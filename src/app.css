@@ -1,4 +1,6 @@
 @import '@fontsource/fira-mono';
+@import '@fontsource/fraunces';
+@import './lib/design/tokens.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
