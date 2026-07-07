@@ -1,4 +1,138 @@
 {
-  "nodes": [],
-  "edges": []
+  "nodes": [
+    {
+      "id": "2026-06-14-rax",
+      "label": "Rax — Heukuppe via Ottohaus",
+      "section": "sport",
+      "discipline": "hiking"
+    },
+    {
+      "id": "2026-05-first-sparring",
+      "label": "First sparring round",
+      "section": "sport",
+      "discipline": "boxing"
+    },
+    {
+      "id": "2026-04-miniature-batch",
+      "label": "Miniature batch — Anycubic Photon Mono 4K",
+      "section": "diy"
+    },
+    {
+      "id": "reelmate",
+      "label": "ReelMate",
+      "section": "projects"
+    },
+    {
+      "id": "lawsyncr",
+      "label": "LawSyncr",
+      "section": "projects"
+    },
+    {
+      "id": "tradebot",
+      "label": "TradeBot",
+      "section": "projects"
+    },
+    {
+      "id": "printerra",
+      "label": "Printerra",
+      "section": "projects"
+    },
+    {
+      "id": "davu-ocr",
+      "label": "DAVU / OCR — document analysis",
+      "section": "projects"
+    },
+    {
+      "id": "cryptex",
+      "label": "Cryptex",
+      "section": "projects"
+    },
+    {
+      "id": "susteam",
+      "label": "susteam",
+      "section": "projects"
+    },
+    {
+      "id": "rail4future",
+      "label": "Rail4Future",
+      "section": "projects"
+    },
+    {
+      "id": "glosav",
+      "label": "GLOSAV",
+      "section": "projects"
+    },
+    {
+      "id": "aim-hackathon-greenwashing-rag",
+      "label": "AIM Hackathon — greenwashing RAG",
+      "section": "projects"
+    },
+    {
+      "id": "tourism-knowledge-graph",
+      "label": "Tourism knowledge graph",
+      "section": "projects"
+    },
+    {
+      "id": "red-cross-lip-reading",
+      "label": "Red Cross lip-reading app",
+      "section": "projects"
+    }
+  ],
+  "edges": [
+    {
+      "source": "reelmate",
+      "target": "tradebot",
+      "kind": "tag"
+    },
+    {
+      "source": "reelmate",
+      "target": "susteam",
+      "kind": "tag"
+    },
+    {
+      "source": "reelmate",
+      "target": "aim-hackathon-greenwashing-rag",
+      "kind": "tag"
+    },
+    {
+      "source": "reelmate",
+      "target": "red-cross-lip-reading",
+      "kind": "tag"
+    },
+    {
+      "source": "lawsyncr",
+      "target": "aim-hackathon-greenwashing-rag",
+      "kind": "tag"
+    },
+    {
+      "source": "tradebot",
+      "target": "susteam",
+      "kind": "tag"
+    },
+    {
+      "source": "tradebot",
+      "target": "red-cross-lip-reading",
+      "kind": "tag"
+    },
+    {
+      "source": "printerra",
+      "target": "glosav",
+      "kind": "tag"
+    },
+    {
+      "source": "davu-ocr",
+      "target": "susteam",
+      "kind": "tag"
+    },
+    {
+      "source": "susteam",
+      "target": "aim-hackathon-greenwashing-rag",
+      "kind": "tag"
+    },
+    {
+      "source": "susteam",
+      "target": "red-cross-lip-reading",
+      "kind": "tag"
+    }
+  ]
 }
