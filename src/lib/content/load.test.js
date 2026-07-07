@@ -56,4 +56,10 @@ describe('loadContent', () => {
 		const items = await loadContent(join(here, '__fixtures__', 'does-not-exist'));
 		expect(items).toEqual([]);
 	});
+
+	it('respects explicit date: over created: when both are present', async () => {
+		const items = await loadContent(FIXTURES);
+		const precedence = items.find((item) => item.slug === 'date-precedence');
+		expect(precedence?.date).toBe('2026-06-14');
+	});
 });

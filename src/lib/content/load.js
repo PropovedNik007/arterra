@@ -45,6 +45,23 @@ function firstParagraph(body) {
 }
 
 /**
+ * Converts a Date or string value to a YYYY-MM-DD string.
+ * Returns an empty string if value is undefined, null, or neither a string nor a Date.
+ * @param {string | Date | undefined} dateValue
+ * @returns {string}
+ */
+function dateToString(dateValue) {
+	if (typeof dateValue === 'string') return dateValue;
+	if (dateValue instanceof Date) {
+		const year = dateValue.getUTCFullYear();
+		const month = String(dateValue.getUTCMonth() + 1).padStart(2, '0');
+		const day = String(dateValue.getUTCDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
+	return '';
+}
+
+/**
  * Loads and normalizes every markdown file under `root`, skipping any that
  * carry `visibility: private` or a missing/invalid `section` (and, for
  * `section: sport`, a missing/invalid `discipline`). Returns `[]` (with a
@@ -96,24 +113,12 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 			.map((target) => target.replace(/\.md$/i, '').split('/').pop() ?? target)
 			.filter((target) => slugSet.has(target.toLowerCase()));
 
-		// Helper to convert Date to YYYY-MM-DD string, or keep as-is if already string
-		const dateToString = (dateValue) => {
-			if (typeof dateValue === 'string') return dateValue;
-			if (dateValue instanceof Date) {
-				const year = dateValue.getUTCFullYear();
-				const month = String(dateValue.getUTCMonth() + 1).padStart(2, '0');
-				const day = String(dateValue.getUTCDate()).padStart(2, '0');
-				return `${year}-${month}-${day}`;
-			}
-			return '';
-		};
-
 		items.push({
 			slug,
 			section,
 			discipline: section === 'sport' ? data.discipline : undefined,
 			title: typeof data.title === 'string' ? data.title : (firstHeading(body) ?? slug),
-			date: typeof data.date === 'string' ? data.date : dateToString(data.created),
+			date: dateToString(data.date) || dateToString(data.created),
 			updated: typeof data.updated === 'string' ? data.updated : undefined,
 			tags: Array.isArray(data.tags) ? data.tags : [],
 			cover: typeof data.cover === 'string' ? data.cover : undefined,
