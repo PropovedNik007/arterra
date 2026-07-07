@@ -24,8 +24,8 @@ for (const node of graph.nodes) {
 	node.type = 'file';
 	node.description = item.excerpt;
 	node.tags = item.tags;
-	if (item.cover) node.img = item.cover;
-	if (item.externalLink) node.link = item.externalLink;
+	node.img = item.cover ?? null;
+	node.link = item.externalLink ?? null;
 	node.order = 0;
 }
 
