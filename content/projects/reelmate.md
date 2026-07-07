@@ -1,8 +1,8 @@
 ---
 type: project
 section: projects
-created: 2025-02-01T00:00:00.000Z
-updated: 2025-02-01T00:00:00.000Z
+created: '2025-02-01'
+updated: '2025-02-01'
 tags:
   - FastAPI
   - AsyncIO

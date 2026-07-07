@@ -1,8 +1,8 @@
 ---
 type: project
 section: projects
-created: 2023-07-01T00:00:00.000Z
-updated: 2023-07-01T00:00:00.000Z
+created: '2023-07-01'
+updated: '2023-07-01'
 tags:
   - AV-HuBERT
   - FastAPI

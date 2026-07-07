@@ -2,8 +2,8 @@
 type: note
 section: sport
 discipline: boxing
-created: 2026-05-20T00:00:00.000Z
-updated: 2026-05-20T00:00:00.000Z
+created: '2026-05-20'
+updated: '2026-05-20'
 tags: []
 ---
 

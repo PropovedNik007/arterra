@@ -1,8 +1,8 @@
 ---
 type: note
 section: diy
-created: 2026-04-10T00:00:00.000Z
-updated: 2026-04-10T00:00:00.000Z
+created: '2026-04-10'
+updated: '2026-04-10'
 tags: []
 ---
 

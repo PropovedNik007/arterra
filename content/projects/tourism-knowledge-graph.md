@@ -1,8 +1,8 @@
 ---
 type: project
 section: projects
-created: 2023-11-01T00:00:00.000Z
-updated: 2023-11-01T00:00:00.000Z
+created: '2023-11-01'
+updated: '2023-11-01'
 tags:
   - knowledge-graph
   - Selenium
