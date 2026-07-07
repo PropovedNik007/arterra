@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { buildGraph } from './build.js';
 
-/** @param {Partial<import('../content/types.js').ContentItem>} overrides */
+/**
+ * @param {Partial<import('../content/types.js').ContentItem>} overrides
+ * @returns {import('../content/types.js').ContentItem}
+ */
 function makeItem(overrides) {
 	return {
 		slug: 'item',

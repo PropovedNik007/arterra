@@ -18,7 +18,7 @@ export const DISCIPLINE_META = {
 
 /**
  * Site-relative path (without the SvelteKit base) for a content item's detail page.
- * @param {import('../content/types.js').ContentItem} item
+ * @param {Pick<import('../content/types.js').ContentItem, 'section' | 'discipline' | 'slug'>} item
  * @returns {string}
  */
 export function itemPath(item) {
