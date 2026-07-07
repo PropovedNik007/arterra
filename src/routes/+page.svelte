@@ -201,7 +201,6 @@
 		background-size: cover;
 		background-attachment: fixed;
 		background-blend-mode: darken;
-		margin-top: -5vh;
 		padding: 0 5vw 0 5vw;
 	}
 	.name-header {

@@ -4,78 +4,212 @@
       "id": "2026-06-14-rax",
       "label": "Rax — Heukuppe via Ottohaus",
       "section": "sport",
-      "discipline": "hiking"
+      "discipline": "hiking",
+      "type": "file",
+      "description": "A day hike up Rax from Vienna. Started at the Preinerwiese trailhead, up to Ottohaus, then the ridge walk to Heukuppe (2007 m) and back down the same way.",
+      "tags": [],
+      "order": 0
     },
     {
       "id": "2026-05-first-sparring",
       "label": "First sparring round",
       "section": "sport",
-      "discipline": "boxing"
+      "discipline": "boxing",
+      "type": "file",
+      "description": "Notes from my first real sparring round after a few months of bag work and pad sessions — what went well, what I want to drill next.",
+      "tags": [],
+      "order": 0
     },
     {
       "id": "2026-04-miniature-batch",
       "label": "Miniature batch — Anycubic Photon Mono 4K",
-      "section": "diy"
+      "section": "diy",
+      "type": "file",
+      "description": "A batch of tabletop miniatures printed on the Photon Mono 4K, tuned for fine detail on faces and weapons.",
+      "tags": [],
+      "order": 0
     },
     {
       "id": "reelmate",
       "label": "ReelMate",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "An AI-driven platform that streamlines creating and distributing short-form video content across major social media platforms. Transforms text content into videos, automates cross-platform scheduling, provides engagement analytics, and includes a Telegram bot for content-approval workflows.",
+      "tags": [
+        "FastAPI",
+        "AsyncIO",
+        "OpenAI",
+        "social-media-automation"
+      ],
+      "order": 0
     },
     {
       "id": "lawsyncr",
       "label": "LawSyncr",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "Led end-to-end full-stack development of a legal-tech MVP, integrating machine learning components.",
+      "tags": [
+        "full-stack",
+        "RAG",
+        "Flask",
+        "Svelte",
+        "LLM"
+      ],
+      "order": 0
     },
     {
       "id": "tradebot",
       "label": "TradeBot",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "A crypto trading bot that scrapes real-time trade data from Binance for market analysis and automates execution of custom trading strategies.",
+      "tags": [
+        "crypto",
+        "Binance",
+        "FastAPI",
+        "AsyncIO"
+      ],
+      "order": 0
     },
     {
       "id": "printerra",
       "label": "Printerra",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "Diploma thesis (BMSTU): a 3D-printer failure detection system based on computer-vision detection.",
+      "tags": [
+        "machine-learning",
+        "OpenCV",
+        "NumPy",
+        "Python"
+      ],
+      "order": 0
     },
     {
       "id": "davu-ocr",
       "label": "DAVU / OCR — document analysis",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "Document analysis project (TU Wien, June 2024) performing layout analysis of historical documents to improve text extraction accuracy, plus Named Entity Recognition and fine-tuned LLMs to extract metadata from document images.",
+      "tags": [
+        "OCR",
+        "Tesseract",
+        "SpaCy",
+        "LLaMA-3"
+      ],
+      "order": 0
     },
     {
       "id": "cryptex",
       "label": "Cryptex",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "An NFT platform where users authenticate via MetaMask and store/manage seed phrases as encoded NFTs. Built the backend interfacing with the Polygon blockchain for secure, efficient transactions.",
+      "tags": [
+        "NFT",
+        "MetaMask",
+        "Polygon",
+        "Solidity"
+      ],
+      "order": 0
     },
     {
       "id": "susteam",
       "label": "susteam",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "Full-stack development of an ESG platform generating sustainability reports for the hospitality industry. Architected and developed the platform end-to-end.",
+      "tags": [
+        "React",
+        "FastAPI",
+        "BERT",
+        "LLaMA-3",
+        "ESG"
+      ],
+      "order": 0
     },
     {
       "id": "rail4future",
       "label": "Rail4Future",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "Data science project (TU Wien, 2024) analyzing rail irregularities in collaboration with industrial partners Siemens and ÖBB (Austrian Federal Railways).",
+      "tags": [
+        "LSTM",
+        "TensorFlow",
+        "data-science"
+      ],
+      "order": 0
     },
     {
       "id": "glosav",
       "label": "GLOSAV",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "Machine learning project detecting railway routes using object detection/tracking algorithms, focused on robustly tracking obstacles on rail tracks.",
+      "tags": [
+        "machine-learning",
+        "YOLOv4",
+        "OpenCV",
+        "NumPy"
+      ],
+      "order": 0
     },
     {
       "id": "aim-hackathon-greenwashing-rag",
       "label": "AIM Hackathon — greenwashing RAG",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "A platform built during the AIM Hackathon (hosted by TIMETOACT Group) that uses Retrieval-Augmented Generation to detect greenwashing in corporate ESG (Environmental, Social, Governance) reports. Placed 2nd Place Winner.",
+      "tags": [
+        "RAG",
+        "LangChain",
+        "Flask",
+        "OpenAI",
+        "ESG"
+      ],
+      "order": 0
     },
     {
       "id": "tourism-knowledge-graph",
       "label": "Tourism knowledge graph",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "Tourism Technology Hackathon 2023 project: a data pipeline mapping data from multiple sources into a knowledge graph on tourism subjects, visualized as an interactive map with an accompanying chatbot for analyzing points of interest. Placed 2nd Place Winner.",
+      "tags": [
+        "knowledge-graph",
+        "Selenium",
+        "GeoPandas",
+        "Folium"
+      ],
+      "order": 0
     },
     {
       "id": "red-cross-lip-reading",
       "label": "Red Cross lip-reading app",
-      "section": "projects"
+      "section": "projects",
+      "folder": "Projects",
+      "type": "file",
+      "description": "A lip-reading web app built (via Coding Austria) for the Austrian Red Cross to aid communication in noisy environments — streams smartphone video into the AV-HuBERT model to read lips and generate text output.",
+      "tags": [
+        "AV-HuBERT",
+        "FastAPI",
+        "Next.js",
+        "computer-vision"
+      ],
+      "order": 0
     }
   ],
   "edges": [

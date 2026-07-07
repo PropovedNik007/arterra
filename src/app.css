@@ -71,6 +71,12 @@ p {
 	font-weight: 400;
 }
 
+h1,
+h2,
+h3 {
+	font-family: var(--font-display);
+}
+
 p {
 	line-height: 1.5;
 }
@@ -146,11 +152,11 @@ button:focus:not(:focus-visible) {
 	justify-content: space-evenly;
 	/* background-color: var(--color-bg-0); */
 	height: 8vh;
-	margin-top: -8vh;
-	margin-bottom: -1rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 	position: relative;
 	z-index: 15;
-	
+
 }
 
 .menu .menu-tab {
@@ -256,11 +262,11 @@ footer div a {
 		justify-content: space-evenly;
 		/* background-color: var(--color-bg-0); */
 		height: 8vh;
-		margin-top: -8vh;
-		margin-bottom: -1rem;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
 		position: relative;
 		z-index: 15;
-		
+
 	}
 	
 	.menu .menu-tab {

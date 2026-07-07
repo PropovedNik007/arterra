@@ -49,6 +49,9 @@
 
 <style>
 	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
 		width: 100%;
 		border-bottom: 1px solid var(--color-border);
 		background-color: var(--color-bg);
@@ -57,7 +60,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: var(--space-4);
+		gap: var(--space-3) var(--space-5);
 		padding: var(--space-3) var(--space-5);
 		flex-wrap: wrap;
 	}
@@ -111,8 +114,23 @@
 	}
 	@media (max-width: 768px) {
 		nav {
-			flex-direction: column;
-			align-items: flex-start;
+			justify-content: center;
+			padding: var(--space-3) var(--space-4);
+			gap: var(--space-2) var(--space-3);
+		}
+		.brand {
+			flex-basis: 100%;
+			text-align: center;
+		}
+		ul {
+			flex-basis: 100%;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: var(--space-2) var(--space-3);
+		}
+		.header-actions {
+			flex-basis: 100%;
+			justify-content: center;
 		}
 	}
 </style>
