@@ -7,7 +7,9 @@
 	Chart.defaults.borderColor = '#36A2EB';
 	Chart.defaults.color = '#ffffff';
 
+	/** @type {HTMLCanvasElement} */
 	let canvasEl;
+	/** @type {Chart | undefined} */
 	let chart;
 
 	let dataRadar = {
