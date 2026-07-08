@@ -1,6 +1,6 @@
 :root {
-	--font-display: 'Fraunces', Georgia, serif;
-	--font-body: 'Roboto', sans-serif;
+	--font-display: 'Unbounded', 'Manrope', sans-serif;
+	--font-body: 'Manrope', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
 
 	--space-1: 0.25rem;

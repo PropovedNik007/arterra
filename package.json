@@ -53,6 +53,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fontsource/manrope": "^5.2.8",
+		"@fontsource/unbounded": "^5.2.8",
 		"@sigma/edge-curve": "3.0.0-beta.13",
 		"chart.js": "^4.4.4",
 		"chroma-js": "^3.0.0",

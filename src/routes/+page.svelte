@@ -1,14 +1,7 @@
 <script>
-	import { onMount, afterUpdate, onDestroy } from 'svelte';
 	import space from '$lib/images/space.jpg';
 
 	import LandingCanvas from '../components/LandingCanvas.svelte';
-
-	import { Tabs, TabItem } from 'flowbite-svelte';
-	import { Breadcrumb, BreadcrumbItem, Card, Button, Toggle, Badge } from 'flowbite-svelte';
-	import { ArrowRightOutline } from 'flowbite-svelte-icons';
-
-	import { base } from '$app/paths';
 
 	import Projects from '../components/projects/Projects.svelte';
 	import Skills from '../components/skills/Skills.svelte';
@@ -16,7 +9,12 @@
 	import Education from '../components/education/Education.svelte';
 	import Cv from '../components/Cv.svelte';
 
-	function scrollDown() {
+	const tabs = ['Projects', 'Education', 'Work Expirience', 'Skills'];
+	let activeTab = $state('Projects');
+
+	/** @param {string} tab */
+	function selectTab(tab) {
+		activeTab = tab;
 		window.scrollTo({
 			top: window.innerHeight * 0.8,
 			behavior: 'smooth'
@@ -75,16 +73,27 @@
 		</div> -->
 </section>
 
-<Tabs class="menu">
-	<!-- <a href="#"> -->
-	<TabItem class="menu-tab" open title="Projects" on:click={scrollDown}>
+<div class="menu" role="tablist" aria-label="CV sections">
+	{#each tabs as tab (tab)}
+		<button
+			type="button"
+			role="tab"
+			class="menu-tab"
+			class:active={activeTab === tab}
+			aria-selected={activeTab === tab}
+			on:click={() => selectTab(tab)}
+		>
+			{tab}
+		</button>
+	{/each}
+</div>
+
+<div class="tab-panel">
+	{#if activeTab === 'Projects'}
 		<Projects />
-	</TabItem>
-	<!-- </a> -->
-	<TabItem class="menu-tab" title="Education" on:click={scrollDown}>
+	{:else if activeTab === 'Education'}
 		<Education />
-	</TabItem>
-	<TabItem class="menu-tab" title="Work Expirience" on:click={scrollDown}>
+	{:else if activeTab === 'Work Expirience'}
 		<div class="work-experience">
 			<p>
 				<b>Data Scientist, Project Rail4Future</b> <br /> Technische Universität Wien, Feb 2024 - Jul
@@ -124,18 +133,15 @@
 				</li>
 			</ul>
 		</div>
-		<!-- </p> -->
-	</TabItem>
-	<TabItem class="menu-tab" title="Skills" on:click={scrollDown}>
-		<!-- 2 cols, on mobile to be one col -->
+	{:else if activeTab === 'Skills'}
 		<div class="skills-container">
 			<Skills />
 			<div class="radar">
 				<SkillsRadar />
 			</div>
 		</div>
-	</TabItem>
-</Tabs>
+	{/if}
+</div>
 
 <div class="content">
 	<Cv />

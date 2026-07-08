@@ -1,5 +1,7 @@
 @import '@fontsource/fira-mono';
-@import '@fontsource/fraunces';
+@import '@fontsource/unbounded/500.css';
+@import '@fontsource/unbounded/700.css';
+@import '@fontsource/manrope';
 @import './lib/design/tokens.css';
 @tailwind base;
 @tailwind components;
@@ -25,7 +27,7 @@ Accent Color: #009688
 Excluded Files Color: #2E3C43 */
 
 :root {
-	--font-body: 'Roboto', sans-serif;
+	--font-body: 'Manrope', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
 
 	--color-bg-0: #263238;
@@ -149,45 +151,56 @@ button:focus:not(:focus-visible) {
 
 .menu {
 	display: flex;
-	justify-content: space-evenly;
-	/* background-color: var(--color-bg-0); */
-	height: 8vh;
+	justify-content: center;
+	gap: var(--space-6);
+	flex-wrap: wrap;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+	padding-bottom: var(--space-2);
 	position: relative;
 	z-index: 15;
-
+	border-bottom: 1px solid var(--color-border);
 }
 
-.menu .menu-tab {
-	/* margin: 0 1rem; */
-	font-size: 2rem !important;
-	height: 100%;
-	
+.menu-tab {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-family: var(--font-body);
+	font-size: 0.85rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--color-text-muted);
+	padding: var(--space-2) var(--space-1);
+	position: relative;
+	transition: color 0.2s ease;
 }
 
-.menu .menu-tab button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	width: 100%;
-	font-size: 1.5rem;
-	color: var(--color-text);
-	/* box-shadow: 0px 14px 55px #4075a6; */
+.menu-tab::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -1px;
+	height: 2px;
+	background: var(--accent-projects);
+	transform: scaleX(0);
+	transform-origin: center;
+	transition: transform 0.2s ease;
 }
 
-.menu .menu-tab button:hover {
-	box-shadow: 0px -14px 55px #7dc0ff;
-	clip-path: inset(-100px -100px 1px -100px);
-	color: white;
+.menu-tab:hover,
+.menu-tab:focus-visible {
+	color: var(--color-heading);
 }
 
+.menu-tab.active {
+	color: var(--color-heading);
+}
 
-.menu .menu-tab:hover {
-	color: white;
-	scale: 1.5;
-	transition: 0.5s;
+.menu-tab.active::after {
+	transform: scaleX(1);
 }
 
 .project {
@@ -255,49 +268,11 @@ footer div a {
 
 @media (max-width: 768px) {
 	.menu {
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		display: flex;
-		justify-content: space-evenly;
-		/* background-color: var(--color-bg-0); */
-		height: 8vh;
-		margin-top: 1rem;
-		margin-bottom: 1rem;
-		position: relative;
-		z-index: 15;
+		gap: var(--space-4);
+	}
 
-	}
-	
-	.menu .menu-tab {
-		/* margin: 0 1rem; */
-		font-size: 1rem !important;
-		height: 100%;
-		
-	}
-	
-	.menu .menu-tab button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100%;
-		width: 100%;
-		font-size: 1rem;
-		color: var(--color-text);
-		padding: 0.4rem;
-		/* box-shadow: 0px 14px 55px #4075a6; */
-	}
-	
-	.menu .menu-tab button:hover {
-		box-shadow: 0px -14px 55px #7dc0ff;
-		clip-path: inset(-100px -100px 0px -100px);
-		color: white;
-	}
-	
-	
-	.menu .menu-tab:hover {
-		color: white;
-		scale: 1;
-		transition: 0.5s;
+	.menu-tab {
+		font-size: 0.7rem;
+		padding: var(--space-1);
 	}
 }
