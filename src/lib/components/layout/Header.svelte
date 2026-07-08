@@ -30,10 +30,15 @@
 		<ul>
 			{#each navItems as item (item.href)}
 				<li aria-current={pathname === item.href ? 'page' : undefined} class:soon={item.soon}>
-					<a href={item.href}>
-						{item.label}
-						{#if item.soon}<span class="soon-dot" aria-label="coming soon"></span>{/if}
-					</a>
+					{#if item.soon}
+						<span class="nav-link" aria-disabled="true" title="{item.label} — coming soon">
+							{item.label}
+							<span class="soon-dot" aria-hidden="true"></span>
+							<span class="visually-hidden">(coming soon)</span>
+						</span>
+					{:else}
+						<a class="nav-link" href={item.href}>{item.label}</a>
+					{/if}
 				</li>
 			{/each}
 		</ul>
@@ -59,11 +64,11 @@
 		top: 0;
 		z-index: 50;
 		width: 100%;
-		background: rgba(15, 20, 24, 0.6);
+		background: color-mix(in srgb, var(--color-bg) 65%, transparent);
 		backdrop-filter: blur(14px) saturate(140%);
 		-webkit-backdrop-filter: blur(14px) saturate(140%);
-		border-bottom: 1px solid rgba(178, 200, 214, 0.12);
-		box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.7);
+		border-bottom: 1px solid var(--color-border);
+		box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.5);
 	}
 	nav {
 		display: flex;
@@ -97,7 +102,7 @@
 		margin: 0;
 		padding: 0;
 	}
-	li a {
+	.nav-link {
 		position: relative;
 		display: inline-flex;
 		align-items: center;
@@ -110,7 +115,7 @@
 		letter-spacing: 0.09em;
 		padding-block: var(--space-2);
 	}
-	li a::after {
+	a.nav-link::after {
 		content: '';
 		position: absolute;
 		left: 0;
@@ -122,30 +127,30 @@
 		transform-origin: left;
 		transition: transform 0.2s ease;
 	}
-	li[aria-current='page'] a {
+	li[aria-current='page'] .nav-link {
 		color: var(--color-heading);
 	}
-	li[aria-current='page'] a::after {
+	li[aria-current='page'] a.nav-link::after {
 		transform: scaleX(1);
 	}
-	li a:hover,
-	li a:focus-visible {
+	a.nav-link:hover,
+	a.nav-link:focus-visible {
 		color: var(--color-heading);
 	}
-	li a:hover::after,
-	li a:focus-visible::after {
+	a.nav-link:hover::after,
+	a.nav-link:focus-visible::after {
 		transform: scaleX(1);
 	}
-	li.soon a {
-		color: var(--color-text-muted);
+	li.soon .nav-link {
+		cursor: default;
 		opacity: 0.55;
 	}
 	.soon-dot {
 		width: 4px;
 		height: 4px;
 		border-radius: 50%;
-		background: var(--accent-diy);
-		box-shadow: 0 0 6px color-mix(in srgb, var(--accent-diy) 80%, transparent);
+		background: var(--color-text-muted);
+		box-shadow: 0 0 6px color-mix(in srgb, var(--color-text-muted) 80%, transparent);
 	}
 	.header-actions {
 		display: flex;
