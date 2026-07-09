@@ -1,6 +1,7 @@
 ---
 type: project
 section: projects
+cover: images/projects/redcross.webp
 created: '2023-07-01'
 updated: '2023-07-01'
 tags:

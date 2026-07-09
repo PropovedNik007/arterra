@@ -1,6 +1,7 @@
 ---
 type: project
 section: projects
+cover: images/projects/3dprinterthesis.png
 created: '2024-06-01'
 updated: '2024-06-01'
 tags:

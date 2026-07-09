@@ -121,9 +121,19 @@
 		color: var(--color-heading);
 		text-decoration: none;
 		white-space: nowrap;
+		transition:
+			opacity 0.3s ease,
+			transform 0.3s ease,
+			color 0.18s ease;
 	}
 	.brand:hover {
 		text-decoration: none;
+	}
+	/* Brand appears only once the header sticks (after scroll); hidden over the hero */
+	.site-header.over-hero .brand {
+		opacity: 0;
+		transform: translateY(-6px);
+		pointer-events: none;
 	}
 	.brand-mark {
 		width: 0.62em;
@@ -254,30 +264,43 @@
 
 	@media (max-width: 820px) {
 		nav {
-			justify-content: center;
+			justify-content: space-between;
 			padding: var(--space-3) var(--space-4);
-			gap: var(--space-2) var(--space-4);
+			gap: var(--space-2) var(--space-3);
+			row-gap: var(--space-3);
 		}
+		/* row 1: brand (left) + actions (right); row 2: nav links, centered */
 		.brand {
-			flex-basis: 100%;
-			justify-content: center;
+			order: 1;
+			font-size: 1.05rem;
+		}
+		.header-actions {
+			order: 2;
+			gap: var(--space-3);
 		}
 		.nav-links {
+			order: 3;
 			flex-basis: 100%;
 			justify-content: center;
 			flex-wrap: wrap;
-			gap: var(--space-3) var(--space-5);
+			gap: var(--space-2) var(--space-4);
 		}
-		.header-actions {
-			flex-basis: 100%;
-			justify-content: center;
+		.nav-link {
+			font-size: 0.82rem;
 		}
-		/* On mobile the header always needs its scrim (no tall hero gap above it) */
-		.site-header {
+		/* On mobile the header always carries its scrim, and the brand always shows
+		   (there's no tall transparent hero gap above it as on desktop). */
+		.site-header,
+		.site-header.over-hero {
 			background: var(--header-scrim);
 			backdrop-filter: blur(16px) saturate(150%);
 			-webkit-backdrop-filter: blur(16px) saturate(150%);
 			border-bottom-color: var(--color-border);
+		}
+		.site-header.over-hero .brand {
+			opacity: 1;
+			transform: none;
+			pointer-events: auto;
 		}
 	}
 </style>

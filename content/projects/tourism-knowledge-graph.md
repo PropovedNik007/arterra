@@ -1,6 +1,7 @@
 ---
 type: project
 section: projects
+cover: images/projects/tourism.webp
 created: '2023-11-01'
 updated: '2023-11-01'
 tags:

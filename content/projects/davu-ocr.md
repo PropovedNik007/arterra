@@ -1,6 +1,7 @@
 ---
 type: project
 section: projects
+cover: images/projects/doc_analysis.webp
 created: '2024-06-01'
 updated: '2024-06-01'
 tags:

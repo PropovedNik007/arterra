@@ -1,6 +1,7 @@
 ---
 type: project
 section: projects
+cover: images/projects/susteam.png
 created: '2024-01-01'
 updated: '2024-01-01'
 tags:

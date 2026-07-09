@@ -1,6 +1,7 @@
 ---
 type: project
 section: projects
+cover: images/projects/cryptex.png
 created: '2024-02-01'
 updated: '2024-02-01'
 tags:

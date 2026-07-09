@@ -1,6 +1,7 @@
 ---
 type: project
 section: projects
+cover: images/projects/reelmate.png
 created: '2025-02-01'
 updated: '2025-02-01'
 tags:

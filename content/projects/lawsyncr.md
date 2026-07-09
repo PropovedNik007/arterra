@@ -1,6 +1,7 @@
 ---
 type: project
 section: projects
+cover: images/projects/lawsyncr.png
 created: '2024-08-01'
 updated: '2024-08-01'
 tags:

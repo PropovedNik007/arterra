@@ -48,7 +48,7 @@
         "OpenAI",
         "social-media-automation"
       ],
-      "img": null,
+      "img": "images/projects/reelmate.png",
       "link": null,
       "order": 0
     },
@@ -66,7 +66,7 @@
         "Svelte",
         "LLM"
       ],
-      "img": null,
+      "img": "images/projects/lawsyncr.png",
       "link": null,
       "order": 0
     },
@@ -83,7 +83,7 @@
         "FastAPI",
         "AsyncIO"
       ],
-      "img": null,
+      "img": "images/projects/tradebot.webp",
       "link": null,
       "order": 0
     },
@@ -100,7 +100,7 @@
         "NumPy",
         "Python"
       ],
-      "img": null,
+      "img": "images/projects/3dprinterthesis.png",
       "link": null,
       "order": 0
     },
@@ -117,7 +117,7 @@
         "SpaCy",
         "LLaMA-3"
       ],
-      "img": null,
+      "img": "images/projects/doc_analysis.webp",
       "link": null,
       "order": 0
     },
@@ -134,7 +134,7 @@
         "Polygon",
         "Solidity"
       ],
-      "img": null,
+      "img": "images/projects/cryptex.png",
       "link": null,
       "order": 0
     },
@@ -152,7 +152,7 @@
         "LLaMA-3",
         "ESG"
       ],
-      "img": null,
+      "img": "images/projects/susteam.png",
       "link": null,
       "order": 0
     },
@@ -168,7 +168,7 @@
         "TensorFlow",
         "data-science"
       ],
-      "img": null,
+      "img": "images/projects/rail4future.jpg",
       "link": null,
       "order": 0
     },
@@ -185,7 +185,7 @@
         "OpenCV",
         "NumPy"
       ],
-      "img": null,
+      "img": "images/projects/glosav.jpg",
       "link": null,
       "order": 0
     },
@@ -203,7 +203,7 @@
         "OpenAI",
         "ESG"
       ],
-      "img": null,
+      "img": "images/projects/aim-hackathon.jpg",
       "link": null,
       "order": 0
     },
@@ -220,7 +220,7 @@
         "GeoPandas",
         "Folium"
       ],
-      "img": null,
+      "img": "images/projects/tourism.webp",
       "link": null,
       "order": 0
     },
@@ -237,7 +237,7 @@
         "Next.js",
         "computer-vision"
       ],
-      "img": null,
+      "img": "images/projects/redcross.webp",
       "link": null,
       "order": 0
     }
