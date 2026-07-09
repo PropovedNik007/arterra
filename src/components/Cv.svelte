@@ -121,33 +121,39 @@
 	section {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		/* align-items: center; */
-		flex: 0.6;
+		margin-bottom: 3rem;
 	}
 	p {
-		line-height: 2rem;
-		text-align: justify;
+		line-height: 1.7;
+		text-align: left;
+		max-width: 60ch;
 	}
 
 	h2 {
-		/* width: 100%; */
-		color: var(--color-text-or);
-		font-size: 1.8rem;
-		font-weight: bold;
+		color: var(--color-heading);
+		font-size: var(--text-2xl);
+		font-weight: 500;
+		margin-bottom: 1rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	b {
-		color: var(--color-text-or);
+		color: var(--color-heading);
+		font-weight: 600;
 	}
 
-    .experience {
+	ul {
+		max-width: 60ch;
+		line-height: 1.6;
+	}
+
+	.experience {
 		display: flex;
 		flex-direction: column;
 	}
 
 	.experience > div {
-		padding-left: 3vh;
+		padding-left: 0;
 	}
-
 </style>

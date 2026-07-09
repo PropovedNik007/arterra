@@ -53,6 +53,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fontsource-variable/newsreader": "^5.2.10",
+		"@fontsource/hanken-grotesk": "^5.2.8",
 		"@fontsource/manrope": "^5.2.8",
 		"@fontsource/unbounded": "^5.2.8",
 		"@sigma/edge-curve": "3.0.0-beta.13",

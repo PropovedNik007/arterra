@@ -23,54 +23,65 @@
 </script>
 
 <svelte:head>
-	<title>Artur Sogomonyan</title>
-	<meta name="description" content="Artur Sogomonyan's CV" />
+	<title>Artur Sogomonyan — Software &amp; ML Engineer</title>
+	<meta
+		name="description"
+		content="Artur Sogomonyan is a software and machine-learning engineer in Vienna, building ML systems, computer-vision pipelines, and full-stack products. Explore projects, an interactive knowledge graph, and more."
+	/>
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Artur Sogomonyan — Software &amp; ML Engineer" />
+	<meta
+		property="og:description"
+		content="Software &amp; ML engineer in Vienna. Machine learning, computer vision, and full-stack development."
+	/>
 </svelte:head>
 
 <section class="landing">
 	<LandingCanvas />
-	<div class="name-header">
-		<h1>Artur <br /> Sogomonyan</h1>
-	</div>
-	<div class="description">
-		<p>Data Scientist</p>
-		<p>Machine Learning Engineer</p>
-		<p>Computer Vision</p>
-		<p>Deep Learning</p>
-		<p>Full-stack development</p>
-		
-		<div class="button-container">
-			<a
-				href="https://wa.me/4367764114581?text=Dear Artur%20I'm%20interested%20to%20work%20with%20you"
-				target="_blank"
-			>
-				<button
-					class="blueShadow relative overflow-hidden px-6 py-3 group rounded-full bg-white text-slate-950"
+	<div class="hero-inner">
+		<div class="name-header">
+			<p class="eyebrow">Software &amp; ML Engineer · Vienna</p>
+			<h1>Artur <br /> Sogomonyan</h1>
+		</div>
+		<div class="description">
+			<p class="lead">
+				I build machine-learning systems, computer-vision pipelines, and full-stack products —
+				and keep a public knowledge graph of the work along the way.
+			</p>
+			<ul class="focus-list">
+				<li>Machine Learning</li>
+				<li>Computer Vision</li>
+				<li>Deep Learning</li>
+				<li>Full-stack Development</li>
+			</ul>
+
+			<div class="button-container">
+				<a
+					class="btn btn-primary"
+					href="https://wa.me/4367764114581?text=Dear Artur%20I'm%20interested%20to%20work%20with%20you"
+					target="_blank"
+					rel="noreferrer"
 				>
-					<h5 class="relative z-9">Get in touch</h5>
+					Get in touch
+				</a>
+
+				<button
+					class="btn btn-ghost"
+					on:click={() => {
+						const link = document.createElement('a');
+						link.href =
+							'https://github.com/PropovedNik007/cv/raw/main/Artur_Sogomonyan_cv_long.pdf';
+						link.download = 'Artur_Sogomonyan_CV.pdf';
+						document.body.appendChild(link);
+						link.click();
+						document.body.removeChild(link);
+					}}
+				>
+					Download CV
 				</button>
-			</a>
-			
-			<button
-				class="blueShadow relative overflow-hidden px-6 py-3 group rounded-full bg-white text-slate-950 mt-4"
-				on:click={() => {
-					const link = document.createElement('a');
-					link.href = 'https://github.com/PropovedNik007/cv/raw/main/Artur_Sogomonyan_cv_long.pdf';
-					link.download = 'Artur_Sogomonyan_CV.pdf';
-					document.body.appendChild(link);
-					link.click();
-					document.body.removeChild(link);
-				}}
-			>
-				<h5 class="relative z-9">Download CV</h5>
-			</button>
+			</div>
 		</div>
 	</div>
-	<!-- <div class="contact">
-			<a href="mailto:arthur.sogomonyan@gmail.com" target="_blank">Email</a> |
-			<a href="https://linkedin.com/in/artur-sogomonyan" target="_blank">LinkedIn</a> |
-			<a href="https://github.com/PropovedNik007" target="_blank">GitHub</a>
-		</div> -->
 </section>
 
 <div class="menu" role="tablist" aria-label="CV sections">
@@ -148,200 +159,192 @@
 </div>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		/* align-items: center; */
-		flex: 0.6;
-	}
-	p {
-		line-height: 2rem;
-		text-align: justify;
-	}
-
-	h1 {
-		width: 100%;
-		color: var(--color-text-or);
-		font-size: 1.8rem;
-		font-weight: bold;
-	}
-
-	.name-header > h1 {
-		color: var(--color-text-or);
-		text-align: left;
-		font-size: 6rem;
-		position: relative;
-		z-index: 0;
-	}
-
-	.description {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		width: 40vw;
-		height: 90vh;
-		margin: 0;
-		position: relative;
-	}
-
-	.description p {
-		text-align: center;
-		font-size: 1.5rem;
-		width: 100%;
-		margin-bottom: 1rem;
-	}
-
 	.landing {
 		position: relative;
 		width: 100%;
-		height: 100vh;
+		min-height: 100vh;
+		/* pull up under the transparent sticky header so the hero reads full-bleed */
+		margin-top: -4.5rem;
 		overflow: hidden;
-		z-index: 1;
-		display: flex;
-		flex-direction: row;
-		align-items: baseline;
-		justify-content: center;
 		background-image: url('$lib/images/space.jpg');
 		background-size: cover;
-		background-attachment: fixed;
-		background-blend-mode: darken;
-		padding: 0 5vw 0 5vw;
+		background-position: center;
 	}
-	.name-header {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 60vw;
-		height: 90vh;
-		margin: 0;
-		position: relative;
-		overflow: hidden;
+	/* warm scrim so text is readable and the cold photo reads warmer */
+	.landing::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(
+				120% 90% at 15% 20%,
+				color-mix(in srgb, var(--accent) 24%, transparent) 0%,
+				transparent 55%
+			),
+			linear-gradient(
+				180deg,
+				color-mix(in srgb, var(--color-bg-sunken) 55%, transparent) 0%,
+				color-mix(in srgb, var(--color-bg-sunken) 78%, transparent) 100%
+			);
+		z-index: 0;
 	}
 
-	.name-header h1:hover {
-		color: white;
-		font-size: 6.5rem;
-		transition: 1s;
-		/* box-shadow: 0px 14px 55px #4075a6; */
+	.hero-inner {
+		position: relative;
+		z-index: 1;
+		max-width: 78rem;
+		margin: 0 auto;
+		min-height: 100vh;
+		padding: 8rem 2rem 5rem;
+		display: grid;
+		grid-template-columns: 1.1fr 0.9fr;
+		gap: 3rem;
+		align-items: center;
+	}
+
+	.eyebrow {
+		font-family: var(--font-body);
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--accent-coral-soft);
+		margin: 0 0 1rem;
+	}
+
+	.name-header h1 {
+		margin: 0;
+		font-size: clamp(3rem, 8vw, 6rem);
+		font-weight: 500;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+		color: #faf9f5;
 	}
 
 	.description {
+		max-width: 30rem;
+	}
+	.lead {
+		font-size: 1.2rem;
+		line-height: 1.6;
+		color: #ece9e2;
+		margin: 0 0 1.75rem;
+	}
+	.focus-list {
+		list-style: none;
+		margin: 0 0 2.25rem;
+		padding: 0;
 		display: flex;
-		flex-direction: column;
+		flex-wrap: wrap;
+		gap: 0.5rem 0.6rem;
+	}
+	.focus-list li {
+		font-size: 0.82rem;
+		font-weight: 500;
+		color: #ece9e2;
+		padding: 0.35rem 0.8rem;
+		border: 1px solid rgba(250, 249, 245, 0.25);
+		border-radius: var(--radius-full);
+		backdrop-filter: blur(4px);
+	}
+
+	.button-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.85rem;
+	}
+	.btn {
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 40vw;
-		height: 90vh;
-		margin: 0;
-		position: relative;
+		font-family: var(--font-body);
+		font-size: 0.95rem;
+		font-weight: 600;
+		padding: 0.8rem 1.5rem;
+		border-radius: var(--radius-full);
+		cursor: pointer;
+		border: 1px solid transparent;
+		transition:
+			transform 0.2s ease,
+			background 0.2s ease,
+			border-color 0.2s ease;
+		text-decoration: none;
+	}
+	.btn:hover {
+		text-decoration: none;
+		transform: translateY(-2px);
+	}
+	.btn-primary {
+		background: var(--accent);
+		color: #fff;
+	}
+	.btn-primary:hover {
+		background: var(--accent-coral-soft);
+	}
+	.btn-ghost {
+		background: rgba(250, 249, 245, 0.06);
+		border-color: rgba(250, 249, 245, 0.35);
+		color: #faf9f5;
+	}
+	.btn-ghost:hover {
+		border-color: #faf9f5;
+		background: rgba(250, 249, 245, 0.12);
 	}
 
-	.description p:hover {
-		color: white;
-		font-size: 1.6rem;
-		transition: 0.7s;
+	.tab-panel {
+		max-width: 72rem;
+		margin: 0 auto;
+		padding: 0 2rem;
 	}
 
-	.description a button:hover {
-		scale: 1.2;
-		transition: 0.5s;
-		color: var(--color-text-or);
+	.work-experience p {
+		margin-bottom: 0.25rem;
 	}
-
-	b {
-		color: var(--color-text-or);
+	.work-experience b {
+		color: var(--color-heading);
 	}
-
-	.blueShadow {
-		box-shadow: 0px 14px 55px #4075a6;
+	.work-experience ul {
+		margin: 0 0 1.5rem;
+		padding-left: 1.1rem;
+		color: var(--color-text);
 	}
-
-	.blueShadow:hover {
-		box-shadow: 0px 14px 55px #7dc0ff;
+	.work-experience li {
+		margin-bottom: 0.35rem;
+		line-height: 1.6;
 	}
-
 
 	.content {
-		padding: 20px;
-		margin-top: 5vh;
+		max-width: 72rem;
+		margin: 3rem auto 0;
+		padding: 0 2rem;
 		display: flex;
 		flex-direction: column;
 	}
 
 	.skills-container {
 		display: grid;
-		grid-template-columns: 1fr 40vw;
+		grid-template-columns: 1fr minmax(280px, 36vw);
+		gap: 2rem;
+		align-items: start;
 	}
-
 	.radar {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		height: 40vw;
-		width: 40vw;
 	}
 
-	/* media mobile */
-	@media (max-width: 768px) {
+	@media (max-width: 820px) {
 		.landing {
-			flex-direction: column;
-			padding-top: 5vh;
-			background-position: center;
-			padding-bottom: 10vh;
+			margin-top: 0;
 		}
-		.name-header {
-			padding-top: 5vh;
-			width: 100vw;
-			height: 50vh;
+		.hero-inner {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			padding: 6rem 1.5rem 4rem;
+			min-height: auto;
 		}
-		.name-header > h1 {
-			font-size: 3rem;
-		}
-
-		.name-header > h1:hover {
-			font-size: 3.3rem;
-		}
-
-		.description {
-			width: 100vw;
-			height: 50vh;
-		}
-
-		.description > p {
-			font-size: 1rem;
-		}
-
-		.description p:hover {
-			font-size: 1.1rem;
-		}
-
 		.skills-container {
-			display: grid;
 			grid-template-columns: 1fr;
 		}
-
-		.radar {
-			height: 100vw;
-			width: 100vw;
-		}
-	}
-
-	.button-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-top: 2rem;
-		width: 100%;
-	}
-
-	.button-container button {
-		width: auto;
-		min-width: 200px;
-		transition: all 0.3s ease;
-		position: relative;
-		overflow: hidden;
-		z-index: 1;
 	}
 </style>
