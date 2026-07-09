@@ -53,6 +53,8 @@
 	--color-border: #3c3b37;
 	--color-border-strong: #4a4844;
 	--accent-contrast: #1f1e1d;
+	/* lighter coral for link TEXT so it clears AA on both bg and raised surfaces */
+	--link: #e08a6b;
 	--header-scrim: rgba(31, 30, 29, 0.72);
 }
 
@@ -67,6 +69,8 @@
 	--color-border: #e2e0d4;
 	--color-border-strong: #d3d0c2;
 	--accent-contrast: #ffffff;
+	/* darker coral for link TEXT so it clears AA on the ivory background */
+	--link: #b0562f;
 	--header-scrim: rgba(244, 243, 236, 0.78);
 }
 

@@ -276,7 +276,8 @@
 	}
 	.btn-primary {
 		background: var(--accent);
-		color: #fff;
+		/* dark ink on the light coral — white fails WCAG AA on #d97757 */
+		color: #1f1e1d;
 	}
 	.btn-primary:hover {
 		background: var(--accent-coral-soft);

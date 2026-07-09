@@ -21,11 +21,15 @@
 	let pathname = $derived($page.url.pathname);
 	let scrollY = $state(0);
 	let scrolled = $derived(scrollY > 32);
+	// The home hero is always a dark photo, so a transparent (unscrolled) header
+	// sitting over it needs light text regardless of the site theme.
+	let isHome = $derived(pathname === `${base}/` || pathname === base);
+	let overHero = $derived(isHome && !scrolled);
 </script>
 
 <svelte:window bind:scrollY />
 
-<header class="site-header" class:scrolled>
+<header class="site-header" class:scrolled class:over-hero={overHero}>
 	<nav aria-label="Primary">
 		<a class="brand" href="{base}/">
 			<span class="brand-mark" aria-hidden="true"></span>
@@ -217,6 +221,35 @@
 		outline: 2px solid var(--accent);
 		outline-offset: 3px;
 		border-radius: var(--radius-sm);
+	}
+
+	/* Transparent header over the dark hero (home, before scroll): force light
+	   text so it's legible in either theme. Desktop only — on mobile the header
+	   always carries its theme scrim (see below). */
+	@media (min-width: 821px) {
+		.site-header.over-hero .brand-text {
+			color: #faf9f5;
+		}
+		.site-header.over-hero .nav-link {
+			color: rgba(250, 249, 245, 0.82);
+		}
+		.site-header.over-hero li[aria-current='page'] .nav-link,
+		.site-header.over-hero a.nav-link:hover,
+		.site-header.over-hero a.nav-link:focus-visible {
+			color: #faf9f5;
+		}
+		.site-header.over-hero .header-actions a {
+			color: rgba(250, 249, 245, 0.78);
+		}
+		.site-header.over-hero .header-actions a:hover {
+			color: #faf9f5;
+		}
+		.site-header.over-hero .divider {
+			background: rgba(250, 249, 245, 0.28);
+		}
+		.site-header.over-hero :global(.theme-toggle) {
+			color: rgba(250, 249, 245, 0.82);
+		}
 	}
 
 	@media (max-width: 820px) {
