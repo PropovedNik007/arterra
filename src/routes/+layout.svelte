@@ -1,62 +1,61 @@
 <script>
-	import Header from '../components/Header.svelte';
 	import '../app.css';
-	import { Footer, FooterCopyright, FooterLinkGroup, FooterLink } from 'flowbite-svelte';
-	import { base } from '$app/paths';
+	import Header from '$lib/components/layout/Header.svelte';
+	import Footer from '$lib/components/layout/Footer.svelte';
+
+	let { children } = $props();
+
+	const personSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		name: 'Artur Sogomonyan',
+		jobTitle: 'Software & Machine Learning Engineer',
+		address: {
+			'@type': 'PostalAddress',
+			addressLocality: 'Vienna',
+			addressCountry: 'AT'
+		},
+		url: 'https://propovednik007.github.io/arterra/',
+		sameAs: [
+			'https://github.com/PropovedNik007',
+			'https://linkedin.com/in/artur-sogomonyan',
+			'https://t.me/arterrai'
+		],
+		knowsAbout: [
+			'Machine Learning',
+			'Computer Vision',
+			'Deep Learning',
+			'Natural Language Processing',
+			'Full-stack Development',
+			'3D Printing'
+		]
+	};
 </script>
+
+<svelte:head>
+	<meta name="author" content="Artur Sogomonyan" />
+	<meta name="robots" content="index, follow" />
+	<meta property="og:site_name" content="Artur Sogomonyan" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="theme-color" content="#262624" />
+	{@html `<script type="application/ld+json">${JSON.stringify(personSchema)}</` + `script>`}
+</svelte:head>
 
 <div class="app">
 	<Header />
-
 	<main>
-		<slot />
+		{@render children()}
 	</main>
-
-	<Footer>
-		<div class="bottom-0 sm:flex sm:items-center sm:justify-between">
-		<FooterCopyright href="{base}/" by="Artur Sogomonyan" year={2024} />
-		<FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
-			<FooterLink href="mailto:arthur.sogomonyan@gmail.com">Email</FooterLink>
-			<FooterLink href="https://linkedin.com/in/artur-sogomonyan">LinkedIn</FooterLink>
-			<FooterLink href="https://github.com/PropovedNik007">GitHub</FooterLink>
-			<FooterLink href="{base}/contact">Contact</FooterLink>
-		</FooterLinkGroup>
-		</div>
-	</Footer>
-
-	<!-- <Footer class="absolute bottom-0 start-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
-		<FooterCopyright href="/" by="Flowbite™" year={2022} />
-		<FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
-		  <FooterLink href="/">About</FooterLink>
-		  <FooterLink href="/">Privacy Policy</FooterLink>
-		  <FooterLink href="/">Licensing</FooterLink>
-		  <FooterLink href="/">Contact</FooterLink>
-		</FooterLinkGroup>
-	  </Footer> -->
+	<Footer />
 </div>
 
 <style>
 	.app {
 		display: flex;
 		flex-direction: column;
-		overflow: hidden;
-		/* min-height: 100vh; */
-
 		min-height: 100vh;
-		margin: 0;
-		justify-content: space-between;
-		/* display: grid;
-		grid-template-rows: auto 1fr auto; */
 	}
-
-	/* main {
+	main {
 		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
-	} */
+	}
 </style>
