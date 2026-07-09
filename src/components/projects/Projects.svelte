@@ -58,7 +58,9 @@
 		transition:
 			transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
 			border-color 0.28s ease,
-			box-shadow 0.28s ease;
+			box-shadow 0.28s ease,
+			filter 0.28s ease,
+			opacity 0.28s ease;
 	}
 	.project-card:hover,
 	.project-card:focus-visible {
@@ -66,6 +68,12 @@
 		border-color: color-mix(in srgb, var(--accent) 50%, var(--color-border));
 		box-shadow: 0 22px 48px -26px rgba(0, 0, 0, 0.6);
 		outline: none;
+	}
+	/* dim every other card while one is hovered (old-version behaviour) */
+	.projects:hover .project-card:not(:hover),
+	.projects:focus-within .project-card:not(:focus-within):not(:hover) {
+		filter: brightness(0.5) saturate(0.85);
+		opacity: 0.72;
 	}
 
 	.cover {

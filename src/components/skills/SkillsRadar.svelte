@@ -1,8 +1,17 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
-	import { Chart, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
+	import {
+		Chart,
+		RadarController,
+		RadialLinearScale,
+		PointElement,
+		LineElement,
+		Filler,
+		Tooltip,
+		Legend
+	} from 'chart.js';
 
-	Chart.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
+	Chart.register(RadarController, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 	Chart.defaults.backgroundColor = '#0000';
 	Chart.defaults.borderColor = '#36A2EB';
 	Chart.defaults.color = '#ffffff';

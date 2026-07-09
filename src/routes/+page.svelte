@@ -99,7 +99,7 @@
 	{/each}
 </div>
 
-<div class="tab-panel">
+<div class="tab-panel" class:wide={activeTab === 'Projects'}>
 	{#if activeTab === 'Projects'}
 		<Projects />
 	{:else if activeTab === 'Education'}
@@ -327,6 +327,11 @@
 		max-width: 72rem;
 		margin: 0 auto;
 		padding: 0 2rem;
+	}
+	/* Projects fills the full page width, like the old version */
+	.tab-panel.wide {
+		max-width: none;
+		padding: 0 clamp(1.5rem, 5vw, 5rem);
 	}
 
 	.work-experience p {
