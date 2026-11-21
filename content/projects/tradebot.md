@@ -1,14 +1,10 @@
 ---
-type: project
+visibility: public
 section: projects
 cover: images/projects/tradebot.webp
-created: '2024-06-01'
-updated: '2024-06-01'
-tags:
-  - crypto
-  - Binance
-  - FastAPI
-  - AsyncIO
+created: 2024-06-01
+updated: 2024-06-01
+tags: [crypto, Binance, FastAPI, AsyncIO]
 ---
 
 # TradeBot

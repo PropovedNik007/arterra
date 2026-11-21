@@ -1,14 +1,10 @@
 ---
-type: project
+visibility: public
 section: projects
 cover: images/projects/doc_analysis.webp
-created: '2024-06-01'
-updated: '2024-06-01'
-tags:
-  - OCR
-  - Tesseract
-  - SpaCy
-  - LLaMA-3
+created: 2024-06-01
+updated: 2024-06-01
+tags: [OCR, Tesseract, SpaCy, LLaMA-3]
 ---
 
 # DAVU / OCR — document analysis

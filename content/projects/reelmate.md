@@ -1,14 +1,10 @@
 ---
-type: project
+visibility: public
 section: projects
 cover: images/projects/reelmate.png
-created: '2025-02-01'
-updated: '2025-02-01'
-tags:
-  - FastAPI
-  - AsyncIO
-  - OpenAI
-  - social-media-automation
+created: 2025-02-01
+updated: 2025-02-01
+tags: [FastAPI, AsyncIO, OpenAI, social-media-automation]
 ---
 
 # ReelMate

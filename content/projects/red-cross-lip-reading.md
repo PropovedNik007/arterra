@@ -1,14 +1,10 @@
 ---
-type: project
+visibility: public
 section: projects
 cover: images/projects/redcross.webp
-created: '2023-07-01'
-updated: '2023-07-01'
-tags:
-  - AV-HuBERT
-  - FastAPI
-  - Next.js
-  - computer-vision
+created: 2023-07-01
+updated: 2023-07-01
+tags: [AV-HuBERT, FastAPI, Next.js, computer-vision]
 ---
 
 # Red Cross lip-reading app

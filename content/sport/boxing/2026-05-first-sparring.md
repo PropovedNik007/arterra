@@ -1,9 +1,9 @@
 ---
-type: note
+visibility: public
 section: sport
 discipline: boxing
-created: '2026-05-20'
-updated: '2026-05-20'
+created: 2026-05-20
+updated: 2026-05-20
 tags: []
 ---
 

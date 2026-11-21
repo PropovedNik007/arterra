@@ -1,14 +1,10 @@
 ---
-type: project
+visibility: public
 section: projects
 cover: images/projects/3dprinterthesis.png
-created: '2024-06-01'
-updated: '2024-06-01'
-tags:
-  - machine-learning
-  - OpenCV
-  - NumPy
-  - Python
+created: 2024-06-01
+updated: 2024-06-01
+tags: [machine-learning, OpenCV, NumPy, Python]
 ---
 
 # Printerra
