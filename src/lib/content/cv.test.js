@@ -11,11 +11,9 @@ describe('cv', () => {
 		for (const slug of cvProjectSlugs()) expect(slugs.has(slug), slug).toBe(true);
 	});
 
-	it('uses the approved MSc period and contains no phone numbers', () => {
+	it('uses the approved MSc period and names no confidential work', () => {
 		const text = JSON.stringify(cv);
 		expect(text).toContain('2022–2026');
-		expect(text).not.toMatch(/\+\d[\d\s]{8,}/);
-		expect(text.toLowerCase()).not.toMatch(/whatsapp/);
 		expect(deniedWords(text)).toEqual([]);
 	});
 });

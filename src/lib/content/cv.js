@@ -2,9 +2,8 @@
  * Single source of truth for the public CV facts rendered on Home and About.
  *
  * Only facts already published on the site or explicitly approved for the
- * public profile belong here. Never add phone numbers, private employers,
- * client identities, or a link to a CV PDF until it has been regenerated and
- * approved. Project links are content slugs from `content/projects`; pages
+ * public profile belong here. Never add private employers or client
+ * identities. Project links are content slugs from `content/projects`; pages
  * turn them into URLs with `cvProjectPath()` and prefix `base` themselves.
  */
 
