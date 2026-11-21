@@ -155,6 +155,8 @@
 		return `Open ${node.label}`;
 	}
 	function hintFor(node) {
+		// The focus node is the page being read: clicking it only selects it.
+		if (node.id === focus) return 'Click to see its connections';
 		if (node.kind === 'item')
 			return node.section === 'projects' ? 'Click to open project' : 'Click to read note';
 		if (node.kind === 'hub' || node.kind === 'discipline') return 'Click to open section';
@@ -222,14 +224,22 @@
 	let tipW = $state(0);
 	let tipH = $state(0);
 	let wheelHint = $state(false);
-	// Initial value only; the setup effect keeps it current.
-	let status = $state(untrack(() => graphData?.nodes?.length) ? 'loading' : 'empty');
-	let listOpen = $state(false);
+	// Initial values only; the setup effect keeps them current. The server (and a
+	// browser without JavaScript) renders the static state: a note plus the list
+	// fallback already open. The client switches to 'loading' as soon as the setup
+	// effect runs and collapses the list once the map is ready.
+	let status = $state(untrack(() => graphData?.nodes?.length) ? 'static' : 'empty');
+	let listOpen = $state(true);
+	/** Set once the user toggles the list themselves; we then never collapse it. */
+	let listPinned = false;
 
 	let root = $state();
 	let stage = $state();
 	let container = $state();
+	let panel = $state();
 	let panelHeading = $state();
+	let searchInput = $state();
+	let zoomGroup = $state();
 
 	let hiddenSet = $derived(new Set(FILTERS.filter((f) => hidden[f.id]).map((f) => f.id)));
 	const isHidden = (node) => hiddenSet.has(categoryOf(node));
@@ -281,6 +291,8 @@
 			: 0
 	);
 	let selectedConnections = $derived(selectedGroups.reduce((sum, g) => sum + g.nodes.length, 0));
+	/** On detail pages the focus node is the current page: no "open" link for it. */
+	let selectedIsFocus = $derived(!!selected && selected.id === focus);
 	let tipNode = $derived(tipId ? (model.byId.get(tipId) ?? null) : null);
 	let listGroups = $derived(
 		GROUPS.map((group) => ({
@@ -349,15 +361,24 @@
 			status = data.nodes.length ? 'loading' : 'empty';
 			return;
 		}
-		const token = { cancelled: false, cleanup: null };
+		const token = { cancelled: false, cleanup: null, renderer: null };
 		untrack(() => {
 			selectedId = null;
 			tipId = null;
 			status = 'loading';
 			setup(data, focusId, isCompact, target, token).catch((error) => {
+				// A failure after the renderer exists leaves no cleanup behind: kill it here.
+				if (token.renderer) {
+					token.renderer.kill();
+					if (renderer === token.renderer) {
+						renderer = null;
+						graph = null;
+						sim = null;
+					}
+				}
 				if (token.cancelled) return;
 				console.error('GraphView: could not start the interactive graph', error);
-				status = 'error';
+				status = error?.graphWebGL ? 'no-webgl' : 'error';
 				listOpen = true;
 			});
 		});
@@ -731,26 +752,44 @@
 		}
 
 		// ---- renderer
-		renderer = new Sigma(graph, target, {
-			allowInvalidContainer: true,
-			defaultEdgeType: 'line',
-			renderEdgeLabels: false,
-			labelFont: palette.font,
-			labelSize: isCompact ? 12 : 13,
-			labelWeight: '500',
-			labelColor: { color: hex(palette.label) },
-			labelDensity: isCompact || narrow ? 0.5 : 0.85,
-			labelGridCellSize: isCompact || narrow ? 110 : 90,
-			labelRenderedSizeThreshold: isCompact ? 7.5 : 6,
-			defaultDrawNodeLabel: drawLabel,
-			defaultDrawNodeHover: drawHover,
-			stagePadding: isCompact ? 18 : 28,
-			minCameraRatio: 0.12,
-			maxCameraRatio: 2.5,
-			zIndex: true,
-			nodeReducer,
-			edgeReducer
-		});
+		// Only a failure here means WebGL is missing; anything else gets the
+		// generic error message.
+		let instance;
+		try {
+			instance = new Sigma(graph, target, {
+				allowInvalidContainer: true,
+				defaultEdgeType: 'line',
+				renderEdgeLabels: false,
+				labelFont: palette.font,
+				labelSize: isCompact ? 12 : 13,
+				labelWeight: '500',
+				labelColor: { color: hex(palette.label) },
+				labelDensity: isCompact || narrow ? 0.5 : 0.85,
+				labelGridCellSize: isCompact || narrow ? 110 : 90,
+				labelRenderedSizeThreshold: isCompact ? 7.5 : 6,
+				defaultDrawNodeLabel: drawLabel,
+				defaultDrawNodeHover: drawHover,
+				stagePadding: isCompact ? 18 : 28,
+				minCameraRatio: 0.12,
+				maxCameraRatio: 2.5,
+				zIndex: true,
+				// Reduced motion: no inertia glide after a pan, no animated
+				// double-click zoom. Sigma divides by the duration on the first
+				// (synchronous) animation step, so 0 would yield NaN; 1 ms finishes
+				// on the next frame, and a zero inertia ratio makes the glide a no-op.
+				...(reducedMotion
+					? { inertiaDuration: 1, inertiaRatio: 0, doubleClickZoomingDuration: 1 }
+					: {}),
+				nodeReducer,
+				edgeReducer
+			});
+		} catch (cause) {
+			throw Object.assign(new Error('GraphView: WebGL renderer unavailable', { cause }), {
+				graphWebGL: true
+			});
+		}
+		renderer = instance;
+		token.renderer = instance;
 
 		// Pin the normalisation box after the settle so the camera never "breathes"
 		// as nodes move or are dragged toward the edge.
@@ -868,13 +907,24 @@
 		renderer.on('doubleClickNode', ({ event }) => event.preventSigmaDefault());
 
 		// ---- dragging (works for mouse and touch through Sigma's unified events)
+		// A second finger means pinch-zoom: drop any drag and leave the gesture to
+		// Sigma (never preventSigmaDefault for multi-touch).
+		const multiTouch = (event) => (event.original?.touches?.length ?? 0) > 1;
 		renderer.on('downNode', ({ node, event }) => {
+			if (multiTouch(event)) {
+				release();
+				return;
+			}
 			const original = event.original;
 			if (original && 'button' in original && original.button !== 0) return;
 			drag = { id: node, sx: event.x, sy: event.y, moved: false };
 		});
 		renderer.on('moveBody', ({ event }) => {
 			if (!drag) return;
+			if (multiTouch(event)) {
+				release();
+				return;
+			}
 			event.preventSigmaDefault();
 			if (event.original?.cancelable && event.original.type === 'mousemove')
 				event.original.preventDefault();
@@ -1032,6 +1082,9 @@
 
 		wake();
 		status = 'ready';
+		// The list was open as the no-JS / loading fallback; tuck it away now
+		// unless the user chose its state themselves.
+		if (!listPinned) listOpen = false;
 
 		token.cleanup = () => {
 			cancelAnimationFrame(raf);
@@ -1110,9 +1163,20 @@
 
 	/** @param {string | null} id */
 	function select(id, { pan = false, focusPanel = false } = {}) {
+		// Clearing unmounts the panel; if focus is inside it, it would fall to <body>.
+		const restoreFocus = !id && !!panel?.contains(document.activeElement);
 		selectedId = id;
 		if (id && pan) panTo(id);
 		if (id && focusPanel) tick().then(() => panelHeading?.focus());
+		if (restoreFocus) tick().then(focusAfterPanel);
+	}
+
+	/** A stable landing spot once the panel closes: search, else the map controls. */
+	function focusAfterPanel() {
+		// Touch skips the search box so closing the panel doesn't pop the keyboard.
+		const search = !compact && pointerType !== 'touch' ? searchInput : null;
+		const target = search ?? zoomGroup?.querySelector('button') ?? stage;
+		target?.focus({ preventScroll: true });
 	}
 
 	function toggleFilter(id) {
@@ -1187,6 +1251,7 @@
 					aria-activedescendant={suggestionsOpen && activeIndex >= 0
 						? `${uid}-option-${activeIndex}`
 						: undefined}
+					bind:this={searchInput}
 					bind:value={query}
 					oninput={() => (activeIndex = -1)}
 					onkeydown={onSearchKey}
@@ -1241,14 +1306,21 @@
 		</div>
 	{/if}
 
-	<div class="stage" class:has-panel={!!selected} bind:this={stage}>
+	<!-- tabindex="-1": last-resort focus target when the details panel closes. -->
+	<div class="stage" class:has-panel={!!selected} bind:this={stage} tabindex="-1">
 		<div class="canvas" bind:this={container} role="img" aria-label={summary}></div>
 
-		{#if status === 'loading'}
+		{#if status === 'static'}
+			<p class="stage-note">The interactive map needs JavaScript — browse the list below.</p>
+		{:else if status === 'loading'}
 			<p class="stage-note" aria-hidden="true">Laying out the map…</p>
-		{:else if status === 'error'}
+		{:else if status === 'no-webgl'}
 			<p class="stage-note">
 				The interactive map needs WebGL, which isn’t available here. The list below has every node.
+			</p>
+		{:else if status === 'error'}
+			<p class="stage-note">
+				The interactive map couldn’t load. Reload the page, or browse the list below.
 			</p>
 		{:else if status === 'empty'}
 			<p class="stage-note">Nothing to map yet.</p>
@@ -1285,7 +1357,7 @@
 		{/if}
 
 		{#if status === 'ready'}
-			<div class="zoom" role="group" aria-label="Map view">
+			<div class="zoom" role="group" aria-label="Map view" bind:this={zoomGroup}>
 				<button type="button" onclick={() => zoom(1.5)} aria-label="Zoom in">+</button>
 				<button type="button" onclick={() => zoom(1 / 1.5)} aria-label="Zoom out">−</button>
 				<button type="button" onclick={resetView} aria-label="Reset view"
@@ -1307,7 +1379,7 @@
 		{/if}
 
 		{#if selected}
-			<aside class="panel" aria-labelledby="{uid}-panel-title">
+			<aside class="panel" aria-labelledby="{uid}-panel-title" bind:this={panel}>
 				<button
 					type="button"
 					class="close"
@@ -1330,7 +1402,9 @@
 				{/if}
 
 				<div class="panel-actions">
-					{#if NAVIGABLE.has(selected.kind) && selected.href}
+					{#if selectedIsFocus}
+						<!-- The focus node is the page being read; linking to it goes nowhere. -->
+					{:else if NAVIGABLE.has(selected.kind) && selected.href}
 						<a class="button primary small" href={hrefOf(selected)}
 							>{openLabel(selected)} <span aria-hidden="true">→</span></a
 						>
@@ -1397,11 +1471,11 @@
 			</ul>
 		{/if}
 		<details class="graph-list" bind:open={listOpen}>
-			<summary>Browse as a list</summary>
+			<summary onclick={() => (listPinned = true)}>Browse as a list</summary>
 			<div class="list-groups">
 				{#each listGroups as group (group.id)}
 					<div>
-						<h4>{group.label} <span class="count">{group.nodes.length}</span></h4>
+						<h3>{group.label} <span class="count">{group.nodes.length}</span></h3>
 						<ul>
 							{#each group.nodes as node (node.id)}
 								<li>
@@ -1554,15 +1628,26 @@
 		font-size: var(--text-sm);
 		cursor: pointer;
 		transition:
-			opacity 160ms ease,
+			color 160ms ease,
 			border-color 160ms ease;
 	}
 	.chip:hover {
 		border-color: var(--tone, var(--color-text-muted));
 	}
+	/* Off: muted (AA-contrast) text and a faded dot/border, not whole-chip opacity. */
 	.chip[aria-pressed='false'] {
-		opacity: 0.45;
+		border-color: var(--color-border);
+		color: var(--color-text-muted);
 		text-decoration: line-through;
+	}
+	.chip[aria-pressed='false']:hover {
+		border-color: var(--color-text-muted);
+	}
+	.chip .dot {
+		transition: opacity 160ms ease;
+	}
+	.chip[aria-pressed='false'] .dot {
+		opacity: 0.3;
 	}
 	.chip .count {
 		color: var(--color-text-muted);
@@ -1588,6 +1673,9 @@
 		height: clamp(34rem, 76vh, 54rem);
 		border-block: 1px solid var(--color-border);
 		background: radial-gradient(ellipse at 50% 45%, rgba(95, 191, 159, 0.05), transparent 62%);
+	}
+	.stage:focus:not(:focus-visible) {
+		outline: none;
 	}
 	.canvas {
 		position: absolute;
@@ -1820,7 +1908,7 @@
 		font-size: var(--text-xs);
 	}
 	.panel h4,
-	.graph-list h4 {
+	.graph-list h3 {
 		margin: var(--space-4) 0 var(--space-2);
 		color: var(--color-text-muted);
 		font-family: var(--font-body);
@@ -2034,7 +2122,8 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.chip {
+		.chip,
+		.chip .dot {
 			transition: none;
 		}
 	}
