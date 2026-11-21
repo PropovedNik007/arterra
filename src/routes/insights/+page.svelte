@@ -4,6 +4,7 @@
 	import WorkSankey from '$lib/components/charts/WorkSankey.svelte';
 	import SkillsRadar from '$lib/components/charts/SkillsRadar.svelte';
 	import GithubDashboard from '$lib/components/charts/GithubDashboard.svelte';
+	import OrgActivity from '$lib/components/charts/OrgActivity.svelte';
 	import { cv } from '$lib/content/cv.js';
 
 	let { data } = $props();
@@ -18,7 +19,12 @@
 		{ value: data.summary.projects, label: 'projects & builds' },
 		{ value: data.summary.fields, label: 'fields of work' },
 		{ value: cv.radar.axes.length, label: 'skill areas' },
-		{ value: data.summary.repos, label: 'public repositories' }
+		{ value: data.summary.repos, label: 'public repositories' },
+		...(data.privateWork.isEmpty
+			? []
+			: [
+					{ value: data.summary.commitsAll.toLocaleString('en-US'), label: 'commits incl. private' }
+				])
 	]);
 </script>
 
@@ -26,7 +32,7 @@
 	<title>Insights — Artur Sogomonyan</title>
 	<meta
 		name="description"
-		content="Charts of Artur Sogomonyan's work: how published projects flow through fields of work, a self-assessed skills profile, and public GitHub activity."
+		content="Charts of Artur Sogomonyan's work: how published projects flow through fields of work, a self-assessed skills profile, and public GitHub activity plus anonymised totals from private organisation work."
 	/>
 </svelte:head>
 
@@ -37,9 +43,9 @@
 			<p class="eyebrow">Charts &amp; numbers</p>
 			<h1>Insights</h1>
 			<p class="lede">
-				The same public work, seen as data: where the projects sit across fields of work, how I rate
-				my own skills, and what the public code history looks like. Every chart has a table
-				underneath.
+				The same work, seen as data: where the projects sit across fields of work, how I rate my own
+				skills, what the public code history looks like, and anonymised totals from private
+				organisation work. Every chart has a table underneath.
 			</p>
 		</div>
 		<dl class="stats">
@@ -105,9 +111,13 @@
 	<section id="github" class="insight" aria-labelledby="github-title">
 		<div class="section-head">
 			<h2 id="github-title">On GitHub</h2>
-			<p>A manually refreshed snapshot of public repositories.</p>
+			<p>
+				A manually refreshed snapshot of public repositories, plus anonymised totals from private
+				organisation work.
+			</p>
 		</div>
 		<GithubDashboard data={data.github} headingLevel={3} />
+		<OrgActivity data={data.privateWork} headingLevel={3} />
 	</section>
 </div>
 

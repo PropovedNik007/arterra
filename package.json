@@ -14,7 +14,8 @@
 		"lint": "prettier --check 'src/**/*.{js,ts,svelte,css}' 'scripts/**/*.mjs' '*.{js,ts,json}' && eslint .",
 		"format": "prettier --write .",
 		"deploy": "gh-pages -d build -t true",
-		"github:refresh": "node scripts/build-github.mjs"
+		"github:refresh": "node scripts/build-github.mjs",
+		"github:orgs": "node scripts/build-github-orgs.mjs"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",

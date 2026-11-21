@@ -1,7 +1,9 @@
 import graphJson from '$lib/graphs/graph.json';
 import githubJson from '$lib/github/github.json';
+import orgsJson from '$lib/github/orgs.json';
 import { buildSankeyData } from '$lib/charts/sankey-data.js';
 import { githubDashboard } from '$lib/github/stats.js';
+import { orgActivity } from '$lib/github/org-stats.js';
 
 export const prerender = true;
 
@@ -13,10 +15,14 @@ const graphData = /** @type {import('$lib/graph/build.js').GraphData} */ (
 const github = /** @type {import('$lib/github/stats.js').Snapshot} */ (
 	/** @type {unknown} */ (githubJson)
 );
+const orgSnapshot = /** @type {import('$lib/github/org-stats.js').OrgSnapshot} */ (
+	/** @type {unknown} */ (orgsJson)
+);
 
 /**
  * Charts over data the site already publishes: the knowledge graph (as a flow),
- * the self-assessed skills profile from the CV, and a manual public GitHub snapshot.
+ * the self-assessed skills profile from the CV, a manual public GitHub snapshot and
+ * anonymised aggregates from private organisation work.
  */
 export function load() {
 	const flow = buildSankeyData(graphData);
@@ -24,13 +30,17 @@ export function load() {
 	// per-repo language bytes and commit histories) would otherwise be serialised
 	// into the page's hydration data and __data.json.
 	const dashboard = githubDashboard(github);
+	// Aliases and aggregates only; public monthly commits feed the combined chart.
+	const privateWork = orgActivity(orgSnapshot, github);
 	return {
 		graphData,
 		github: dashboard,
+		privateWork,
 		summary: {
 			projects: flow.total,
 			fields: flow.fields.length,
-			repos: dashboard.counts.own
+			repos: dashboard.counts.own,
+			commitsAll: dashboard.commits + privateWork.totals.commits
 		}
 	};
 }
