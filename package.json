@@ -13,7 +13,8 @@
 		"test:watch": "vitest",
 		"lint": "prettier --check 'src/**/*.{js,ts,svelte,css}' 'scripts/**/*.mjs' '*.{js,ts,json}' && eslint .",
 		"format": "prettier --write .",
-		"deploy": "gh-pages -d build -t true"
+		"deploy": "gh-pages -d build -t true",
+		"github:refresh": "node scripts/build-github.mjs"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
@@ -42,6 +43,7 @@
 		"@fontsource/hanken-grotesk": "^5.2.8",
 		"chroma-js": "^3.2.0",
 		"d3-force": "^3.0.0",
+		"d3-sankey": "^0.12.3",
 		"graphology": "^0.26.0",
 		"gray-matter": "^4.0.3",
 		"gsap": "^3.15.0",
