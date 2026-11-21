@@ -207,7 +207,7 @@ export const ITEM_FIELDS = {
 	'aim-hackathon-greenwashing-rag': ['ml', 'llm', 'nlp'],
 	cryptex: ['web3', 'frontend', 'backend'],
 	'davu-ocr': ['cv', 'ml', 'llm', 'nlp'],
-	flexam: ['3d-printing'],
+	flexam: ['3d-printing', 'cv', 'ml', 'backend', 'frontend'],
 	glosav: ['iot', 'cv', 'ml'],
 	lawsyncr: ['ml', 'llm', 'nlp'],
 	printerra: ['iot', 'cv', 'ml', '3d-printing'],

@@ -143,7 +143,8 @@ export const cv = {
 			org: 'Flexam',
 			period: 'Current',
 			current: true,
-			summary: 'Software for multi-axis 3D printers. Further details are intentionally omitted.',
+			summary:
+				'Software for industrial multi-axis additive manufacturing: 3D segmentation, toolpath generation, and the full-stack slicer product in Go, Rust, Python, and TypeScript.',
 			project: 'flexam'
 		},
 		{
@@ -207,7 +208,21 @@ export const cv = {
 	skills: {
 		'Machine learning & vision': ['PyTorch', 'TensorFlow', 'scikit-learn', 'OpenCV', 'YOLO'],
 		'Language & retrieval': ['NLP', 'LLMs', 'RAG', 'LangChain'],
-		'Software engineering': ['Python', 'C++', 'JavaScript', 'Svelte', 'React', 'FastAPI', 'Docker'],
+		'Software engineering': [
+			'Python',
+			'Go',
+			'Rust',
+			'TypeScript',
+			'JavaScript',
+			'C++',
+			'Node.js',
+			'Bun',
+			'Svelte',
+			'React',
+			'three.js',
+			'FastAPI',
+			'Docker'
+		],
 		'Data & infrastructure': [
 			'PostgreSQL',
 			'MongoDB',

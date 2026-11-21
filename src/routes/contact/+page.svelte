@@ -3,6 +3,7 @@
 	import PageIntro from '$lib/components/ui/PageIntro.svelte';
 	import EnvelopeIcon from '$lib/icons/EnvelopeIcon.svelte';
 	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
+	import MediumIcon from '$lib/icons/MediumIcon.svelte';
 	import LinkedinIcon from '$lib/icons/LinkedinIcon.svelte';
 	import GithubIcon from '$lib/icons/GithubIcon.svelte';
 	import { cv } from '$lib/content/cv.js';
@@ -26,6 +27,12 @@
 			value: 'PropovedNik007',
 			href: 'https://github.com/PropovedNik007',
 			icon: GithubIcon
+		},
+		{
+			label: 'Medium',
+			value: '@artur.sogomonyan',
+			href: 'https://medium.com/@artur.sogomonyan',
+			icon: MediumIcon
 		}
 	];
 </script>

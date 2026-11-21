@@ -129,6 +129,7 @@ export function buildFaq(featured) {
 	const name = cv.name;
 	const place = `${CITY}, ${COUNTRY}`;
 	const [msc, bsc, ...courses] = cv.education;
+	const current = cv.experience.find((entry) => entry.current);
 	const earlierRoles = cv.experience.filter((entry) => !entry.current && entry.role).slice(0, 3);
 	const skillGroups = Object.entries(cv.skills).map(
 		([group, values]) => `${lowerFirst(group)} (${values.join(', ')})`
@@ -187,10 +188,10 @@ export function buildFaq(featured) {
 			id: 'experience',
 			group: 'work',
 			question: `What is ${name}’s work experience?`,
-			answer: `${name}’s roles include ${list(
+			answer: `${current ? `${name} currently works at ${current.org} on ${lowerFirst(withoutPeriod(current.summary))}. ` : ''}${name}’s earlier roles include ${list(
 				earlierRoles.map((entry) => `${entry.role} at ${orgLabel(entry.org)}, ${entry.period}`),
 				';'
-			)}. Earlier roles covered 3D modelling and prototyping as well as frontend and full-stack web development.`,
+			)}. Before that, he worked on 3D modelling and prototyping as well as frontend and full-stack web development.`,
 			links: [{ label: 'Experience on the About page', href: '/about' }]
 		},
 		{
@@ -270,11 +271,12 @@ export function buildFaq(featured) {
 			id: 'contact',
 			group: 'site',
 			question: `How can I contact ${name}?`,
-			answer: `You can reach ${name} by email at ${PROFILE.email}, on LinkedIn (${PROFILE.linkedin.replace('https://', '')}), on Telegram (${PROFILE.telegram.replace('https://', '')}), or on GitHub (${PROFILE.github.replace('https://', '')}). A useful first message names the outcome you want, the current constraint, and the next decision.`,
+			answer: `You can reach ${name} by email at ${PROFILE.email}, on LinkedIn (${PROFILE.linkedin.replace('https://', '')}), on Telegram (${PROFILE.telegram.replace('https://', '')}), on GitHub (${PROFILE.github.replace('https://', '')}), or on Medium (${PROFILE.medium.replace('https://', '')}). A useful first message names the outcome you want, the current constraint, and the next decision.`,
 			links: [
 				{ label: 'Contact', href: '/contact' },
 				{ label: 'Email', href: `mailto:${PROFILE.email}` },
-				{ label: 'LinkedIn', href: PROFILE.linkedin }
+				{ label: 'LinkedIn', href: PROFILE.linkedin },
+				{ label: 'Medium', href: PROFILE.medium }
 			]
 		},
 		{

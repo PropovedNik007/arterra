@@ -21,7 +21,8 @@ export const PROFILE = {
 	email: 'arthur.sogomonyan@gmail.com',
 	linkedin: 'https://linkedin.com/in/artur-sogomonyan',
 	github: 'https://github.com/PropovedNik007',
-	telegram: 'https://t.me/arterrai'
+	telegram: 'https://t.me/arterrai',
+	medium: 'https://medium.com/@artur.sogomonyan'
 };
 
 /**

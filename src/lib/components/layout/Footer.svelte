@@ -4,6 +4,7 @@
 	import LinkedinIcon from '$lib/icons/LinkedinIcon.svelte';
 	import EnvelopeIcon from '$lib/icons/EnvelopeIcon.svelte';
 	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
+	import MediumIcon from '$lib/icons/MediumIcon.svelte';
 	import { cv } from '$lib/content/cv.js';
 
 	const year = new Date().getFullYear();
@@ -25,7 +26,8 @@
 		{ href: 'mailto:arthur.sogomonyan@gmail.com', label: 'Email', icon: EnvelopeIcon },
 		{ href: 'https://t.me/arterrai', label: 'Telegram', icon: TelegramIcon },
 		{ href: 'https://linkedin.com/in/artur-sogomonyan', label: 'LinkedIn', icon: LinkedinIcon },
-		{ href: 'https://github.com/PropovedNik007', label: 'GitHub', icon: GithubIcon }
+		{ href: 'https://github.com/PropovedNik007', label: 'GitHub', icon: GithubIcon },
+		{ href: 'https://medium.com/@artur.sogomonyan', label: 'Medium', icon: MediumIcon }
 	];
 </script>
 

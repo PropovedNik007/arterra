@@ -82,7 +82,7 @@
 			"kind": "field",
 			"tone": "field",
 			"href": "/projects?field=ml",
-			"subtitle": "Field · 8 notes",
+			"subtitle": "Field · 9 notes",
 			"excerpt": "Supervised models, training pipelines, and evaluation."
 		},
 		{
@@ -91,7 +91,7 @@
 			"kind": "field",
 			"tone": "field",
 			"href": "/projects?field=cv",
-			"subtitle": "Field · 5 notes",
+			"subtitle": "Field · 6 notes",
 			"excerpt": "Detection, tracking, OCR, and video understanding."
 		},
 		{
@@ -145,7 +145,7 @@
 			"kind": "field",
 			"tone": "field",
 			"href": "/projects?field=backend",
-			"subtitle": "Field · 9 notes",
+			"subtitle": "Field · 10 notes",
 			"excerpt": "APIs, async services, and cloud infrastructure."
 		},
 		{
@@ -154,7 +154,7 @@
 			"kind": "field",
 			"tone": "field",
 			"href": "/projects?field=frontend",
-			"subtitle": "Field · 7 notes",
+			"subtitle": "Field · 8 notes",
 			"excerpt": "Web interfaces in React, Svelte, and Next.js."
 		},
 		{
@@ -223,14 +223,23 @@
 			"tone": "projects",
 			"section": "projects",
 			"href": "/projects/flexam",
+			"external": "https://flexam.tech",
 			"subtitle": "Projects",
-			"excerpt": "Active software project for multi-axis 3D printers.",
+			"excerpt": "At Flexam, a Vienna company building software for industrial additive manufacturing, I develop the path from a 3D model to a multi-axis, non-planar toolpath: segmenting…",
+			"cover": "images/projects/flexam-toolpath-editor.webp",
 			"tags": [
-				"software-engineering",
 				"3d-printing",
-				"multi-axis"
+				"multi-axis",
+				"3d-segmentation",
+				"toolpath-generation",
+				"computer-vision",
+				"full-stack"
 			],
 			"fields": [
+				"Machine Learning",
+				"Computer Vision",
+				"Back-end",
+				"Front-end",
 				"3D Printing"
 			],
 			"featured": true
@@ -666,7 +675,7 @@
 			"kind": "topic",
 			"tone": "topic",
 			"href": "/projects?tag=React",
-			"subtitle": "Tool / topic · 2 notes"
+			"subtitle": "Tool / topic · 3 notes"
 		},
 		{
 			"id": "topic-svelte",
@@ -677,12 +686,20 @@
 			"subtitle": "Tool / topic · 2 notes"
 		},
 		{
+			"id": "topic-python",
+			"label": "Python",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=Python",
+			"subtitle": "Tool / topic · 4 notes"
+		},
+		{
 			"id": "topic-fastapi",
 			"label": "FastAPI",
 			"kind": "topic",
 			"tone": "topic",
 			"href": "/projects?tag=FastAPI",
-			"subtitle": "Tool / topic · 4 notes"
+			"subtitle": "Tool / topic · 5 notes"
 		},
 		{
 			"id": "topic-asyncio",
@@ -723,14 +740,6 @@
 			"tone": "topic",
 			"href": "/projects?tag=NumPy",
 			"subtitle": "Tool / topic · 2 notes"
-		},
-		{
-			"id": "topic-python",
-			"label": "Python",
-			"kind": "topic",
-			"tone": "topic",
-			"href": "/projects?tag=Python",
-			"subtitle": "Tool / topic · 3 notes"
 		},
 		{
 			"id": "topic-ocr",
@@ -963,6 +972,26 @@
 		},
 		{
 			"source": "web-development-path",
+			"target": "field-frontend",
+			"kind": "field"
+		},
+		{
+			"source": "flexam",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "flexam",
+			"target": "field-cv",
+			"kind": "field"
+		},
+		{
+			"source": "flexam",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "flexam",
 			"target": "field-frontend",
 			"kind": "field"
 		},
@@ -1282,6 +1311,11 @@
 			"kind": "topic"
 		},
 		{
+			"source": "flexam",
+			"target": "topic-react",
+			"kind": "topic"
+		},
+		{
 			"source": "susteam",
 			"target": "topic-react",
 			"kind": "topic"
@@ -1294,6 +1328,31 @@
 		{
 			"source": "lawsyncr",
 			"target": "topic-svelte",
+			"kind": "topic"
+		},
+		{
+			"source": "flexam",
+			"target": "topic-python",
+			"kind": "topic"
+		},
+		{
+			"source": "printerra",
+			"target": "topic-python",
+			"kind": "topic"
+		},
+		{
+			"source": "rail4future",
+			"target": "topic-python",
+			"kind": "topic"
+		},
+		{
+			"source": "glosav",
+			"target": "topic-python",
+			"kind": "topic"
+		},
+		{
+			"source": "flexam",
+			"target": "topic-fastapi",
 			"kind": "topic"
 		},
 		{
@@ -1364,21 +1423,6 @@
 		{
 			"source": "glosav",
 			"target": "topic-numpy",
-			"kind": "topic"
-		},
-		{
-			"source": "printerra",
-			"target": "topic-python",
-			"kind": "topic"
-		},
-		{
-			"source": "rail4future",
-			"target": "topic-python",
-			"kind": "topic"
-		},
-		{
-			"source": "glosav",
-			"target": "topic-python",
 			"kind": "topic"
 		},
 		{

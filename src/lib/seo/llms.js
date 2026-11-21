@@ -54,7 +54,8 @@ export const LLMS_PAGES = [
 	{
 		path: '/contact',
 		title: 'Contact',
-		description: 'Email, Telegram, LinkedIn, and GitHub, plus what to include in a first message.'
+		description:
+			'Email, Telegram, LinkedIn, GitHub, and Medium, plus what to include in a first message.'
 	}
 ];
 

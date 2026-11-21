@@ -62,7 +62,7 @@
 					'@type': 'Language',
 					name: language.name
 				})),
-				sameAs: [PROFILE.linkedin, PROFILE.github, PROFILE.telegram]
+				sameAs: [PROFILE.linkedin, PROFILE.github, PROFILE.telegram, PROFILE.medium]
 			},
 			{
 				'@type': 'WebSite',
