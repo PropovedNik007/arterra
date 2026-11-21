@@ -12,7 +12,8 @@
 		{ href: '/projects', label: 'Projects' },
 		{ href: '/diy', label: 'DIY' },
 		{ href: '/sport', label: 'Sport' },
-		{ href: '/graph', label: 'Knowledge graph' }
+		{ href: '/graph', label: 'Knowledge graph' },
+		{ href: '/insights', label: 'Insights' }
 	];
 	const site = [
 		{ href: '/about', label: 'About' },

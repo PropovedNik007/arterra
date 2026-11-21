@@ -93,6 +93,9 @@
 		<div class="section-label">
 			<p class="eyebrow">Toolkit</p>
 			<h2 id="about-toolkit">Built around problems, not buzzwords.</h2>
+			<a class="entry-link" href="{base}/insights#skills"
+				>See the skills profile chart <span aria-hidden="true">→</span></a
+			>
 		</div>
 		<div class="skill-groups">
 			{#each Object.entries(cv.skills) as [group, values] (group)}

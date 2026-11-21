@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
 	import GraphView from '$lib/graph/GraphView.svelte';
 
@@ -34,6 +35,9 @@
 				and tools behind it. Colour marks the kind of node, size how connected it is — hover to
 				trace a thread, click a project to open it.
 			</p>
+			<a class="flow-link" href="{base}/insights#flow"
+				>See the work as a flow <span aria-hidden="true">→</span></a
+			>
 		</div>
 		<dl class="stats">
 			{#each stats as stat (stat.label)}
@@ -66,6 +70,12 @@
 	.intro .lede {
 		max-width: 44rem;
 		margin: 0;
+	}
+	.flow-link {
+		display: inline-block;
+		margin-top: var(--space-3);
+		font-size: var(--text-sm);
+		font-weight: 650;
 	}
 	@media (max-width: 800px) {
 		.intro {
