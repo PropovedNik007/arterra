@@ -57,6 +57,17 @@ function articleBody(body) {
 }
 
 /**
+ * First public http(s) URL listed under a `## Links` heading, used as the
+ * project's external link when the note has no `link:` frontmatter.
+ * @param {string} body
+ * @returns {string | undefined}
+ */
+function linksSectionUrl(body) {
+	const section = body.match(/^##\s+Links\s*$([\s\S]*?)(?=^#{1,2}\s|(?![\s\S]))/im)?.[1] ?? '';
+	return section.match(/https?:\/\/[^\s)>\]]+/)?.[0];
+}
+
+/**
  * Converts a Date or string value to a YYYY-MM-DD string.
  * Returns an empty string if value is undefined, null, or neither a string nor a Date.
  * @param {string | Date | undefined} dateValue
@@ -135,14 +146,17 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 			discipline: section === 'sport' ? data.discipline : undefined,
 			title: typeof data.title === 'string' ? data.title : (firstHeading(body) ?? slug),
 			date: dateToString(data.date) || dateToString(data.created),
-			updated: typeof data.updated === 'string' ? data.updated : undefined,
+			updated: dateToString(data.updated) || undefined,
 			tags: Array.isArray(data.tags) ? data.tags : [],
 			cover: typeof data.cover === 'string' ? data.cover : undefined,
 			excerpt: typeof data.description === 'string' ? data.description : firstParagraph(body),
 			html: await renderMarkdown(articleBody(body)),
 			links,
 			tech: Array.isArray(data.tech) ? data.tech : undefined,
-			externalLink: typeof data.link === 'string' ? data.link : undefined,
+			externalLink:
+				typeof data.link === 'string' && data.link ? data.link : linksSectionUrl(body),
+			featured: data.featured === true,
+			featuredOrder: typeof data.featured_order === 'number' ? data.featured_order : undefined,
 			printer: typeof data.printer === 'string' ? data.printer : undefined,
 			material: typeof data.material === 'string' ? data.material : undefined,
 			distance_km: typeof data.distance_km === 'number' ? data.distance_km : undefined,
@@ -154,4 +168,18 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 	}
 
 	return items.sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+/**
+ * Featured items first (by `featured_order`), then everything else by date.
+ * Returns a new array.
+ * @param {ContentItem[]} items
+ * @returns {ContentItem[]}
+ */
+export function byFeatured(items) {
+	return [...items].sort((a, b) => {
+		if (a.featured !== b.featured) return a.featured ? -1 : 1;
+		if (a.featured && b.featured) return (a.featuredOrder ?? 99) - (b.featuredOrder ?? 99);
+		return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
+	});
 }

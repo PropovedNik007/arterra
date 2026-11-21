@@ -1,361 +1,1426 @@
 {
-  "nodes": [
-    {
-      "id": "hub-projects",
-      "label": "Projects",
-      "section": "projects",
-      "isHub": true
-    },
-    {
-      "id": "hub-diy",
-      "label": "DIY",
-      "section": "diy",
-      "isHub": true
-    },
-    {
-      "id": "hub-sport",
-      "label": "Sport",
-      "section": "sport",
-      "isHub": true
-    },
-    {
-      "id": "topic-fastapi",
-      "label": "FastAPI",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "topic-asyncio",
-      "label": "AsyncIO",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "topic-openai",
-      "label": "OpenAI",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "topic-rag",
-      "label": "RAG",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "topic-flask",
-      "label": "Flask",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "topic-machine-learning",
-      "label": "machine-learning",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "topic-opencv",
-      "label": "OpenCV",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "topic-numpy",
-      "label": "NumPy",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "topic-llama-3",
-      "label": "LLaMA-3",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "topic-esg",
-      "label": "ESG",
-      "section": "topic",
-      "isTopic": true
-    },
-    {
-      "id": "2026-06-14-rax",
-      "label": "Rax — Heukuppe via Ottohaus",
-      "section": "sport",
-      "discipline": "hiking"
-    },
-    {
-      "id": "2026-05-first-sparring",
-      "label": "First sparring round",
-      "section": "sport",
-      "discipline": "boxing"
-    },
-    {
-      "id": "2026-04-miniature-batch",
-      "label": "Miniature batch — Anycubic Photon Mono 4K",
-      "section": "diy"
-    },
-    {
-      "id": "reelmate",
-      "label": "ReelMate",
-      "section": "projects"
-    },
-    {
-      "id": "lawsyncr",
-      "label": "LawSyncr",
-      "section": "projects"
-    },
-    {
-      "id": "tradebot",
-      "label": "TradeBot",
-      "section": "projects"
-    },
-    {
-      "id": "printerra",
-      "label": "Printerra",
-      "section": "projects"
-    },
-    {
-      "id": "davu-ocr",
-      "label": "DAVU / OCR — document analysis",
-      "section": "projects"
-    },
-    {
-      "id": "cryptex",
-      "label": "Cryptex",
-      "section": "projects"
-    },
-    {
-      "id": "susteam",
-      "label": "susteam",
-      "section": "projects"
-    },
-    {
-      "id": "rail4future",
-      "label": "Rail4Future",
-      "section": "projects"
-    },
-    {
-      "id": "glosav",
-      "label": "GLOSAV",
-      "section": "projects"
-    },
-    {
-      "id": "aim-hackathon-greenwashing-rag",
-      "label": "AIM Hackathon — greenwashing RAG",
-      "section": "projects"
-    },
-    {
-      "id": "tourism-knowledge-graph",
-      "label": "Tourism knowledge graph",
-      "section": "projects"
-    },
-    {
-      "id": "red-cross-lip-reading",
-      "label": "Red Cross lip-reading app",
-      "section": "projects"
-    }
-  ],
-  "edges": [
-    {
-      "source": "hub-projects",
-      "target": "hub-diy",
-      "kind": "taxonomy"
-    },
-    {
-      "source": "hub-diy",
-      "target": "hub-sport",
-      "kind": "taxonomy"
-    },
-    {
-      "source": "hub-sport",
-      "target": "hub-projects",
-      "kind": "taxonomy"
-    },
-    {
-      "source": "hub-sport",
-      "target": "2026-06-14-rax",
-      "kind": "section"
-    },
-    {
-      "source": "hub-sport",
-      "target": "2026-05-first-sparring",
-      "kind": "section"
-    },
-    {
-      "source": "hub-diy",
-      "target": "2026-04-miniature-batch",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "reelmate",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "lawsyncr",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "tradebot",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "printerra",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "davu-ocr",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "cryptex",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "susteam",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "rail4future",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "glosav",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "aim-hackathon-greenwashing-rag",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "tourism-knowledge-graph",
-      "kind": "section"
-    },
-    {
-      "source": "hub-projects",
-      "target": "red-cross-lip-reading",
-      "kind": "section"
-    },
-    {
-      "source": "reelmate",
-      "target": "topic-fastapi",
-      "kind": "tag"
-    },
-    {
-      "source": "tradebot",
-      "target": "topic-fastapi",
-      "kind": "tag"
-    },
-    {
-      "source": "susteam",
-      "target": "topic-fastapi",
-      "kind": "tag"
-    },
-    {
-      "source": "red-cross-lip-reading",
-      "target": "topic-fastapi",
-      "kind": "tag"
-    },
-    {
-      "source": "reelmate",
-      "target": "topic-asyncio",
-      "kind": "tag"
-    },
-    {
-      "source": "tradebot",
-      "target": "topic-asyncio",
-      "kind": "tag"
-    },
-    {
-      "source": "reelmate",
-      "target": "topic-openai",
-      "kind": "tag"
-    },
-    {
-      "source": "aim-hackathon-greenwashing-rag",
-      "target": "topic-openai",
-      "kind": "tag"
-    },
-    {
-      "source": "lawsyncr",
-      "target": "topic-rag",
-      "kind": "tag"
-    },
-    {
-      "source": "aim-hackathon-greenwashing-rag",
-      "target": "topic-rag",
-      "kind": "tag"
-    },
-    {
-      "source": "lawsyncr",
-      "target": "topic-flask",
-      "kind": "tag"
-    },
-    {
-      "source": "aim-hackathon-greenwashing-rag",
-      "target": "topic-flask",
-      "kind": "tag"
-    },
-    {
-      "source": "printerra",
-      "target": "topic-machine-learning",
-      "kind": "tag"
-    },
-    {
-      "source": "glosav",
-      "target": "topic-machine-learning",
-      "kind": "tag"
-    },
-    {
-      "source": "printerra",
-      "target": "topic-opencv",
-      "kind": "tag"
-    },
-    {
-      "source": "glosav",
-      "target": "topic-opencv",
-      "kind": "tag"
-    },
-    {
-      "source": "printerra",
-      "target": "topic-numpy",
-      "kind": "tag"
-    },
-    {
-      "source": "glosav",
-      "target": "topic-numpy",
-      "kind": "tag"
-    },
-    {
-      "source": "davu-ocr",
-      "target": "topic-llama-3",
-      "kind": "tag"
-    },
-    {
-      "source": "susteam",
-      "target": "topic-llama-3",
-      "kind": "tag"
-    },
-    {
-      "source": "susteam",
-      "target": "topic-esg",
-      "kind": "tag"
-    },
-    {
-      "source": "aim-hackathon-greenwashing-rag",
-      "target": "topic-esg",
-      "kind": "tag"
-    }
-  ]
+	"nodes": [
+		{
+			"id": "hub-projects",
+			"label": "Projects",
+			"kind": "hub",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects",
+			"subtitle": "Section · 14 projects"
+		},
+		{
+			"id": "hub-diy",
+			"label": "DIY",
+			"kind": "hub",
+			"tone": "diy",
+			"section": "diy",
+			"href": "/diy",
+			"subtitle": "Section · 1 note"
+		},
+		{
+			"id": "hub-sport",
+			"label": "Sport",
+			"kind": "hub",
+			"tone": "sport",
+			"section": "sport",
+			"href": "/sport",
+			"subtitle": "Section · 2 notes"
+		},
+		{
+			"id": "discipline-hiking",
+			"label": "Hiking",
+			"kind": "discipline",
+			"tone": "sport",
+			"section": "sport",
+			"discipline": "hiking",
+			"href": "/sport/hiking",
+			"subtitle": "Sport · 1 note"
+		},
+		{
+			"id": "discipline-boxing",
+			"label": "Boxing",
+			"kind": "discipline",
+			"tone": "sport",
+			"section": "sport",
+			"discipline": "boxing",
+			"href": "/sport/boxing",
+			"subtitle": "Sport · 1 note"
+		},
+		{
+			"id": "discipline-diving",
+			"label": "Diving",
+			"kind": "discipline",
+			"tone": "sport",
+			"section": "sport",
+			"discipline": "diving",
+			"href": "/sport/diving",
+			"subtitle": "Sport · nothing published yet"
+		},
+		{
+			"id": "discipline-table-tennis",
+			"label": "Table Tennis",
+			"kind": "discipline",
+			"tone": "sport",
+			"section": "sport",
+			"discipline": "table-tennis",
+			"href": "/sport/table-tennis",
+			"subtitle": "Sport · nothing published yet"
+		},
+		{
+			"id": "domain-data-science",
+			"label": "Data Science",
+			"kind": "domain",
+			"tone": "field",
+			"href": null,
+			"subtitle": "Domain · 6 fields",
+			"excerpt": "Modelling, perception, language, and analysis."
+		},
+		{
+			"id": "field-ml",
+			"label": "Machine Learning",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=ml",
+			"subtitle": "Field · 8 notes",
+			"excerpt": "Supervised models, training pipelines, and evaluation."
+		},
+		{
+			"id": "field-cv",
+			"label": "Computer Vision",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=cv",
+			"subtitle": "Field · 5 notes",
+			"excerpt": "Detection, tracking, OCR, and video understanding."
+		},
+		{
+			"id": "field-nlp",
+			"label": "NLP",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=nlp",
+			"subtitle": "Field · 4 notes",
+			"excerpt": "Entity extraction, classification, and text understanding."
+		},
+		{
+			"id": "field-llm",
+			"label": "LLMs & RAG",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=llm",
+			"subtitle": "Field · 6 notes",
+			"excerpt": "Retrieval-augmented generation and applied language models."
+		},
+		{
+			"id": "field-analytics",
+			"label": "Data Analytics",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=analytics",
+			"subtitle": "Field · 3 notes",
+			"excerpt": "Pipelines, geospatial data, and knowledge graphs."
+		},
+		{
+			"id": "field-time-series",
+			"label": "Time Series",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=time-series",
+			"subtitle": "Field · 2 notes",
+			"excerpt": "Sequential signals, forecasting, and market data."
+		},
+		{
+			"id": "domain-software",
+			"label": "Software Engineering",
+			"kind": "domain",
+			"tone": "field",
+			"href": null,
+			"subtitle": "Domain · 4 fields",
+			"excerpt": "Services, interfaces, and systems that ship."
+		},
+		{
+			"id": "field-backend",
+			"label": "Back-end",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=backend",
+			"subtitle": "Field · 9 notes",
+			"excerpt": "APIs, async services, and cloud infrastructure."
+		},
+		{
+			"id": "field-frontend",
+			"label": "Front-end",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=frontend",
+			"subtitle": "Field · 7 notes",
+			"excerpt": "Web interfaces in React, Svelte, and Next.js."
+		},
+		{
+			"id": "field-web3",
+			"label": "Web3",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=web3",
+			"subtitle": "Field · 2 notes",
+			"excerpt": "Blockchain integrations, wallets, and exchange APIs."
+		},
+		{
+			"id": "field-iot",
+			"label": "IoT & Edge",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=iot",
+			"subtitle": "Field · 2 notes",
+			"excerpt": "Real-time inference close to cameras and devices."
+		},
+		{
+			"id": "domain-making",
+			"label": "Making & Hardware",
+			"kind": "domain",
+			"tone": "field",
+			"href": null,
+			"subtitle": "Domain · 1 field",
+			"excerpt": "Physical prototyping, printers, and fabrication."
+		},
+		{
+			"id": "field-3d-printing",
+			"label": "3D Printing",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=3d-printing",
+			"subtitle": "Field · 3 notes",
+			"excerpt": "Resin and multi-axis printing, from software to miniatures."
+		},
+		{
+			"id": "web-development-path",
+			"label": "Web development path",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/web-development-path",
+			"subtitle": "Projects",
+			"excerpt": "I have worked across frontend and backend development since 2017, building and extending production web applications for freelance clients, Linwood, and KRK Group, and…",
+			"tags": [
+				"full-stack",
+				"frontend",
+				"web-development",
+				"React",
+				"Svelte",
+				"Django"
+			],
+			"fields": [
+				"Back-end",
+				"Front-end"
+			],
+			"featured": true
+		},
+		{
+			"id": "flexam",
+			"label": "Flexam",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/flexam",
+			"subtitle": "Projects",
+			"excerpt": "Active software project for multi-axis 3D printers.",
+			"tags": [
+				"software-engineering",
+				"3d-printing",
+				"multi-axis"
+			],
+			"fields": [
+				"3D Printing"
+			],
+			"featured": true
+		},
+		{
+			"id": "2026-06-14-rax",
+			"label": "Rax — Heukuppe via Ottohaus",
+			"kind": "item",
+			"tone": "sport",
+			"section": "sport",
+			"discipline": "hiking",
+			"href": "/sport/hiking/2026-06-14-rax",
+			"subtitle": "Sport · Hiking",
+			"excerpt": "A day hike up Rax from Vienna. Started at the Preinerwiese trailhead, up to Ottohaus, then the ridge walk to Heukuppe (2007 m) and back down the same way.",
+			"tags": [],
+			"fields": []
+		},
+		{
+			"id": "2026-05-first-sparring",
+			"label": "First sparring round",
+			"kind": "item",
+			"tone": "sport",
+			"section": "sport",
+			"discipline": "boxing",
+			"href": "/sport/boxing/2026-05-first-sparring",
+			"subtitle": "Sport · Boxing",
+			"excerpt": "Notes from my first real sparring round after a few months of bag work and pad sessions — what went well, what I want to drill next.",
+			"tags": [],
+			"fields": []
+		},
+		{
+			"id": "2026-04-miniature-batch",
+			"label": "Miniature batch — Anycubic Photon Mono 4K",
+			"kind": "item",
+			"tone": "diy",
+			"section": "diy",
+			"href": "/diy/2026-04-miniature-batch",
+			"subtitle": "DIY",
+			"excerpt": "A batch of tabletop miniatures printed on the Photon Mono 4K, tuned for fine detail on faces and weapons.",
+			"tags": [],
+			"fields": [
+				"3D Printing"
+			]
+		},
+		{
+			"id": "reelmate",
+			"label": "ReelMate",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/reelmate",
+			"external": "https://propovednik007.github.io/reelmate/",
+			"subtitle": "Projects",
+			"excerpt": "An AI-driven platform that streamlines creating and distributing short-form video content across major social media platforms. Transforms text content into videos,…",
+			"cover": "images/projects/reelmate.png",
+			"tags": [
+				"FastAPI",
+				"AsyncIO",
+				"OpenAI",
+				"social-media-automation"
+			],
+			"fields": [
+				"LLMs & RAG",
+				"Back-end",
+				"Front-end"
+			]
+		},
+		{
+			"id": "lawsyncr",
+			"label": "LawSyncr",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/lawsyncr",
+			"subtitle": "Projects",
+			"excerpt": "Led end-to-end full-stack development of a legal-tech MVP, integrating machine learning components.",
+			"cover": "images/projects/lawsyncr.png",
+			"tags": [
+				"full-stack",
+				"RAG",
+				"Flask",
+				"Svelte",
+				"LLM"
+			],
+			"fields": [
+				"Machine Learning",
+				"NLP",
+				"LLMs & RAG",
+				"Back-end",
+				"Front-end"
+			]
+		},
+		{
+			"id": "tradebot",
+			"label": "TradeBot",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/tradebot",
+			"subtitle": "Projects",
+			"excerpt": "A crypto trading bot that scrapes real-time trade data from Binance for market analysis and automates execution of custom trading strategies.",
+			"cover": "images/projects/tradebot.webp",
+			"tags": [
+				"crypto",
+				"Binance",
+				"FastAPI",
+				"AsyncIO"
+			],
+			"fields": [
+				"Data Analytics",
+				"Time Series",
+				"Back-end",
+				"Web3"
+			]
+		},
+		{
+			"id": "printerra",
+			"label": "Printerra",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/printerra",
+			"subtitle": "Projects",
+			"excerpt": "Diploma thesis (BMSTU): a 3D-printer failure detection system based on computer-vision detection.",
+			"cover": "images/projects/3dprinterthesis.png",
+			"tags": [
+				"machine-learning",
+				"OpenCV",
+				"NumPy",
+				"Python"
+			],
+			"fields": [
+				"Machine Learning",
+				"Computer Vision",
+				"IoT & Edge",
+				"3D Printing"
+			]
+		},
+		{
+			"id": "davu-ocr",
+			"label": "DAVU / OCR — document analysis",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/davu-ocr",
+			"subtitle": "Projects",
+			"excerpt": "Document analysis project (TU Wien, June 2024) performing layout analysis of historical documents to improve text extraction accuracy, plus Named Entity Recognition and…",
+			"cover": "images/projects/doc_analysis.webp",
+			"tags": [
+				"OCR",
+				"Tesseract",
+				"SpaCy",
+				"LLaMA-3"
+			],
+			"fields": [
+				"Machine Learning",
+				"Computer Vision",
+				"NLP",
+				"LLMs & RAG"
+			]
+		},
+		{
+			"id": "cryptex",
+			"label": "Cryptex",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/cryptex",
+			"subtitle": "Projects",
+			"excerpt": "An NFT platform where users authenticate via MetaMask and store/manage seed phrases as encoded NFTs. Built the backend interfacing with the Polygon blockchain for…",
+			"cover": "images/projects/cryptex.png",
+			"tags": [
+				"NFT",
+				"MetaMask",
+				"Polygon",
+				"Solidity"
+			],
+			"fields": [
+				"Back-end",
+				"Front-end",
+				"Web3"
+			]
+		},
+		{
+			"id": "susteam",
+			"label": "susteam",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/susteam",
+			"external": "https://susteam.at/",
+			"subtitle": "Projects",
+			"excerpt": "From January 2023 to February 2025, I served as CTO and Data Scientist for an ESG analytics platform for the hospitality industry. I architected and built the product…",
+			"cover": "images/projects/susteam.png",
+			"tags": [
+				"React",
+				"FastAPI",
+				"AWS",
+				"OCR",
+				"RAG",
+				"BERT"
+			],
+			"fields": [
+				"Machine Learning",
+				"Computer Vision",
+				"NLP",
+				"LLMs & RAG",
+				"Back-end",
+				"Front-end"
+			],
+			"featured": true
+		},
+		{
+			"id": "rail4future",
+			"label": "Rail4Future",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/rail4future",
+			"external": "https://www.rail4future.com/en/",
+			"subtitle": "Projects",
+			"excerpt": "I worked as a Research Scientist at TU Wien from February to July 2024, analyzing rail irregularities for the Rail4Future digital-twin platform with industrial partners…",
+			"cover": "images/projects/rail4future.jpg",
+			"tags": [
+				"Python",
+				"LSTM",
+				"TensorFlow",
+				"data-science",
+				"digital-twins",
+				"rail"
+			],
+			"fields": [
+				"Machine Learning",
+				"Data Analytics",
+				"Time Series"
+			],
+			"featured": true
+		},
+		{
+			"id": "glosav",
+			"label": "GLOSAV",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/glosav",
+			"subtitle": "Projects",
+			"excerpt": "As a Machine Learning Analyst at GLOSAV from February to July 2021, I developed a computer-vision pipeline for railway-route and obstacle detection. The work combined…",
+			"cover": "images/projects/glosav.jpg",
+			"tags": [
+				"Python",
+				"machine-learning",
+				"YOLO",
+				"OpenCV",
+				"NumPy",
+				"computer-vision"
+			],
+			"fields": [
+				"Machine Learning",
+				"Computer Vision",
+				"IoT & Edge"
+			],
+			"featured": true
+		},
+		{
+			"id": "aim-hackathon-greenwashing-rag",
+			"label": "AIM Hackathon — greenwashing RAG",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/aim-hackathon-greenwashing-rag",
+			"subtitle": "Projects",
+			"excerpt": "A platform built during the AIM Hackathon (hosted by TIMETOACT Group) that uses Retrieval-Augmented Generation to detect greenwashing in corporate ESG (Environmental,…",
+			"cover": "images/projects/aim-hackathon.jpg",
+			"tags": [
+				"RAG",
+				"LangChain",
+				"Flask",
+				"OpenAI",
+				"ESG"
+			],
+			"fields": [
+				"Machine Learning",
+				"NLP",
+				"LLMs & RAG",
+				"Back-end"
+			]
+		},
+		{
+			"id": "tourism-knowledge-graph",
+			"label": "Tourism knowledge graph",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/tourism-knowledge-graph",
+			"subtitle": "Projects",
+			"excerpt": "Tourism Technology Hackathon 2023 project: a data pipeline mapping data from multiple sources into a knowledge graph on tourism subjects, visualized as an interactive…",
+			"cover": "images/projects/tourism.webp",
+			"tags": [
+				"knowledge-graph",
+				"Selenium",
+				"GeoPandas",
+				"Folium"
+			],
+			"fields": [
+				"Machine Learning",
+				"Data Analytics",
+				"Back-end",
+				"Front-end"
+			]
+		},
+		{
+			"id": "red-cross-lip-reading",
+			"label": "Red Cross lip-reading app",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/red-cross-lip-reading",
+			"subtitle": "Projects",
+			"excerpt": "A lip-reading web app built (via Coding Austria) for the Austrian Red Cross to aid communication in noisy environments — streams smartphone video into the AV-HuBERT…",
+			"cover": "images/projects/redcross.webp",
+			"tags": [
+				"AV-HuBERT",
+				"FastAPI",
+				"Next.js",
+				"computer-vision"
+			],
+			"fields": [
+				"Computer Vision",
+				"LLMs & RAG",
+				"Back-end",
+				"Front-end"
+			]
+		},
+		{
+			"id": "org-tu-wien",
+			"label": "TU Wien",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "University · MSc Data Science · 2022–2026"
+		},
+		{
+			"id": "org-bmstu",
+			"label": "Bauman Moscow State Technical University",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "University · BSc Information Technologies · 2014–2020"
+		},
+		{
+			"id": "org-siemens",
+			"label": "Siemens",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "Partner · Industrial partner on Rail4Future"
+		},
+		{
+			"id": "org-oebb",
+			"label": "ÖBB",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "Partner · Austrian Federal Railways · Rail4Future partner"
+		},
+		{
+			"id": "org-austrian-red-cross",
+			"label": "Austrian Red Cross",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "Partner · Client of the lip-reading app"
+		},
+		{
+			"id": "org-coding-austria",
+			"label": "Coding Austria",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "Company · Delivered the Red Cross lip-reading app"
+		},
+		{
+			"id": "org-timetoact",
+			"label": "AIM Hackathon · TIMETOACT Group",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "Hackathon · 2nd place"
+		},
+		{
+			"id": "org-tourism-technology-hackathon",
+			"label": "Tourism Technology Hackathon",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "Hackathon · 2023 · 2nd place"
+		},
+		{
+			"id": "org-linwood",
+			"label": "Linwood",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "Company · Full-stack developer · 2018–2019"
+		},
+		{
+			"id": "org-krk-group",
+			"label": "KRK Group",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "Company · Frontend developer · 2019"
+		},
+		{
+			"id": "org-arterra-miniature",
+			"label": "Arterra Miniature",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"subtitle": "Company · Engineer & project manager · 2020–2021"
+		},
+		{
+			"id": "org-unity-fight-club",
+			"label": "Unity Fight Club",
+			"kind": "org",
+			"tone": "org",
+			"href": null,
+			"external": "https://unity-fight.club/feed",
+			"subtitle": "Club · Boxing gym · Vienna"
+		},
+		{
+			"id": "topic-react",
+			"label": "React",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=React",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-svelte",
+			"label": "Svelte",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=Svelte",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-fastapi",
+			"label": "FastAPI",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=FastAPI",
+			"subtitle": "Tool / topic · 4 notes"
+		},
+		{
+			"id": "topic-asyncio",
+			"label": "AsyncIO",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=AsyncIO",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-openai",
+			"label": "OpenAI",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=OpenAI",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-flask",
+			"label": "Flask",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=Flask",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-opencv",
+			"label": "OpenCV",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=OpenCV",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-numpy",
+			"label": "NumPy",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=NumPy",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-python",
+			"label": "Python",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=Python",
+			"subtitle": "Tool / topic · 3 notes"
+		},
+		{
+			"id": "topic-ocr",
+			"label": "OCR",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=OCR",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-llama-3",
+			"label": "LLaMA-3",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=LLaMA-3",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-esg",
+			"label": "ESG",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=ESG",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
+			"id": "topic-rail",
+			"label": "rail",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=rail",
+			"subtitle": "Tool / topic · 2 notes"
+		}
+	],
+	"edges": [
+		{
+			"source": "hub-projects",
+			"target": "hub-diy",
+			"kind": "taxonomy"
+		},
+		{
+			"source": "hub-diy",
+			"target": "hub-sport",
+			"kind": "taxonomy"
+		},
+		{
+			"source": "hub-sport",
+			"target": "hub-projects",
+			"kind": "taxonomy"
+		},
+		{
+			"source": "hub-sport",
+			"target": "discipline-hiking",
+			"kind": "section"
+		},
+		{
+			"source": "hub-sport",
+			"target": "discipline-boxing",
+			"kind": "section"
+		},
+		{
+			"source": "hub-sport",
+			"target": "discipline-diving",
+			"kind": "section"
+		},
+		{
+			"source": "hub-sport",
+			"target": "discipline-table-tennis",
+			"kind": "section"
+		},
+		{
+			"source": "domain-making",
+			"target": "hub-diy",
+			"kind": "section"
+		},
+		{
+			"source": "domain-data-science",
+			"target": "hub-projects",
+			"kind": "section"
+		},
+		{
+			"source": "domain-software",
+			"target": "hub-projects",
+			"kind": "section"
+		},
+		{
+			"source": "domain-data-science",
+			"target": "field-ml",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-data-science",
+			"target": "field-cv",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-data-science",
+			"target": "field-nlp",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-data-science",
+			"target": "field-llm",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-data-science",
+			"target": "field-analytics",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-data-science",
+			"target": "field-time-series",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-software",
+			"target": "field-backend",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-software",
+			"target": "field-frontend",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-software",
+			"target": "field-web3",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-software",
+			"target": "field-iot",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-making",
+			"target": "field-3d-printing",
+			"kind": "domain"
+		},
+		{
+			"source": "hub-projects",
+			"target": "web-development-path",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "flexam",
+			"kind": "section"
+		},
+		{
+			"source": "discipline-hiking",
+			"target": "2026-06-14-rax",
+			"kind": "discipline"
+		},
+		{
+			"source": "discipline-boxing",
+			"target": "2026-05-first-sparring",
+			"kind": "discipline"
+		},
+		{
+			"source": "hub-diy",
+			"target": "2026-04-miniature-batch",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "reelmate",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "lawsyncr",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "tradebot",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "printerra",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "davu-ocr",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "cryptex",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "susteam",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "rail4future",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "glosav",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "aim-hackathon-greenwashing-rag",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "tourism-knowledge-graph",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
+			"target": "red-cross-lip-reading",
+			"kind": "section"
+		},
+		{
+			"source": "web-development-path",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "web-development-path",
+			"target": "field-frontend",
+			"kind": "field"
+		},
+		{
+			"source": "flexam",
+			"target": "field-3d-printing",
+			"kind": "field"
+		},
+		{
+			"source": "2026-04-miniature-batch",
+			"target": "field-3d-printing",
+			"kind": "field"
+		},
+		{
+			"source": "reelmate",
+			"target": "field-llm",
+			"kind": "field"
+		},
+		{
+			"source": "reelmate",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "reelmate",
+			"target": "field-frontend",
+			"kind": "field"
+		},
+		{
+			"source": "lawsyncr",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "lawsyncr",
+			"target": "field-nlp",
+			"kind": "field"
+		},
+		{
+			"source": "lawsyncr",
+			"target": "field-llm",
+			"kind": "field"
+		},
+		{
+			"source": "lawsyncr",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "lawsyncr",
+			"target": "field-frontend",
+			"kind": "field"
+		},
+		{
+			"source": "tradebot",
+			"target": "field-analytics",
+			"kind": "field"
+		},
+		{
+			"source": "tradebot",
+			"target": "field-time-series",
+			"kind": "field"
+		},
+		{
+			"source": "tradebot",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "tradebot",
+			"target": "field-web3",
+			"kind": "field"
+		},
+		{
+			"source": "printerra",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "printerra",
+			"target": "field-cv",
+			"kind": "field"
+		},
+		{
+			"source": "printerra",
+			"target": "field-iot",
+			"kind": "field"
+		},
+		{
+			"source": "printerra",
+			"target": "field-3d-printing",
+			"kind": "field"
+		},
+		{
+			"source": "davu-ocr",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "davu-ocr",
+			"target": "field-cv",
+			"kind": "field"
+		},
+		{
+			"source": "davu-ocr",
+			"target": "field-nlp",
+			"kind": "field"
+		},
+		{
+			"source": "davu-ocr",
+			"target": "field-llm",
+			"kind": "field"
+		},
+		{
+			"source": "cryptex",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "cryptex",
+			"target": "field-frontend",
+			"kind": "field"
+		},
+		{
+			"source": "cryptex",
+			"target": "field-web3",
+			"kind": "field"
+		},
+		{
+			"source": "susteam",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "susteam",
+			"target": "field-cv",
+			"kind": "field"
+		},
+		{
+			"source": "susteam",
+			"target": "field-nlp",
+			"kind": "field"
+		},
+		{
+			"source": "susteam",
+			"target": "field-llm",
+			"kind": "field"
+		},
+		{
+			"source": "susteam",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "susteam",
+			"target": "field-frontend",
+			"kind": "field"
+		},
+		{
+			"source": "rail4future",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "rail4future",
+			"target": "field-analytics",
+			"kind": "field"
+		},
+		{
+			"source": "rail4future",
+			"target": "field-time-series",
+			"kind": "field"
+		},
+		{
+			"source": "glosav",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "glosav",
+			"target": "field-cv",
+			"kind": "field"
+		},
+		{
+			"source": "glosav",
+			"target": "field-iot",
+			"kind": "field"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "field-nlp",
+			"kind": "field"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "field-llm",
+			"kind": "field"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "tourism-knowledge-graph",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "tourism-knowledge-graph",
+			"target": "field-analytics",
+			"kind": "field"
+		},
+		{
+			"source": "tourism-knowledge-graph",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "tourism-knowledge-graph",
+			"target": "field-frontend",
+			"kind": "field"
+		},
+		{
+			"source": "red-cross-lip-reading",
+			"target": "field-cv",
+			"kind": "field"
+		},
+		{
+			"source": "red-cross-lip-reading",
+			"target": "field-llm",
+			"kind": "field"
+		},
+		{
+			"source": "red-cross-lip-reading",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
+			"source": "red-cross-lip-reading",
+			"target": "field-frontend",
+			"kind": "field"
+		},
+		{
+			"source": "org-tu-wien",
+			"target": "rail4future",
+			"kind": "org"
+		},
+		{
+			"source": "org-tu-wien",
+			"target": "davu-ocr",
+			"kind": "org"
+		},
+		{
+			"source": "org-bmstu",
+			"target": "printerra",
+			"kind": "org"
+		},
+		{
+			"source": "org-siemens",
+			"target": "rail4future",
+			"kind": "org"
+		},
+		{
+			"source": "org-oebb",
+			"target": "rail4future",
+			"kind": "org"
+		},
+		{
+			"source": "org-austrian-red-cross",
+			"target": "red-cross-lip-reading",
+			"kind": "org"
+		},
+		{
+			"source": "org-coding-austria",
+			"target": "red-cross-lip-reading",
+			"kind": "org"
+		},
+		{
+			"source": "org-timetoact",
+			"target": "aim-hackathon-greenwashing-rag",
+			"kind": "org"
+		},
+		{
+			"source": "org-tourism-technology-hackathon",
+			"target": "tourism-knowledge-graph",
+			"kind": "org"
+		},
+		{
+			"source": "org-linwood",
+			"target": "web-development-path",
+			"kind": "org"
+		},
+		{
+			"source": "org-krk-group",
+			"target": "web-development-path",
+			"kind": "org"
+		},
+		{
+			"source": "org-arterra-miniature",
+			"target": "field-3d-printing",
+			"kind": "org"
+		},
+		{
+			"source": "org-unity-fight-club",
+			"target": "discipline-boxing",
+			"kind": "org"
+		},
+		{
+			"source": "web-development-path",
+			"target": "topic-react",
+			"kind": "topic"
+		},
+		{
+			"source": "susteam",
+			"target": "topic-react",
+			"kind": "topic"
+		},
+		{
+			"source": "web-development-path",
+			"target": "topic-svelte",
+			"kind": "topic"
+		},
+		{
+			"source": "lawsyncr",
+			"target": "topic-svelte",
+			"kind": "topic"
+		},
+		{
+			"source": "reelmate",
+			"target": "topic-fastapi",
+			"kind": "topic"
+		},
+		{
+			"source": "tradebot",
+			"target": "topic-fastapi",
+			"kind": "topic"
+		},
+		{
+			"source": "susteam",
+			"target": "topic-fastapi",
+			"kind": "topic"
+		},
+		{
+			"source": "red-cross-lip-reading",
+			"target": "topic-fastapi",
+			"kind": "topic"
+		},
+		{
+			"source": "reelmate",
+			"target": "topic-asyncio",
+			"kind": "topic"
+		},
+		{
+			"source": "tradebot",
+			"target": "topic-asyncio",
+			"kind": "topic"
+		},
+		{
+			"source": "reelmate",
+			"target": "topic-openai",
+			"kind": "topic"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "topic-openai",
+			"kind": "topic"
+		},
+		{
+			"source": "lawsyncr",
+			"target": "topic-flask",
+			"kind": "topic"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "topic-flask",
+			"kind": "topic"
+		},
+		{
+			"source": "printerra",
+			"target": "topic-opencv",
+			"kind": "topic"
+		},
+		{
+			"source": "glosav",
+			"target": "topic-opencv",
+			"kind": "topic"
+		},
+		{
+			"source": "printerra",
+			"target": "topic-numpy",
+			"kind": "topic"
+		},
+		{
+			"source": "glosav",
+			"target": "topic-numpy",
+			"kind": "topic"
+		},
+		{
+			"source": "printerra",
+			"target": "topic-python",
+			"kind": "topic"
+		},
+		{
+			"source": "rail4future",
+			"target": "topic-python",
+			"kind": "topic"
+		},
+		{
+			"source": "glosav",
+			"target": "topic-python",
+			"kind": "topic"
+		},
+		{
+			"source": "davu-ocr",
+			"target": "topic-ocr",
+			"kind": "topic"
+		},
+		{
+			"source": "susteam",
+			"target": "topic-ocr",
+			"kind": "topic"
+		},
+		{
+			"source": "davu-ocr",
+			"target": "topic-llama-3",
+			"kind": "topic"
+		},
+		{
+			"source": "susteam",
+			"target": "topic-llama-3",
+			"kind": "topic"
+		},
+		{
+			"source": "susteam",
+			"target": "topic-esg",
+			"kind": "topic"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "topic-esg",
+			"kind": "topic"
+		},
+		{
+			"source": "rail4future",
+			"target": "topic-rail",
+			"kind": "topic"
+		},
+		{
+			"source": "glosav",
+			"target": "topic-rail",
+			"kind": "topic"
+		}
+	]
 }

@@ -16,6 +16,8 @@
  * @property {string[]} links
  * @property {string[]} [tech]
  * @property {string} [externalLink]
+ * @property {boolean} [featured]
+ * @property {number} [featuredOrder]
  * @property {string} [printer]
  * @property {string} [material]
  * @property {number} [distance_km]
