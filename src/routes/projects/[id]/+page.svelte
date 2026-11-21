@@ -8,4 +8,4 @@
 	<meta name="description" content={data.item.excerpt} />
 </svelte:head>
 
-<Article item={data.item} parentLabel="Projects" parentHref="/projects" />
+<Article item={data.item} parentLabel="Projects" parentHref="/projects" context={data.context} />

@@ -13,10 +13,19 @@
 	);
 </script>
 
-<svelte:head
-	><title>{data.item.title} — {meta.label}</title><meta
-		name="description"
-		content={data.item.excerpt}
-	/></svelte:head
->
-<Article item={data.item} parentLabel={meta.label} parentHref={meta.path} {extraMeta} />
+<svelte:head>
+	<title>{data.item.title} — {meta.label}</title>
+	<meta name="description" content={data.item.excerpt} />
+</svelte:head>
+
+<Article
+	item={data.item}
+	parentLabel={meta.label}
+	parentHref={meta.path}
+	trail={[
+		{ label: 'Sport', href: '/sport' },
+		{ label: meta.label, href: meta.path }
+	]}
+	{extraMeta}
+	context={data.context}
+/>

@@ -12,3 +12,21 @@ describe('itemPath', () => {
 		);
 	});
 });
+
+describe('tagLabel', () => {
+	it('turns lower-case kebab tags into words and keeps proper names', async () => {
+		const { tagLabel } = await import('./sections.js');
+		expect(tagLabel('digital-twins')).toBe('digital twins');
+		expect(tagLabel('LLaMA-3')).toBe('LLaMA-3');
+		expect(tagLabel('Next.js')).toBe('Next.js');
+		expect(tagLabel('rail')).toBe('rail');
+	});
+});
+
+describe('formatNoteDate', () => {
+	it('formats ISO dates without timezone drift', async () => {
+		const { formatNoteDate } = await import('./sections.js');
+		expect(formatNoteDate('2026-06-14')).toBe('14 Jun 2026');
+		expect(formatNoteDate('')).toBe('');
+	});
+});

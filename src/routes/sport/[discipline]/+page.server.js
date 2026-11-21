@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { loadContent } from '$lib/content/load.js';
 import { DISCIPLINES } from '$lib/content/types.js';
+import { cardItem } from '$lib/components/view-data.js';
 
 export const prerender = true;
 export function entries() {
@@ -12,8 +13,8 @@ export async function load({ params }) {
 		error(404, 'Sport discipline not found');
 	}
 	const discipline = /** @type {import('$lib/content/types.js').Discipline} */ (params.discipline);
-	const items = (await loadContent()).filter(
-		(item) => item.section === 'sport' && item.discipline === discipline
-	);
+	const items = (await loadContent())
+		.filter((item) => item.section === 'sport' && item.discipline === discipline)
+		.map(cardItem);
 	return { discipline, items };
 }

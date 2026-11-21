@@ -1,5 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { loadContent } from '$lib/content/load.js';
+import { articleContext } from '$lib/components/view-data.js';
+import graph from '$lib/graphs/graph.json';
 
 export const prerender = true;
 export async function entries() {
@@ -15,5 +17,8 @@ export async function load({ params }) {
 			candidate.slug === params.id
 	);
 	if (!item) error(404, 'Sport note not found');
-	return { item };
+	return {
+		item,
+		context: articleContext(/** @type {import('$lib/graph/build.js').GraphData} */ (graph), item)
+	};
 }

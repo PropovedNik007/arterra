@@ -166,6 +166,33 @@ textarea:focus-visible {
 	border: 0;
 }
 
+/* Heading row above a group of cards: title left, short context right. */
+.section-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-2) var(--space-5);
+	margin-bottom: var(--space-5);
+	padding-bottom: var(--space-3);
+	border-bottom: 1px solid var(--color-border);
+}
+
+.section-head h2 {
+	margin: 0;
+	font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.section-head p {
+	margin: 0;
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+}
+
+summary:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 4px;
+}
+
 @media (max-width: 860px) {
 	.grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));

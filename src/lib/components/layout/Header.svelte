@@ -1,73 +1,106 @@
 <script>
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { base } from '$app/paths';
 	import GithubIcon from '$lib/icons/GithubIcon.svelte';
 	import LinkedinIcon from '$lib/icons/LinkedinIcon.svelte';
 	import EnvelopeIcon from '$lib/icons/EnvelopeIcon.svelte';
 	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
 
+	// The brand link is the home link (and every breadcrumb starts with Home),
+	// so the row stays focused on destinations. Retro lives in the footer.
 	const navItems = [
-		{ href: '/', label: 'Home' },
 		{ href: '/projects', label: 'Projects' },
 		{ href: '/diy', label: 'DIY' },
 		{ href: '/sport', label: 'Sport' },
-		{ href: '/about', label: 'About' },
 		{ href: '/graph', label: 'Graph' },
-		{ href: '/retro', label: 'Retro' }
+		{ href: '/about', label: 'About' },
+		{ href: '/contact', label: 'Contact' }
 	];
 
 	let scrollY = $state(0);
-	let pathname = $derived($page.url.pathname.replace(base, '') || '/');
+	// Use the route id, not url.pathname: with relative paths `base` is "." or ".."
+	// during prerender, so stripping it from the pathname is unreliable.
+	let pathname = $derived(page.route.id ?? (page.url.pathname.replace(base, '') || '/'));
 	let isHome = $derived(pathname === '/');
 	let overHero = $derived(isHome && scrollY < 48);
 
 	/** @param {string} href */
 	function isActive(href) {
-		const normalized = href === '/' ? href : href.replace(/\/$/, '');
-		return normalized === '/'
-			? pathname === '/'
-			: pathname === normalized || pathname.startsWith(`${normalized}/`);
+		const normalized = href.replace(/\/$/, '');
+		return pathname === normalized || pathname.startsWith(`${normalized}/`);
 	}
 </script>
 
 <svelte:window bind:scrollY />
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class:over-hero={overHero} class:scrolled={scrollY >= 48 || !isHome} class="site-header">
-	<nav class="shell" aria-label="Primary navigation">
-		<a class="brand" href="{base}/">Artur Sogomonyan</a>
+	<div class="shell bar">
+		<a class="brand" href="{base}/" aria-current={isHome ? 'page' : undefined}>Artur Sogomonyan</a>
 
-		<ul class="nav-links">
-			{#each navItems as item (item.href)}
-				<li aria-current={isActive(item.href) ? 'page' : undefined}>
-					<a href={`${base}${item.href}`}>{item.label}</a>
-				</li>
-			{/each}
-		</ul>
+		<nav class="nav" aria-label="Primary">
+			<ul class="nav-links">
+				{#each navItems as item (item.href)}
+					<li>
+						<a href={`${base}${item.href}`} aria-current={isActive(item.href) ? 'page' : undefined}
+							>{item.label}</a
+						>
+					</li>
+				{/each}
+			</ul>
+		</nav>
 
-		<div class="header-actions" aria-label="Social links">
-			<a href="mailto:arthur.sogomonyan@gmail.com" aria-label="Email"
+		<div class="header-actions">
+			<a href="mailto:arthur.sogomonyan@gmail.com" aria-label="Email" title="Email"
 				><EnvelopeIcon class="icon" /></a
 			>
-			<a href="https://t.me/arterrai" target="_blank" rel="noreferrer" aria-label="Telegram"
-				><TelegramIcon class="icon" /></a
+			<a
+				href="https://t.me/arterrai"
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="Telegram"
+				title="Telegram"><TelegramIcon class="icon" /></a
 			>
 			<a
 				href="https://linkedin.com/in/artur-sogomonyan"
 				target="_blank"
-				rel="noreferrer"
-				aria-label="LinkedIn"><LinkedinIcon class="icon" /></a
+				rel="noopener noreferrer"
+				aria-label="LinkedIn"
+				title="LinkedIn"><LinkedinIcon class="icon" /></a
 			>
 			<a
 				href="https://github.com/PropovedNik007"
 				target="_blank"
-				rel="noreferrer"
-				aria-label="GitHub"><GithubIcon class="icon" /></a
+				rel="noopener noreferrer"
+				aria-label="GitHub"
+				title="GitHub"><GithubIcon class="icon" /></a
 			>
 		</div>
-	</nav>
+	</div>
 </header>
 
 <style>
+	.skip-link {
+		position: fixed;
+		top: var(--space-3);
+		left: var(--space-3);
+		z-index: 200;
+		padding: 0.6rem 1rem;
+		border-radius: var(--radius-full);
+		background: var(--accent);
+		color: var(--accent-contrast);
+		font-weight: 700;
+		transform: translateY(-200%);
+		transition: transform 160ms ease;
+	}
+	.skip-link:focus,
+	.skip-link:focus-visible {
+		transform: translateY(0);
+		text-decoration: none;
+		outline: 2px solid var(--color-heading);
+		outline-offset: 2px;
+	}
 	.site-header {
 		position: sticky;
 		top: 0;
@@ -84,7 +117,7 @@
 		background: var(--header-scrim);
 		backdrop-filter: blur(16px) saturate(145%);
 	}
-	nav {
+	.bar {
 		display: flex;
 		min-height: 4.5rem;
 		align-items: center;
@@ -103,17 +136,20 @@
 	.nav-links a:hover {
 		text-decoration: none;
 	}
-	.over-hero .brand {
+	.over-hero .brand:not(:focus-visible) {
 		opacity: 0;
 		transform: translateY(-5px);
 		pointer-events: none;
 	}
+	.nav {
+		min-width: 0;
+		margin-left: auto;
+	}
 	.nav-links {
 		display: flex;
 		align-items: center;
-		justify-content: center;
 		gap: clamp(0.9rem, 2vw, 1.6rem);
-		margin: 0 0 0 auto;
+		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
@@ -125,6 +161,10 @@
 		font-size: 0.82rem;
 		font-weight: 650;
 		letter-spacing: 0.045em;
+		white-space: nowrap;
+	}
+	.nav-links a:focus-visible {
+		outline-offset: -2px;
 	}
 	.over-hero .nav-links a,
 	.over-hero .header-actions a {
@@ -141,21 +181,24 @@
 		transform: scaleX(0);
 		transition: transform 180ms ease;
 	}
-	.nav-links li[aria-current='page'] a,
-	.nav-links a:hover {
+	.nav-links a[aria-current='page'],
+	.nav-links a:hover,
+	.over-hero .nav-links a:hover {
 		color: var(--color-heading);
 	}
-	.nav-links li[aria-current='page'] a::after,
+	.nav-links a[aria-current='page']::after,
 	.nav-links a:hover::after {
 		transform: scaleX(1);
 	}
 	.header-actions {
 		display: flex;
 		align-items: center;
-		gap: var(--space-3);
+		gap: var(--space-1);
 	}
 	.header-actions a {
 		display: inline-flex;
+		padding: 0.45rem;
+		border-radius: var(--radius-full);
 		color: var(--color-text-muted);
 	}
 	.header-actions a:hover {
@@ -166,10 +209,10 @@
 		height: 1rem;
 	}
 	@media (max-width: 1040px) {
-		nav {
+		.bar {
 			flex-wrap: wrap;
 			gap: 0;
-			padding-top: var(--space-3);
+			padding-top: var(--space-2);
 		}
 		.brand {
 			order: 1;
@@ -178,15 +221,24 @@
 			order: 2;
 			margin-left: auto;
 		}
-		.nav-links {
+		.nav {
 			order: 3;
 			width: 100%;
-			overflow-x: auto;
-			justify-content: flex-start;
 			margin: 0;
 		}
+		/* Horizontal scroll row; the fade on the right hints at more items. */
+		.nav-links {
+			overflow-x: auto;
+			padding-right: var(--space-6);
+			scrollbar-width: none;
+			-webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 2.5rem), transparent);
+			mask-image: linear-gradient(90deg, #000 calc(100% - 2.5rem), transparent);
+		}
+		.nav-links::-webkit-scrollbar {
+			display: none;
+		}
 		.nav-links a {
-			padding: 0.75rem 0 1rem;
+			padding: 0.75rem 0 0.9rem;
 		}
 	}
 	@media (max-width: 520px) {
@@ -195,6 +247,13 @@
 		}
 		.brand {
 			font-size: 1rem;
+		}
+		.nav-links {
+			gap: 1.05rem;
+		}
+		.nav-links a {
+			font-size: 0.8rem;
+			letter-spacing: 0.02em;
 		}
 	}
 </style>
