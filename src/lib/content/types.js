@@ -1,3 +1,10 @@
+/**
+ * @typedef {object} GalleryImage
+ * @property {string} src Site-relative image path (no leading slash, no base).
+ * @property {string} alt
+ * @property {string} [caption]
+ */
+
 /** @typedef {'projects' | 'diy' | 'sport'} Section */
 /** @typedef {'hiking' | 'boxing' | 'diving' | 'table-tennis'} Discipline */
 
@@ -11,6 +18,7 @@
  * @property {string} [updated]
  * @property {string[]} tags
  * @property {string} [cover]
+ * @property {GalleryImage[]} [gallery] Extra images shown under the article.
  * @property {string} excerpt
  * @property {string} html
  * @property {string[]} links

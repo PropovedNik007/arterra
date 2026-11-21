@@ -61,6 +61,12 @@ export const FIELDS = [
 		description: 'Detection, tracking, OCR, and video understanding.'
 	},
 	{
+		id: '3d-geometry',
+		label: '3D Segmentation & Geometry',
+		domain: 'data-science',
+		description: 'Mesh segmentation, part analysis, and computational geometry.'
+	},
+	{
 		id: 'nlp',
 		label: 'NLP',
 		domain: 'data-science',
@@ -113,6 +119,18 @@ export const FIELDS = [
 		label: '3D Printing',
 		domain: 'making',
 		description: 'Resin and multi-axis printing, from software to miniatures.'
+	},
+	{
+		id: 'toolpaths',
+		label: 'Toolpaths & G-code',
+		domain: 'making',
+		description: 'Slicing, toolpath generation, and G-code for additive manufacturing.'
+	},
+	{
+		id: 'robotics',
+		label: 'Robotics',
+		domain: 'making',
+		description: 'Robot arms and multi-axis motion for fabrication cells.'
 	}
 ];
 
@@ -170,7 +188,17 @@ export const TAG_FIELDS = {
 	binance: ['web3'],
 	iot: ['iot'],
 	'3d-printing': ['3d-printing'],
-	'multi-axis': ['3d-printing'],
+	'multi-axis': ['3d-printing', 'robotics'],
+	'additive-manufacturing': ['3d-printing'],
+	'3d-segmentation': ['3d-geometry', 'cv'],
+	'mesh-processing': ['3d-geometry'],
+	'computational-geometry': ['3d-geometry'],
+	trimesh: ['3d-geometry'],
+	slicing: ['toolpaths', '3d-printing'],
+	'toolpath-generation': ['toolpaths'],
+	'g-code': ['toolpaths'],
+	robotics: ['robotics'],
+	'robot-arms': ['robotics'],
 	resin: ['3d-printing']
 };
 
@@ -207,7 +235,16 @@ export const ITEM_FIELDS = {
 	'aim-hackathon-greenwashing-rag': ['ml', 'llm', 'nlp'],
 	cryptex: ['web3', 'frontend', 'backend'],
 	'davu-ocr': ['cv', 'ml', 'llm', 'nlp'],
-	flexam: ['3d-printing', 'cv', 'ml', 'backend', 'frontend'],
+	flexam: [
+		'3d-printing',
+		'3d-geometry',
+		'toolpaths',
+		'robotics',
+		'cv',
+		'ml',
+		'backend',
+		'frontend'
+	],
 	glosav: ['iot', 'cv', 'ml'],
 	lawsyncr: ['ml', 'llm', 'nlp'],
 	printerra: ['iot', 'cv', 'ml', '3d-printing'],

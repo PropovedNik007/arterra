@@ -74,6 +74,31 @@ function linksSectionUrl(body) {
 }
 
 /**
+ * Validated `gallery` frontmatter: a list of `{ src, alt, caption? }` with
+ * site-relative image paths. Malformed entries are dropped with a warning.
+ * @param {unknown} value
+ * @param {string} slug
+ * @returns {import('./types.js').GalleryImage[] | undefined}
+ */
+function parseGallery(value, slug) {
+	if (!Array.isArray(value)) return undefined;
+	/** @type {import('./types.js').GalleryImage[]} */
+	const images = [];
+	for (const entry of value) {
+		const src = typeof entry?.src === 'string' ? entry.src.replace(/^\/+/, '') : '';
+		const alt = typeof entry?.alt === 'string' ? entry.alt.trim() : '';
+		if (!src || !alt || /^[a-z]+:/i.test(src)) {
+			console.warn(`[content] "${slug}": skipping gallery entry without a local src and alt text`);
+			continue;
+		}
+		const caption =
+			typeof entry.caption === 'string' && entry.caption.trim() ? entry.caption.trim() : undefined;
+		images.push({ src, alt, caption });
+	}
+	return images.length ? images : undefined;
+}
+
+/**
  * Converts a Date or string value to a YYYY-MM-DD string.
  * Returns an empty string if value is undefined, null, or neither a string nor a Date.
  * @param {string | Date | undefined} dateValue
@@ -157,6 +182,7 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 			updated: dateToString(data.updated) || undefined,
 			tags: Array.isArray(data.tags) ? data.tags : [],
 			cover: typeof data.cover === 'string' ? data.cover : undefined,
+			gallery: parseGallery(data.gallery, slug),
 			excerpt: typeof data.description === 'string' ? data.description : firstParagraph(body),
 			html: await renderMarkdown(articleBody(body)),
 			links,

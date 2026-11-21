@@ -138,6 +138,20 @@
 		</aside>
 	</div>
 
+	{#if item.gallery?.length}
+		<section class="gallery" aria-labelledby="gallery-title">
+			<h2 id="gallery-title" class="aside-label">Gallery</h2>
+			<div class="gallery-grid">
+				{#each item.gallery as image (image.src)}
+					<figure>
+						<img src={`${base}/${image.src}`} alt={image.alt} loading="lazy" decoding="async" />
+						{#if image.caption}<figcaption>{image.caption}</figcaption>{/if}
+					</figure>
+				{/each}
+			</div>
+		</section>
+	{/if}
+
 	{#if context.related.length}
 		<section class="related" aria-labelledby="related-heading">
 			<div class="section-head">
@@ -213,6 +227,33 @@
 		color: var(--color-text-muted);
 		font-family: var(--font-mono);
 		font-size: var(--text-sm);
+	}
+	.gallery {
+		margin-top: clamp(3rem, 7vw, 6rem);
+	}
+	.gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+		gap: var(--space-5);
+		margin-top: var(--space-4);
+	}
+	.gallery figure {
+		margin: 0;
+	}
+	.gallery img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 10;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background: var(--color-bg-raised);
+		object-fit: cover;
+	}
+	.gallery figcaption {
+		margin-top: var(--space-2);
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+		line-height: 1.5;
 	}
 	.hero-image {
 		display: block;

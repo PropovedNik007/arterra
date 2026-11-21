@@ -73,7 +73,7 @@
 			"kind": "domain",
 			"tone": "field",
 			"href": null,
-			"subtitle": "Domain · 6 fields",
+			"subtitle": "Domain · 7 fields",
 			"excerpt": "Modelling, perception, language, and analysis."
 		},
 		{
@@ -93,6 +93,15 @@
 			"href": "/projects?field=cv",
 			"subtitle": "Field · 6 notes",
 			"excerpt": "Detection, tracking, OCR, and video understanding."
+		},
+		{
+			"id": "field-3d-geometry",
+			"label": "3D Segmentation & Geometry",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=3d-geometry",
+			"subtitle": "Field · 1 note",
+			"excerpt": "Mesh segmentation, part analysis, and computational geometry."
 		},
 		{
 			"id": "field-nlp",
@@ -181,7 +190,7 @@
 			"kind": "domain",
 			"tone": "field",
 			"href": null,
-			"subtitle": "Domain · 1 field",
+			"subtitle": "Domain · 3 fields",
 			"excerpt": "Physical prototyping, printers, and fabrication."
 		},
 		{
@@ -192,6 +201,24 @@
 			"href": "/projects?field=3d-printing",
 			"subtitle": "Field · 3 notes",
 			"excerpt": "Resin and multi-axis printing, from software to miniatures."
+		},
+		{
+			"id": "field-toolpaths",
+			"label": "Toolpaths & G-code",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=toolpaths",
+			"subtitle": "Field · 1 note",
+			"excerpt": "Slicing, toolpath generation, and G-code for additive manufacturing."
+		},
+		{
+			"id": "field-robotics",
+			"label": "Robotics",
+			"kind": "field",
+			"tone": "field",
+			"href": "/projects?field=robotics",
+			"subtitle": "Field · 1 note",
+			"excerpt": "Robot arms and multi-axis motion for fabrication cells."
 		},
 		{
 			"id": "web-development-path",
@@ -225,22 +252,25 @@
 			"href": "/projects/flexam",
 			"external": "https://flexam.tech",
 			"subtitle": "Projects",
-			"excerpt": "At Flexam, a Vienna company building software for industrial additive manufacturing, I develop the path from a 3D model to a multi-axis, non-planar toolpath: segmenting…",
-			"cover": "images/projects/flexam-toolpath-editor.webp",
+			"excerpt": "At Flexam, a Vienna company building software for industrial additive manufacturing, I develop the path from a 3D model to a robot-ready, multi-axis toolpath: segmenting…",
+			"cover": "images/projects/flexam-slicer.webp",
 			"tags": [
 				"3d-printing",
+				"additive-manufacturing",
 				"multi-axis",
-				"3d-segmentation",
-				"toolpath-generation",
-				"computer-vision",
-				"full-stack"
+				"robotics",
+				"robot-arms",
+				"3d-segmentation"
 			],
 			"fields": [
 				"Machine Learning",
 				"Computer Vision",
+				"3D Segmentation & Geometry",
 				"Back-end",
 				"Front-end",
-				"3D Printing"
+				"3D Printing",
+				"Toolpaths & G-code",
+				"Robotics"
 			],
 			"featured": true
 		},
@@ -837,6 +867,11 @@
 		},
 		{
 			"source": "domain-data-science",
+			"target": "field-3d-geometry",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-data-science",
 			"target": "field-nlp",
 			"kind": "domain"
 		},
@@ -878,6 +913,16 @@
 		{
 			"source": "domain-making",
 			"target": "field-3d-printing",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-making",
+			"target": "field-toolpaths",
+			"kind": "domain"
+		},
+		{
+			"source": "domain-making",
+			"target": "field-robotics",
 			"kind": "domain"
 		},
 		{
@@ -987,6 +1032,11 @@
 		},
 		{
 			"source": "flexam",
+			"target": "field-3d-geometry",
+			"kind": "field"
+		},
+		{
+			"source": "flexam",
 			"target": "field-backend",
 			"kind": "field"
 		},
@@ -998,6 +1048,16 @@
 		{
 			"source": "flexam",
 			"target": "field-3d-printing",
+			"kind": "field"
+		},
+		{
+			"source": "flexam",
+			"target": "field-toolpaths",
+			"kind": "field"
+		},
+		{
+			"source": "flexam",
+			"target": "field-robotics",
 			"kind": "field"
 		},
 		{

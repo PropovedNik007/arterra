@@ -144,7 +144,7 @@ export const cv = {
 			period: 'Current',
 			current: true,
 			summary:
-				'Software for industrial multi-axis additive manufacturing: 3D segmentation, toolpath generation, and the full-stack slicer product in Go, Rust, Python, and TypeScript.',
+				'Software for industrial multi-axis additive manufacturing: 3D segmentation, slicing, toolpath and G-code generation for robot arms and multi-axis machines, and the full-stack slicer product in Go, Rust, Python, and TypeScript.',
 			project: 'flexam'
 		},
 		{
@@ -222,6 +222,16 @@ export const cv = {
 			'three.js',
 			'FastAPI',
 			'Docker'
+		],
+		'3D & manufacturing': [
+			'3D segmentation',
+			'Mesh processing',
+			'Slicing',
+			'Toolpath generation',
+			'G-code',
+			'Robot arms',
+			'Multi-axis printing',
+			'trimesh'
 		],
 		'Data & infrastructure': [
 			'PostgreSQL',
