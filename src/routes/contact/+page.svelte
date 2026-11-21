@@ -82,7 +82,7 @@
 					target={contact.href.startsWith('http') ? '_blank' : undefined}
 					rel={contact.href.startsWith('http') ? 'noreferrer' : undefined}
 				>
-					<svelte:component this={contact.icon} class="contact-icon" />
+					<contact.icon class="contact-icon" />
 					<div><span>{contact.label}</span><strong>{contact.value}</strong></div>
 					<b aria-hidden="true">↗</b>
 				</a>

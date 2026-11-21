@@ -4,6 +4,7 @@
 	import { base } from '$app/paths';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
+	import { cv } from '$lib/content/cv.js';
 
 	let { children } = $props();
 	let isRetro = $derived(($page.url.pathname.replace(base, '') || '/') === '/retro');
@@ -11,11 +12,11 @@
 	const personSchema = {
 		'@context': 'https://schema.org',
 		'@type': 'Person',
-		name: 'Artur Sogomonyan',
-		jobTitle: 'Software & Machine Learning Engineer',
+		name: cv.name,
+		jobTitle: cv.headline,
 		address: {
 			'@type': 'PostalAddress',
-			addressLocality: 'Vienna',
+			addressLocality: cv.location,
 			addressCountry: 'AT'
 		},
 		url: 'https://propovednik007.github.io/arterra/',
@@ -46,7 +47,8 @@
 
 <div class="app">
 	{#if !isRetro}<Header />{/if}
-	<main>
+	<!-- Skip-link target: the header's first focusable link points at #main. -->
+	<main id="main" tabindex="-1">
 		{@render children()}
 	</main>
 	{#if !isRetro}<Footer />{/if}
@@ -60,5 +62,8 @@
 	}
 	main {
 		flex: 1;
+	}
+	main:focus {
+		outline: none;
 	}
 </style>

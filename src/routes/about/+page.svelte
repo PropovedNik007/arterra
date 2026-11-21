@@ -2,71 +2,31 @@
 	import { base } from '$app/paths';
 	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
 	import PageIntro from '$lib/components/ui/PageIntro.svelte';
+	import { cv, cvProjectPath } from '$lib/content/cv.js';
 
-	const experience = [
-		{
-			period: '2024',
-			role: 'Data Scientist · Rail4Future',
-			place: 'TU Wien',
-			text: 'Analyzed railway irregularities, strengthened LSTM experiments, and worked with Siemens and ÖBB collaborators.'
-		},
-		{
-			period: '2023–2025',
-			role: 'CTO & Data Scientist',
-			place: 'susteam',
-			text: 'Architected an ESG reporting product across OCR, retrieval, applied NLP, APIs, and product delivery.'
-		},
-		{
-			period: '2021',
-			role: 'Machine Learning Analyst',
-			place: 'GLOSAV',
-			text: 'Built real-time computer-vision methods for railway route and obstacle detection.'
-		},
-		{
-			period: '2020–2021',
-			role: 'Engineer & Project Manager',
-			place: 'Arterra Miniature',
-			text: 'Combined 3D modelling, prototyping, software, and end-to-end project delivery.'
-		},
-		{
-			period: '2017–2020',
-			role: 'Full-stack & Frontend Engineering',
-			place: 'Product teams and freelance',
-			text: 'Built and extended web products, commerce systems, and educational interfaces.'
-		}
-	];
-
-	const skills = {
-		'Applied ML': ['PyTorch', 'TensorFlow', 'scikit-learn', 'OpenCV', 'YOLO', 'NLP', 'RAG'],
-		'Product engineering': ['Python', 'FastAPI', 'Svelte', 'React', 'JavaScript', 'Docker'],
-		'Data & infrastructure': ['PostgreSQL', 'MongoDB', 'Redis', 'AWS', 'Linux', 'CI/CD']
-	};
+	const msc = cv.education[0];
 </script>
 
 <svelte:head
-	><title>About — Artur Sogomonyan</title><meta
+	><title>About — {cv.name}</title><meta
 		name="description"
-		content="About Artur Sogomonyan, a software and machine-learning engineer in Vienna."
+		content="About {cv.name}, {cv.headline} in {cv.location}: experience, education, toolkit, and languages."
 	/></svelte:head
 >
 
 <div class="shell page">
 	<Breadcrumb items={[{ label: 'About' }]} />
 	<PageIntro
-		eyebrow="Engineer, researcher, maker"
+		eyebrow="{cv.headline} · {cv.location}"
 		title="About"
 		description="I work where models meet products: shaping the data, testing the method, building the service, and making the result understandable to the person using it."
 	>
-		<a
-			class="button primary"
-			href="https://github.com/PropovedNik007/cv/raw/main/Artur_Sogomonyan_cv_long.pdf"
-			>Download CV ↗</a
-		>
+		<a class="button primary" href="{base}/projects">See projects</a>
 		<a class="button" href="{base}/contact">Get in touch</a>
 	</PageIntro>
 
 	<section class="profile-grid">
-		<div class="portrait"><img src="{base}/images/profile.png" alt="Artur Sogomonyan" /></div>
+		<div class="portrait"><img src="{base}/images/profile.png" alt={cv.name} /></div>
 		<div class="manifesto">
 			<p class="eyebrow">How I work</p>
 			<h2>Technical depth without losing the shape of the problem.</h2>
@@ -79,40 +39,58 @@
 				hands-on making. That mix makes me comfortable moving between research questions, system
 				boundaries, and user-facing details.
 			</p>
-			<div class="facts">
-				<div><strong>Vienna</strong><span>Based in Austria</span></div>
-				<div><strong>MSc</strong><span>Data Science · TU Wien</span></div>
-				<div><strong>4</strong><span>Languages spoken</span></div>
-			</div>
+			<dl class="facts">
+				<div>
+					<dt>{cv.location}</dt>
+					<dd>Based in Austria</dd>
+				</div>
+				<div>
+					<dt>MSc</dt>
+					<dd>Data Science · {msc.schoolShort} · {msc.period}</dd>
+				</div>
+				<div>
+					<dt>{cv.languages.length}</dt>
+					<dd>Languages spoken</dd>
+				</div>
+			</dl>
 		</div>
 	</section>
 
-	<section class="resume-section">
+	<section class="resume-section" aria-labelledby="about-experience">
 		<div class="section-label">
 			<p class="eyebrow">Experience</p>
-			<h2>A practical route through software and AI.</h2>
+			<h2 id="about-experience">A practical route through software and AI.</h2>
 		</div>
-		<div class="timeline">
-			{#each experience as entry (entry.role)}
-				<article>
-					<time>{entry.period}</time>
-					<div>
-						<h3>{entry.role}</h3>
-						<p class="place">{entry.place}</p>
-						<p>{entry.text}</p>
+		<ol class="timeline">
+			{#each cv.experience as entry (entry.id)}
+				<li class:current={entry.current}>
+					<div class="when">
+						{#if entry.current}<span class="badge">Current</span>{:else}<span class="period"
+								>{entry.period}</span
+							>{/if}
 					</div>
-				</article>
+					<div>
+						<h3>{entry.role ?? entry.org}</h3>
+						{#if entry.role}<p class="place">{entry.org}</p>{/if}
+						<p>{entry.summary}</p>
+						{#if entry.project}
+							<a class="entry-link" href="{base}{cvProjectPath(entry.project)}"
+								>View project <span aria-hidden="true">→</span></a
+							>
+						{/if}
+					</div>
+				</li>
 			{/each}
-		</div>
+		</ol>
 	</section>
 
-	<section class="resume-section skills-section">
+	<section class="resume-section skills-section" aria-labelledby="about-toolkit">
 		<div class="section-label">
 			<p class="eyebrow">Toolkit</p>
-			<h2>Built around problems, not buzzwords.</h2>
+			<h2 id="about-toolkit">Built around problems, not buzzwords.</h2>
 		</div>
 		<div class="skill-groups">
-			{#each Object.entries(skills) as [group, values] (group)}
+			{#each Object.entries(cv.skills) as [group, values] (group)}
 				<div>
 					<h3>{group}</h3>
 					<ul>
@@ -120,28 +98,53 @@
 					</ul>
 				</div>
 			{/each}
+			<div>
+				<h3>Languages</h3>
+				<ul class="languages">
+					{#each cv.languages as language (language.name)}
+						<li>{language.name} <span>{language.level}</span></li>
+					{/each}
+				</ul>
+			</div>
 		</div>
 	</section>
 
-	<section class="education">
+	<section class="education" aria-labelledby="about-education">
 		<p class="eyebrow">Education &amp; recognition</p>
+		<h2 id="about-education" class="visually-hidden">Education and recognition</h2>
 		<div class="education-grid">
-			<div><strong>MSc Data Science</strong><span>TU Wien · 2022–2025</span></div>
-			<div>
-				<strong>BSc Information Technologies</strong><span
-					>Bauman Moscow State Technical University · 2014–2020</span
-				>
-			</div>
-			<div>
-				<strong>Two 2nd-place finishes</strong><span
-					>AIM Hackathon &amp; Tourism Technology Hackathon</span
-				>
-			</div>
-			<div>
-				<strong>IEEE publication · 2024</strong><span
-					>Surrogate modelling for railway digital twins</span
-				>
-			</div>
+			{#each cv.education as entry (entry.id)}
+				<div>
+					<strong>{entry.degree}</strong><span>{entry.school} · {entry.period}</span>
+					{#if entry.note}<p>{entry.note}</p>{/if}
+					{#if entry.project}
+						<a class="entry-link" href="{base}{cvProjectPath(entry.project)}"
+							>View the thesis project <span aria-hidden="true">→</span></a
+						>
+					{/if}
+				</div>
+			{/each}
+		</div>
+
+		<h3 class="subhead">Awards &amp; publication</h3>
+		<div class="education-grid recognition">
+			{#each cv.awards as award (award.id)}
+				<div>
+					<strong>{award.title}</strong><span>{award.detail}</span>
+					{#if award.project}
+						<a class="entry-link" href="{base}{cvProjectPath(award.project)}"
+							>View project <span aria-hidden="true">→</span></a
+						>
+					{/if}
+				</div>
+			{/each}
+			{#each cv.publications as publication (publication.id)}
+				<div>
+					<strong>{publication.venue} publication · {publication.year}</strong><span
+						>{publication.title}</span
+					>
+				</div>
+			{/each}
 		</div>
 	</section>
 </div>
@@ -182,6 +185,7 @@
 		font-size: 1.08rem;
 	}
 	.facts {
+		margin-bottom: 0;
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: var(--space-4);
@@ -189,15 +193,16 @@
 		padding-top: var(--space-5);
 		border-top: 1px solid var(--color-border);
 	}
-	.facts strong,
-	.facts span {
+	.facts dt,
+	.facts dd {
 		display: block;
+		margin: 0;
 	}
-	.facts strong {
+	.facts dt {
 		color: var(--color-heading);
 		font-size: var(--text-lg);
 	}
-	.facts span {
+	.facts dd {
 		margin-top: 0.2rem;
 		color: var(--color-text-muted);
 		font-size: var(--text-xs);
@@ -213,19 +218,54 @@
 		max-width: 11ch;
 	}
 	.timeline {
+		margin: 0;
+		padding: 0;
+		list-style: none;
 		border-top: 1px solid var(--color-border);
 	}
-	.timeline article {
+	.timeline li {
 		display: grid;
-		grid-template-columns: 7rem 1fr;
+		grid-template-columns: 8.5rem 1fr;
 		gap: var(--space-5);
 		padding: var(--space-5) 0;
 		border-bottom: 1px solid var(--color-border);
 	}
-	time {
+	.period {
 		color: var(--accent);
 		font: 700 var(--text-xs) var(--font-body);
 		letter-spacing: 0.08em;
+	}
+	.when {
+		padding-top: 0.3rem;
+	}
+	.badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.15rem 0.55rem;
+		border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+		border-radius: var(--radius-full);
+		color: var(--accent);
+		font: 700 var(--text-xs) var(--font-body);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.badge::before {
+		content: '';
+		width: 0.4rem;
+		height: 0.4rem;
+		border-radius: 50%;
+		background: var(--accent);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+	}
+	.timeline li.current h3 {
+		color: var(--color-heading);
+	}
+	.entry-link {
+		display: inline-block;
+		margin-top: var(--space-3);
+		font-size: var(--text-sm);
+		font-weight: 650;
 	}
 	.timeline h3 {
 		margin: 0;
@@ -257,6 +297,12 @@
 		padding: 0;
 		list-style: none;
 	}
+	.skill-groups .languages span {
+		margin-left: 0.3rem;
+		color: var(--accent);
+		font-size: var(--text-xs);
+		font-weight: 700;
+	}
 	.skill-groups li {
 		padding: 0.42rem 0.72rem;
 		border: 1px solid var(--color-border-strong);
@@ -280,15 +326,29 @@
 		background: var(--color-bg-raised);
 	}
 	.education-grid strong,
-	.education-grid span {
+	.education-grid div > span {
 		display: block;
 	}
 	.education-grid strong {
 		color: var(--color-heading);
 	}
-	.education-grid span {
+	.education-grid div > span {
 		margin-top: var(--space-2);
 		color: var(--color-text-muted);
+	}
+	.education-grid p {
+		margin: var(--space-3) 0 0;
+		color: var(--color-text);
+		font-size: var(--text-sm);
+	}
+	.subhead {
+		margin: var(--space-7) 0 var(--space-4);
+		color: var(--color-text-muted);
+		font-family: var(--font-body);
+		font-size: var(--text-xs);
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
 	}
 	@media (max-width: 760px) {
 		.profile-grid,

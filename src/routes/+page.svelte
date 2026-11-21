@@ -2,113 +2,112 @@
 	import { base } from '$app/paths';
 	import LandingCanvas from '../components/LandingCanvas.svelte';
 	import ContentCard from '$lib/components/cards/ContentCard.svelte';
+	import GraphView from '$lib/graph/GraphView.svelte';
+	import { cv, cvProjectPath } from '$lib/content/cv.js';
 
 	let { data } = $props();
+
+	const tabs = ['Projects', 'Education', 'Work Experience', 'Skills'];
 	let activeTab = $state('Projects');
 	/** @type {HTMLDivElement | undefined} */
 	let tabAnchor;
+	/** @type {HTMLButtonElement[]} */
+	const tabButtons = [];
 
-	const tabs = ['Projects', 'Education', 'Work Experience', 'Skills'];
-	const focus = [
-		'Data Scientist',
-		'Machine Learning Engineer',
-		'Computer Vision',
-		'Deep Learning',
-		'Full-stack Development'
-	];
-	const education = [
-		{
-			degree: 'Master of Science · Data Science',
-			school: 'Technische Universität Wien',
-			period: '2022–2025'
-		},
-		{
-			degree: 'Bachelor of Science · Information Technologies and Telecommunications',
-			school: 'Bauman Moscow State Technical University',
-			period: '2014–2020'
-		},
-		{
-			degree: 'Deep Learning School',
-			school: 'Moscow Institute of Physics and Technology',
-			period: '2020–2021'
-		},
-		{
-			degree: 'School of Data Analysis',
-			school: 'Higher School of Economics University and Yandex',
-			period: '2020'
-		}
-	];
-	const experience = [
-		{
-			role: 'Data Scientist · Rail4Future',
-			place: 'Technische Universität Wien',
-			period: '2024',
-			text: 'Rail-irregularity analysis and LSTM modelling with Siemens and ÖBB.'
-		},
-		{
-			role: 'CTO · Data Scientist',
-			place: 'susteam',
-			period: '2023–present',
-			text: 'Architecture and full-stack development for an ESG reporting platform.'
-		},
-		{
-			role: 'Machine Learning Analyst',
-			place: 'GLOSAV',
-			period: '2021',
-			text: 'Real-time railway-route and obstacle detection using computer vision.'
-		},
-		{
-			role: 'Project Manager · Software Engineer',
-			place: 'Arterra Miniature',
-			period: '2020–2021',
-			text: '3D visualisation, prototyping, software, and delivery management.'
-		}
-	];
-	const skillGroups = [
-		{
-			title: 'Software development',
-			items: ['Python', 'C++', 'JavaScript', 'Svelte', 'React', 'FastAPI', 'Docker']
-		},
-		{
-			title: 'Machine learning',
-			items: ['PyTorch', 'TensorFlow', 'OpenCV', 'scikit-learn', 'NLP', 'RAG', 'LLMs']
-		},
-		{
-			title: 'Data & infrastructure',
-			items: ['PostgreSQL', 'MongoDB', 'Redis', 'AWS', 'Linux', 'nginx', 'Git']
-		}
-	];
-	const channels = [
+	/**
+	 * @param {number} count
+	 * @param {string} noun
+	 */
+	function countOf(count, noun) {
+		return `${count} ${noun}${count === 1 ? '' : 's'}`;
+	}
+
+	/**
+	 * Channel counts: an honest empty state instead of "0 notes".
+	 * @param {number} count
+	 * @param {string} noun
+	 */
+	function plural(count, noun) {
+		return count === 0 ? `No ${noun}s yet` : countOf(count, noun);
+	}
+
+	/** @param {string[]} words */
+	function listOf(words) {
+		if (words.length <= 1) return words.join('');
+		return `${words.slice(0, -1).join(', ')} and ${words.at(-1)}`;
+	}
+
+	let graphCounts = $derived.by(() => {
+		/** @type {Record<string, number>} */
+		const byKind = {};
+		for (const node of data.graphData.nodes) byKind[node.kind] = (byKind[node.kind] ?? 0) + 1;
+		return byKind;
+	});
+
+	let channels = $derived([
 		{
 			path: '/projects',
 			number: '01',
 			title: 'Projects',
+			count: plural(data.counts.projects, 'project'),
 			text: 'Applied AI, computer vision, RAG, and full-stack systems.'
 		},
 		{
 			path: '/diy',
 			number: '02',
 			title: 'DIY',
-			text: 'Miniatures, 3D printing, and hands-on experiments.'
+			count: plural(data.counts.diy, 'note'),
+			text: 'Miniatures, 3D printing, and hands-on builds.'
 		},
 		{
 			path: '/sport',
 			number: '03',
 			title: 'Sport',
-			text: 'Hiking, boxing, diving, and table-tennis notes.'
+			count: plural(data.counts.sport, 'note'),
+			text: data.sportDisciplines.length
+				? `Notes on ${listOf(data.sportDisciplines.map((label) => label.toLowerCase()))} so far.`
+				: 'Hiking, boxing, diving, and table tennis.'
 		},
 		{
 			path: '/graph',
 			number: '04',
 			title: 'Graph',
-			text: 'Explore how projects and technologies connect.'
+			count: `${plural(graphCounts.field ?? 0, 'field')} · ${plural(graphCounts.org ?? 0, 'organisation')}`,
+			text: 'How projects, fields of work, and organisations connect.'
 		}
-	];
+	]);
+
+	function prefersReducedMotion() {
+		return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	}
 
 	/** @param {string} tab */
 	function selectTab(tab) {
 		activeTab = tab;
-		requestAnimationFrame(() => tabAnchor?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+		requestAnimationFrame(() =>
+			tabAnchor?.scrollIntoView({
+				behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+				block: 'start'
+			})
+		);
+	}
+
+	/**
+	 * WAI-ARIA tabs with automatic activation: arrows wrap, Home/End jump to the ends.
+	 * @param {KeyboardEvent} event
+	 * @param {number} index
+	 */
+	function onTabKeydown(event, index) {
+		/** @type {number | undefined} */
+		let next;
+		if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+		else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+		else if (event.key === 'Home') next = 0;
+		else if (event.key === 'End') next = tabs.length - 1;
+		if (next === undefined) return;
+		event.preventDefault();
+		activeTab = tabs[next];
+		tabButtons[next]?.focus();
 	}
 
 	/** @param {string} tab */
@@ -118,10 +117,10 @@
 </script>
 
 <svelte:head>
-	<title>Artur Sogomonyan — Software &amp; ML Engineer</title>
+	<title>{cv.name} — {cv.headline}</title>
 	<meta
 		name="description"
-		content="Software and machine-learning engineer in Vienna building applied AI systems, computer-vision pipelines, and full-stack products."
+		content="{cv.headline} in {cv.location} building applied machine-learning systems, computer-vision pipelines, and full-stack products."
 	/>
 </svelte:head>
 
@@ -130,11 +129,11 @@
 		<LandingCanvas />
 		<div class="shell hero-inner">
 			<div class="name-header">
-				<p class="eyebrow">Software &amp; ML Engineer · Vienna</p>
+				<p class="eyebrow">{cv.headline} · {cv.location}</p>
 				<h1>Artur<br />Sogomonyan</h1>
 			</div>
 			<div class="description">
-				{#each focus as item (item)}<p>{item}</p>{/each}
+				{#each cv.focus as item (item)}<p>{item}</p>{/each}
 				<div class="hero-actions">
 					<a class="button light" href="{base}/projects">Explore projects</a>
 					<a class="button glass" href="{base}/contact">Get in touch</a>
@@ -145,15 +144,18 @@
 
 	<div class="tab-anchor" bind:this={tabAnchor} aria-hidden="true"></div>
 	<div class="tab-menu" role="tablist" aria-label="Portfolio sections">
-		{#each tabs as tab (tab)}
+		{#each tabs as tab, index (tab)}
 			<button
+				bind:this={tabButtons[index]}
 				id={tabId(tab)}
 				type="button"
 				role="tab"
 				class:active={activeTab === tab}
 				aria-selected={activeTab === tab}
 				aria-controls="home-tab-panel"
+				tabindex={activeTab === tab ? 0 : -1}
 				onclick={() => selectTab(tab)}
+				onkeydown={(event) => onTabKeydown(event, index)}
 			>
 				{tab}
 			</button>
@@ -164,6 +166,7 @@
 		id="home-tab-panel"
 		class="shell page tab-section"
 		role="tabpanel"
+		tabindex="0"
 		aria-labelledby={tabId(activeTab)}
 	>
 		{#key activeTab}
@@ -171,50 +174,97 @@
 				<div class="section-heading">
 					<div>
 						<p class="eyebrow">Portfolio / {activeTab}</p>
-						<h2>{activeTab}</h2>
+						<h2>{activeTab === 'Projects' ? 'Selected projects' : activeTab}</h2>
 					</div>
-					{#if activeTab === 'Projects'}<a href="{base}/projects">All projects →</a>{/if}
+					{#if activeTab === 'Projects'}
+						<a href="{base}/projects">All {data.counts.projects} projects →</a>
+					{:else}
+						<a href="{base}/about">Full profile →</a>
+					{/if}
 				</div>
 
 				{#if activeTab === 'Projects'}
 					<div class="project-grid">
-						{#each data.projects as item (item.slug)}<ContentCard {item} />{/each}
+						{#each data.projects as item (item.slug)}<ContentCard {item} headingLevel={3} />{/each}
 					</div>
 				{:else if activeTab === 'Education'}
 					<div class="timeline-grid">
-						{#each education as item (item.degree)}
+						{#each cv.education as entry (entry.id)}
 							<article>
-								<time>{item.period}</time>
-								<h3>{item.degree}</h3>
-								<p>{item.school}</p>
+								<span class="period">{entry.period}</span>
+								<h3>{entry.degree}</h3>
+								<b>{entry.school}</b>
+								{#if entry.note}<p>{entry.note}</p>{/if}
+								{#if entry.project}
+									<a class="entry-link" href="{base}{cvProjectPath(entry.project)}"
+										>View the thesis project →</a
+									>
+								{/if}
 							</article>
 						{/each}
 					</div>
 				{:else if activeTab === 'Work Experience'}
 					<div class="timeline-grid">
-						{#each experience as item (item.role)}
-							<article>
-								<time>{item.period}</time>
-								<h3>{item.role}</h3>
-								<b>{item.place}</b>
-								<p>{item.text}</p>
+						{#each cv.experience as entry (entry.id)}
+							<article class:current={entry.current}>
+								{#if entry.current}
+									<span class="badge">Current</span>
+								{:else}
+									<span class="period">{entry.period}</span>
+								{/if}
+								<h3>{entry.role ?? entry.org}</h3>
+								{#if entry.role}<b>{entry.org}</b>{/if}
+								<p>{entry.summary}</p>
+								{#if entry.project}
+									<a class="entry-link" href="{base}{cvProjectPath(entry.project)}"
+										>View project →</a
+									>
+								{/if}
 							</article>
 						{/each}
 					</div>
 				{:else}
 					<div class="skill-grid">
-						{#each skillGroups as group (group.title)}
+						{#each Object.entries(cv.skills) as [group, values] (group)}
 							<article>
-								<h3>{group.title}</h3>
+								<h3>{group}</h3>
 								<ul>
-									{#each group.items as item (item)}<li>{item}</li>{/each}
+									{#each values as value (value)}<li>{value}</li>{/each}
 								</ul>
 							</article>
 						{/each}
 					</div>
+					<div class="languages">
+						<h3>Languages</h3>
+						<ul>
+							{#each cv.languages as language (language.name)}
+								<li>{language.name} <span>{language.level}</span></li>
+							{/each}
+						</ul>
+					</div>
 				{/if}
 			</div>
 		{/key}
+	</div>
+</div>
+
+<div class="map-teaser">
+	<div class="shell page">
+		<GraphView
+			graphData={data.graphData}
+			compact
+			eyebrow="Knowledge map"
+			title="How the work connects."
+		/>
+		<p class="map-caption">
+			Projects, DIY, and sport notes, linked to the fields of work they belong to and the
+			organisations behind them:
+			{countOf(graphCounts.item ?? 0, 'note')}, {countOf(graphCounts.field ?? 0, 'field')} across
+			{countOf(graphCounts.domain ?? 0, 'domain')}, and {countOf(
+				graphCounts.org ?? 0,
+				'organisation'
+			)}.
+		</p>
 	</div>
 </div>
 
@@ -232,6 +282,7 @@
 					<span>{channel.number}</span>
 					<h3>{channel.title}</h3>
 					<p>{channel.text}</p>
+					<strong class="count">{channel.count}</strong>
 					<b aria-hidden="true">↗</b>
 				</a>
 			{/each}
@@ -438,7 +489,7 @@
 		border-radius: var(--radius-lg);
 		background: var(--color-bg-raised);
 	}
-	.timeline-grid time {
+	.timeline-grid .period {
 		color: var(--accent);
 		font: 600 var(--text-xs) var(--font-mono);
 		letter-spacing: 0.08em;
@@ -453,13 +504,47 @@
 		color: var(--color-text-muted);
 		font-size: var(--text-sm);
 	}
+	.timeline-grid article {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.timeline-grid article.current {
+		border-color: color-mix(in srgb, var(--accent) 45%, var(--color-border));
+	}
 	.timeline-grid p {
 		margin-bottom: 0;
 		color: var(--color-text);
 	}
+	.badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		padding: 0.2rem 0.6rem;
+		border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+		border-radius: var(--radius-full);
+		color: var(--accent);
+		font: 600 var(--text-xs) var(--font-mono);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.badge::before {
+		content: '';
+		width: 0.45rem;
+		height: 0.45rem;
+		border-radius: 50%;
+		background: var(--accent);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+	}
+	.entry-link {
+		margin-top: auto;
+		padding-top: var(--space-4);
+		font-size: var(--text-sm);
+		font-weight: 650;
+	}
 	.skill-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 		gap: var(--space-4);
 	}
 	.skill-grid ul {
@@ -477,6 +562,43 @@
 		color: var(--color-text-muted);
 		font-size: var(--text-sm);
 	}
+	.languages {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-4) var(--space-6);
+		margin-top: var(--space-5);
+		padding: var(--space-5) var(--space-6);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+	}
+	.languages h3 {
+		margin: 0;
+		font-size: var(--text-lg);
+	}
+	.languages ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2) var(--space-5);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		color: var(--color-text);
+	}
+	.languages span {
+		margin-left: 0.3rem;
+		color: var(--accent);
+		font: 600 var(--text-xs) var(--font-mono);
+	}
+	.map-teaser {
+		border-top: 1px solid var(--color-border);
+	}
+	.map-caption {
+		max-width: 46rem;
+		margin: var(--space-5) 0 0;
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
 	.channels {
 		border-block: 1px solid var(--color-border);
 		background: var(--color-bg-sunken);
@@ -490,6 +612,8 @@
 	}
 	.channel-grid a {
 		position: relative;
+		display: flex;
+		flex-direction: column;
 		min-height: 13rem;
 		padding: var(--space-5);
 		border-right: 1px solid var(--color-border);
@@ -514,6 +638,15 @@
 		margin: 0;
 		color: var(--color-text-muted);
 		font-size: var(--text-sm);
+	}
+	.channel-grid .count {
+		margin-top: auto;
+		padding-top: var(--space-5);
+		padding-right: var(--space-5);
+		color: var(--color-heading);
+		font: 600 var(--text-xs) var(--font-mono);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
 	}
 	.channel-grid b {
 		position: absolute;

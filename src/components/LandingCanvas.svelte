@@ -40,13 +40,20 @@
 		let height = window.innerHeight;
 		let points: Point[] = [];
 		let target = { x: width / 2, y: height / 2 };
-		let animateHeader = true;
 		let frame = 0;
+		let resizeFrame = 0;
+		let visible = true;
 		let disposed = false;
 		let gsapContext: typeof import('gsap').gsap | null = null;
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+		/** Points whose drift tween stopped while the hero was off-screen. */
+		const idle = new Set<Point>();
 
 		const getDistance = (p1: { x: number; y: number }, p2: { x: number; y: number }) =>
 			Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
+
+		/** Animate only while the hero is on screen and the visitor allows motion. */
+		const isRunning = () => visible && !reducedMotion.matches && !disposed;
 
 		function initHeader() {
 			width = window.innerWidth;
@@ -100,7 +107,11 @@
 		}
 
 		function shiftPoint(point: Point) {
-			if (!gsapContext || disposed) return;
+			if (!gsapContext || !isRunning()) {
+				idle.add(point);
+				return;
+			}
+			idle.delete(point);
 			gsapContext.to(point, {
 				duration: 1 + Math.random(),
 				x: point.originX - 50 + Math.random() * 100,
@@ -110,64 +121,103 @@
 			});
 		}
 
-		function animate() {
-			if (animateHeader) {
-				context.clearRect(0, 0, width, height);
-				for (const point of points) {
-					const distance = Math.abs(getDistance(target, point));
-					if (distance < 4000) {
-						point.active = 0.3;
-						point.circle!.active = 0.6;
-					} else if (distance < 20000) {
-						point.active = 0.1;
-						point.circle!.active = 0.3;
-					} else if (distance < 40000) {
-						point.active = 0.02;
-						point.circle!.active = 0.1;
-					} else {
-						point.active = 0;
-						point.circle!.active = 0;
-					}
-					drawLines(point);
-					point.circle!.draw();
+		function draw() {
+			context.clearRect(0, 0, width, height);
+			for (const point of points) {
+				const distance = Math.abs(getDistance(target, point));
+				if (distance < 4000) {
+					point.active = 0.3;
+					point.circle!.active = 0.6;
+				} else if (distance < 20000) {
+					point.active = 0.1;
+					point.circle!.active = 0.3;
+				} else if (distance < 40000) {
+					point.active = 0.02;
+					point.circle!.active = 0.1;
+				} else {
+					point.active = 0;
+					point.circle!.active = 0;
 				}
+				drawLines(point);
+				point.circle!.draw();
 			}
+		}
+
+		function animate() {
+			frame = 0;
+			if (!isRunning()) return;
+			draw();
 			frame = requestAnimationFrame(animate);
 		}
 
-		function mouseMove(event: MouseEvent) {
-			target.x = event.pageX;
-			target.y = event.pageY;
+		let gsapLoading = false;
+		/** GSAP drives the point drift; it is only fetched once motion is allowed. */
+		function loadGsap() {
+			if (gsapContext || gsapLoading) return;
+			gsapLoading = true;
+			import('gsap').then(({ gsap }) => {
+				if (disposed) return;
+				gsapContext = gsap;
+				sync();
+			});
 		}
 
-		function scrollCheck() {
-			animateHeader = window.scrollY <= height;
+		/** (Re)start the loop and drift tweens, or settle on one static frame. */
+		function sync() {
+			if (isRunning()) {
+				loadGsap();
+				for (const point of [...idle]) shiftPoint(point);
+				if (!frame) frame = requestAnimationFrame(animate);
+			} else {
+				cancelAnimationFrame(frame);
+				frame = 0;
+				if (reducedMotion.matches) {
+					gsapContext?.killTweensOf(points);
+					for (const point of points) idle.add(point);
+					draw();
+				}
+			}
+		}
+
+		function mouseMove(event: MouseEvent) {
+			const rect = canvas.getBoundingClientRect();
+			target.x = event.clientX - rect.left;
+			target.y = event.clientY - rect.top;
 		}
 
 		function resize() {
-			width = window.innerWidth;
-			height = window.innerHeight;
-			canvas.width = width;
-			canvas.height = height;
+			cancelAnimationFrame(resizeFrame);
+			resizeFrame = requestAnimationFrame(() => {
+				gsapContext?.killTweensOf(points);
+				initHeader();
+				idle.clear();
+				for (const point of points) idle.add(point);
+				if (isRunning()) sync();
+				else draw();
+			});
 		}
 
-		initHeader();
-		import('gsap').then(({ gsap }) => {
-			if (disposed) return;
-			gsapContext = gsap;
-			for (const point of points) shiftPoint(point);
+		const observer = new IntersectionObserver(([entry]) => {
+			visible = entry.isIntersecting;
+			sync();
 		});
-		animate();
+
+		initHeader();
+		for (const point of points) idle.add(point);
+		sync();
+		observer.observe(canvas);
+		reducedMotion.addEventListener('change', sync);
 		if (!('ontouchstart' in window)) window.addEventListener('mousemove', mouseMove);
-		window.addEventListener('scroll', scrollCheck);
 		window.addEventListener('resize', resize);
 
 		return () => {
 			disposed = true;
 			cancelAnimationFrame(frame);
+			cancelAnimationFrame(resizeFrame);
 			gsapContext?.killTweensOf(points);
+			observer.disconnect();
+			reducedMotion.removeEventListener('change', sync);
 			window.removeEventListener('mousemove', mouseMove);
-			window.removeEventListener('scroll', scrollCheck);
 			window.removeEventListener('resize', resize);
 		};
 	});
