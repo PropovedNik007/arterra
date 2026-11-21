@@ -3,6 +3,7 @@
 	import LandingCanvas from '../components/LandingCanvas.svelte';
 	import ContentCard from '$lib/components/cards/ContentCard.svelte';
 	import GraphView from '$lib/graph/GraphView.svelte';
+	import SkillsRadar from '$lib/components/charts/SkillsRadar.svelte';
 	import { cv, cvProjectPath } from '$lib/content/cv.js';
 
 	let { data } = $props();
@@ -114,6 +115,11 @@
 	function tabId(tab) {
 		return `home-tab-${tab.toLowerCase().replaceAll(' ', '-')}`;
 	}
+
+	/** @param {string} tab */
+	function panelId(tab) {
+		return `${tabId(tab)}-panel`;
+	}
 </script>
 
 <svelte:head>
@@ -152,7 +158,7 @@
 				role="tab"
 				class:active={activeTab === tab}
 				aria-selected={activeTab === tab}
-				aria-controls="home-tab-panel"
+				aria-controls={panelId(tab)}
 				tabindex={activeTab === tab ? 0 : -1}
 				onclick={() => selectTab(tab)}
 				onkeydown={(event) => onTabKeydown(event, index)}
@@ -162,32 +168,36 @@
 		{/each}
 	</div>
 
-	<div
-		id="home-tab-panel"
-		class="shell page tab-section"
-		role="tabpanel"
-		tabindex="0"
-		aria-labelledby={tabId(activeTab)}
-	>
-		{#key activeTab}
+	<!-- Every panel is server-rendered and the inactive ones are hidden, so each
+	     tab's content (including the Skills radar and its table) is in the
+	     prerendered HTML; the tabs only switch which one is shown. -->
+	{#each tabs as tab (tab)}
+		<div
+			id={panelId(tab)}
+			class="shell page tab-section"
+			role="tabpanel"
+			tabindex="0"
+			aria-labelledby={tabId(tab)}
+			hidden={activeTab !== tab}
+		>
 			<div class="tab-content">
 				<div class="section-heading">
 					<div>
-						<p class="eyebrow">Portfolio / {activeTab}</p>
-						<h2>{activeTab === 'Projects' ? 'Selected projects' : activeTab}</h2>
+						<p class="eyebrow">Portfolio / {tab}</p>
+						<h2>{tab === 'Projects' ? 'Selected projects' : tab}</h2>
 					</div>
-					{#if activeTab === 'Projects'}
+					{#if tab === 'Projects'}
 						<a href="{base}/projects">All {data.counts.projects} projects →</a>
 					{:else}
 						<a href="{base}/about">Full profile →</a>
 					{/if}
 				</div>
 
-				{#if activeTab === 'Projects'}
+				{#if tab === 'Projects'}
 					<div class="project-grid">
 						{#each data.projects as item (item.slug)}<ContentCard {item} headingLevel={3} />{/each}
 					</div>
-				{:else if activeTab === 'Education'}
+				{:else if tab === 'Education'}
 					<div class="timeline-grid">
 						{#each cv.education as entry (entry.id)}
 							<article>
@@ -203,7 +213,7 @@
 							</article>
 						{/each}
 					</div>
-				{:else if activeTab === 'Work Experience'}
+				{:else if tab === 'Work Experience'}
 					<div class="timeline-grid">
 						{#each cv.experience as entry (entry.id)}
 							<article class:current={entry.current}>
@@ -224,28 +234,33 @@
 						{/each}
 					</div>
 				{:else}
-					<div class="skill-grid">
-						{#each Object.entries(cv.skills) as [group, values] (group)}
-							<article>
-								<h3>{group}</h3>
+					<div class="skills-layout">
+						<div class="skills-lists">
+							<div class="skill-grid">
+								{#each Object.entries(cv.skills) as [group, values] (group)}
+									<article>
+										<h3>{group}</h3>
+										<ul>
+											{#each values as value (value)}<li>{value}</li>{/each}
+										</ul>
+									</article>
+								{/each}
+							</div>
+							<div class="languages">
+								<h3>Languages</h3>
 								<ul>
-									{#each values as value (value)}<li>{value}</li>{/each}
+									{#each cv.languages as language (language.name)}
+										<li>{language.name} <span>{language.level}</span></li>
+									{/each}
 								</ul>
-							</article>
-						{/each}
-					</div>
-					<div class="languages">
-						<h3>Languages</h3>
-						<ul>
-							{#each cv.languages as language (language.name)}
-								<li>{language.name} <span>{language.level}</span></li>
-							{/each}
-						</ul>
+							</div>
+						</div>
+						<SkillsRadar radar={cv.radar} />
 					</div>
 				{/if}
 			</div>
-		{/key}
-	</div>
+		</div>
+	{/each}
 </div>
 
 <div class="map-teaser">
@@ -448,6 +463,9 @@
 		background: rgba(58, 78, 88, 0.62);
 		box-shadow: inset 0 -2px #9cd9f9;
 	}
+	.tab-section[hidden] {
+		display: none;
+	}
 	.tab-section {
 		min-height: calc(100vh - 9.5rem);
 		min-height: calc(100dvh - 9.5rem);
@@ -542,9 +560,18 @@
 		font-size: var(--text-sm);
 		font-weight: 650;
 	}
+	.skills-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+		align-items: start;
+		gap: var(--space-5);
+	}
+	.skills-lists {
+		min-width: 0;
+	}
 	.skill-grid {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--space-4);
 	}
 	.skill-grid ul {
@@ -653,6 +680,14 @@
 		right: var(--space-5);
 		bottom: var(--space-5);
 		color: var(--accent);
+	}
+	@media (max-width: 1040px) {
+		.skills-layout {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.skill-grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
 	}
 	@media (max-width: 900px) {
 		.hero-inner {

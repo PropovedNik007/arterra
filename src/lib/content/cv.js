@@ -54,6 +54,22 @@ import { itemPath } from '../design/sections.js';
  */
 
 /**
+ * @typedef {object} RadarSeries
+ * @property {string} id
+ * @property {string} label
+ * @property {number[]} values One score per radar axis, 0–100.
+ */
+
+/**
+ * Self-assessed skill radar: one score per axis for each series, 0–100. These
+ * are the owner's own ratings; keep them exactly as given.
+ * @typedef {object} SkillRadar
+ * @property {string[]} axes
+ * @property {number} max
+ * @property {RadarSeries[]} series
+ */
+
+/**
  * @typedef {object} Cv
  * @property {string} name
  * @property {string} headline
@@ -62,6 +78,7 @@ import { itemPath } from '../design/sections.js';
  * @property {EducationEntry[]} education
  * @property {ExperienceEntry[]} experience
  * @property {Record<string, string[]>} skills
+ * @property {SkillRadar} radar
  * @property {LanguageEntry[]} languages
  * @property {AwardEntry[]} awards
  * @property {PublicationEntry[]} publications
@@ -191,6 +208,25 @@ export const cv = {
 			'nginx',
 			'Git',
 			'CI/CD'
+		]
+	},
+	radar: {
+		axes: [
+			'Data Science',
+			'Computer Vision',
+			'NLP',
+			'Blockchain',
+			'IoT',
+			'3D/AR',
+			'Front-End',
+			'Back-End',
+			'DevOps',
+			'Databases'
+		],
+		max: 100,
+		series: [
+			{ id: 'experience', label: 'Experience', values: [90, 80, 75, 30, 50, 60, 70, 80, 50, 70] },
+			{ id: 'interest', label: 'Interest', values: [80, 100, 100, 60, 60, 90, 80, 90, 60, 70] }
 		]
 	},
 	languages: [
