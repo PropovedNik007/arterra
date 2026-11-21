@@ -10,7 +10,7 @@ date: 2026-06-14
 region: Rax, Lower Austria
 distance_km: 14
 gain_m: 950
-gpx: "attachments/example.gpx"
+gpx: 'attachments/example.gpx'
 led_group: false
 tags: []
 ---

@@ -89,7 +89,8 @@
 		border-color: var(--accent);
 	}
 	.club > span {
-		color: var(--accent);
+		/* Lightened so the label keeps AA contrast on the accent-tinted card. */
+		color: color-mix(in srgb, var(--accent) 72%, var(--color-heading));
 		font-size: var(--text-xs);
 		font-weight: 700;
 		letter-spacing: 0.1em;

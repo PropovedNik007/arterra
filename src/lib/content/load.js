@@ -58,13 +58,19 @@ function articleBody(body) {
 
 /**
  * First public http(s) URL listed under a `## Links` heading, used as the
- * project's external link when the note has no `link:` frontmatter.
+ * project's external link when the note has no `link:` frontmatter. `live` is
+ * true only when its line is labelled `Live:` — a partner or programme homepage
+ * (e.g. Rail4Future's) is not a live deployment of the work.
  * @param {string} body
- * @returns {string | undefined}
+ * @returns {{ url: string, live: boolean } | undefined}
  */
 function linksSectionUrl(body) {
 	const section = body.match(/^##\s+Links\s*$([\s\S]*?)(?=^#{1,2}\s|(?![\s\S]))/im)?.[1] ?? '';
-	return section.match(/https?:\/\/[^\s)>\]]+/)?.[0];
+	for (const line of section.split(/\r?\n/)) {
+		const url = line.match(/https?:\/\/[^\s)>\]]+/)?.[0];
+		if (url) return { url, live: /^\s*[-*]?\s*live\s*:/i.test(line) };
+	}
+	return undefined;
 }
 
 /**
@@ -140,6 +146,8 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 			.map((target) => target.replace(/\.md$/i, '').split('/').pop() ?? target)
 			.filter((target) => slugSet.has(target.toLowerCase()));
 
+		const listed = typeof data.link === 'string' && data.link ? undefined : linksSectionUrl(body);
+
 		items.push({
 			slug,
 			section,
@@ -153,7 +161,9 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 			html: await renderMarkdown(articleBody(body)),
 			links,
 			tech: Array.isArray(data.tech) ? data.tech : undefined,
-			externalLink: typeof data.link === 'string' && data.link ? data.link : linksSectionUrl(body),
+			externalLink: typeof data.link === 'string' && data.link ? data.link : listed?.url,
+			// Frontmatter `link:` is the project's own link; a listed URL is live only if labelled so.
+			externalLive: typeof data.link === 'string' && data.link ? true : Boolean(listed?.live),
 			featured: data.featured === true,
 			featuredOrder: typeof data.featured_order === 'number' ? data.featured_order : undefined,
 			printer: typeof data.printer === 'string' ? data.printer : undefined,

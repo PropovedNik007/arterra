@@ -3,6 +3,7 @@ import { buildGraph, unclassifiedItems } from './build.js';
 import { focusSubgraph, relatedItems, sectionSubgraph } from './subgraph.js';
 import { DISCIPLINE_META, SECTION_META, itemPath } from '../design/sections.js';
 import { loadContent } from '../content/load.js';
+import { deniedWords } from '../testing/denylist.js';
 
 /**
  * @param {Partial<import('../content/types.js').ContentItem>} overrides
@@ -133,8 +134,8 @@ describe('graph built from the real content', async () => {
 		expect(unclassifiedItems(items).map((item) => item.slug)).toEqual([]);
 	});
 
-	it('never leaks the confidential project name', () => {
-		expect(JSON.stringify(graph)).toBeTruthy();
+	it('never leaks a confidential name', () => {
+		expect(deniedWords(JSON.stringify(graph))).toEqual([]);
 	});
 });
 

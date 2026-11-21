@@ -119,7 +119,7 @@
 	}
 	.bar {
 		display: flex;
-		min-height: 4.5rem;
+		min-height: var(--header-h);
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-6);
@@ -210,6 +210,7 @@
 	}
 	@media (max-width: 1040px) {
 		.bar {
+			box-sizing: border-box;
 			flex-wrap: wrap;
 			gap: 0;
 			padding-top: var(--space-2);

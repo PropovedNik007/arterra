@@ -16,6 +16,7 @@
  * @property {string[]} links
  * @property {string[]} [tech]
  * @property {string} [externalLink]
+ * @property {boolean} [externalLive] True when externalLink is a live deployment of the work.
  * @property {boolean} [featured]
  * @property {number} [featuredOrder]
  * @property {string} [printer]

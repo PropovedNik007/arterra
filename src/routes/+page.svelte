@@ -299,7 +299,7 @@
 		position: relative;
 		min-height: calc(100vh - var(--tab-height));
 		min-height: calc(100dvh - var(--tab-height));
-		margin-top: -4.5rem;
+		margin-top: calc(-1 * var(--header-h));
 		overflow: hidden;
 		background:
 			linear-gradient(90deg, rgba(2, 8, 13, 0.32), rgba(2, 8, 13, 0.2)),
@@ -404,7 +404,7 @@
 	}
 	.tab-menu {
 		position: sticky;
-		top: 4.5rem;
+		top: var(--header-h);
 		z-index: 40;
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
@@ -415,7 +415,7 @@
 	}
 	.tab-anchor {
 		height: 0;
-		scroll-margin-top: 4.5rem;
+		scroll-margin-top: var(--header-h);
 	}
 	.tab-menu button {
 		min-width: 0;

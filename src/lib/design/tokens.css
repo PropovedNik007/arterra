@@ -1,4 +1,7 @@
 :root {
+	/* Sticky header height; pages that tuck content under it (Home hero, sticky
+	   tabs) read this instead of hard-coding it. Wraps to two rows ≤1040px. */
+	--header-h: 4.5rem;
 	--font-display: 'Newsreader Variable', Georgia, serif;
 	--font-body: 'Hanken Grotesk', system-ui, sans-serif;
 	--font-mono: 'Fira Mono', monospace;
@@ -71,4 +74,10 @@
 	--graph-topic: #8fa6bd;
 	--graph-edge: #57544c;
 	--graph-label: #ebe6dc;
+}
+
+@media (max-width: 1040px) {
+	:root {
+		--header-h: 5.25rem;
+	}
 }

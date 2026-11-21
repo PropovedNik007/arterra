@@ -151,6 +151,9 @@ textarea:focus-visible {
 .grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
+	/* A wide (featured) card can leave a hole when it can't fit beside the
+	   previous card; let later cards backfill it. */
+	grid-auto-flow: row dense;
 	gap: var(--space-5);
 }
 

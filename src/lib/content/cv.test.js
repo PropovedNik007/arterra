@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { cv, cvProjectSlugs } from './cv.js';
 import { loadContent } from './load.js';
+import { deniedWords } from '../testing/denylist.js';
 
 describe('cv', () => {
 	it('links only to projects that exist', async () => {
@@ -15,5 +16,6 @@ describe('cv', () => {
 		expect(text).toContain('2022–2026');
 		expect(text).not.toMatch(/\+\d[\d\s]{8,}/);
 		expect(text.toLowerCase()).not.toMatch(/whatsapp/);
+		expect(deniedWords(text)).toEqual([]);
 	});
 });

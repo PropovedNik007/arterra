@@ -60,7 +60,7 @@
 	<div class="body">
 		<div class="meta">
 			<span class="kicker">{kicker}</span>
-			{#if item.externalLink}
+			{#if item.externalLink && item.externalLive}
 				<span class="live"
 					>Live<span class="visually-hidden"> site available</span><span aria-hidden="true">↗</span
 					></span

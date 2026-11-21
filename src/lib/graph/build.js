@@ -160,7 +160,7 @@ export function buildGraph(items) {
 			section: item.section,
 			discipline: item.discipline,
 			href: itemPath(item),
-			external: item.externalLink,
+			external: item.externalLive ? item.externalLink : undefined,
 			subtitle: discipline ? `Sport · ${discipline.label}` : SECTION_META[item.section].label,
 			excerpt: truncate(item.excerpt, 170),
 			cover: item.cover,

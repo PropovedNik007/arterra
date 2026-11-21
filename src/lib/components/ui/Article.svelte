@@ -66,7 +66,8 @@
 		{#if item.externalLink}
 			<div class="actions">
 				<a class="button primary" href={item.externalLink} target="_blank" rel="noopener noreferrer"
-					>Visit live site <span aria-hidden="true">↗</span><span class="visually-hidden">
+					>{item.externalLive ? 'Visit live site' : 'Project website'}
+					<span aria-hidden="true">↗</span><span class="visually-hidden">
 						(opens in a new tab)</span
 					></a
 				>

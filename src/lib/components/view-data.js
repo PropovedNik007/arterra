@@ -20,6 +20,7 @@ import { focusSubgraph, relatedItems } from '$lib/graph/subgraph.js';
  * @property {string} [cover]
  * @property {string} excerpt
  * @property {string} [externalLink]
+ * @property {boolean} [externalLive]
  * @property {boolean} [featured]
  * @property {string[]} fields Field ids, in FIELDS order.
  */
@@ -41,6 +42,7 @@ export function cardItem(item) {
 		cover: item.cover,
 		excerpt: item.excerpt,
 		externalLink: item.externalLink,
+		externalLive: item.externalLive,
 		featured: item.featured,
 		fields: fieldsFor(item)
 	};

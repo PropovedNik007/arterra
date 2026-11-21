@@ -1,13 +1,13 @@
 <script>
 	import '../app.css';
 	import { page } from '$app/stores';
-	import { base } from '$app/paths';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import { cv } from '$lib/content/cv.js';
 
 	let { children } = $props();
-	let isRetro = $derived(($page.url.pathname.replace(base, '') || '/') === '/retro');
+	// route.id is base-independent; `base` is relative ('.') during prerender.
+	let isRetro = $derived($page.route.id === '/retro');
 
 	const personSchema = {
 		'@context': 'https://schema.org',
@@ -38,7 +38,7 @@
 
 <svelte:head>
 	<meta name="author" content="Artur Sogomonyan" />
-	<meta name="robots" content="index, follow" />
+	{#if !isRetro}<meta name="robots" content="index, follow" />{/if}
 	<meta property="og:site_name" content="Artur Sogomonyan" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="theme-color" content="#151514" />
