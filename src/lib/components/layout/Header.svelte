@@ -5,6 +5,7 @@
 	import LinkedinIcon from '$lib/icons/LinkedinIcon.svelte';
 	import EnvelopeIcon from '$lib/icons/EnvelopeIcon.svelte';
 	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
+	import { cv } from '$lib/content/cv.js';
 
 	// The brand link is the home link (and every breadcrumb starts with Home),
 	// so the row stays focused on destinations. Retro lives in the footer.
@@ -75,6 +76,15 @@
 				rel="noopener noreferrer"
 				aria-label="GitHub"
 				title="GitHub"><GithubIcon class="icon" /></a
+			>
+			<!-- Last in the row so the mobile rule that hides the first two icons keeps it. -->
+			<a
+				class="cv-link"
+				href={cv.pdf.href}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="{cv.pdf.label} ({cv.pdf.note})"
+				title="{cv.pdf.label} ({cv.pdf.note})">CV</a
 			>
 		</div>
 	</div>
@@ -166,9 +176,14 @@
 	.nav-links a:focus-visible {
 		outline-offset: -2px;
 	}
+	/* Foreground over the dark hero image (fixed, since the image is the same in
+	   every theme): one local token, mixed for the softer variants. */
+	.over-hero {
+		--on-hero-fg: rgb(226 235 240);
+	}
 	.over-hero .nav-links a,
 	.over-hero .header-actions a {
-		color: rgba(226, 235, 240, 0.68);
+		color: color-mix(in srgb, var(--on-hero-fg) 68%, transparent);
 	}
 	.nav-links a::after {
 		content: '';
@@ -202,6 +217,33 @@
 		color: var(--color-text-muted);
 	}
 	.header-actions a:hover {
+		color: var(--accent);
+	}
+	.header-actions a.cv-link {
+		margin-left: var(--space-1);
+		padding: 0.3rem 0.7rem;
+		border: 1px solid var(--color-border-strong);
+		color: var(--color-heading);
+		font-size: var(--text-xs);
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		line-height: 1.2;
+		white-space: nowrap;
+		transition:
+			border-color 180ms ease,
+			color 180ms ease;
+	}
+	.header-actions a.cv-link:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+		text-decoration: none;
+	}
+	.over-hero .header-actions a.cv-link {
+		border-color: color-mix(in srgb, var(--on-hero-fg) 35%, transparent);
+		color: color-mix(in srgb, var(--on-hero-fg) 86%, transparent);
+	}
+	.over-hero .header-actions a.cv-link:hover {
+		border-color: var(--accent);
 		color: var(--accent);
 	}
 	.header-actions :global(.icon) {

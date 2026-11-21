@@ -143,6 +143,9 @@
 				<div class="hero-actions">
 					<a class="button light" href="{base}/projects">Explore projects</a>
 					<a class="button glass" href="{base}/contact">Get in touch</a>
+					<a class="button glass" href={cv.pdf.href} target="_blank" rel="noopener noreferrer"
+						>{cv.pdf.label} ({cv.pdf.note}) <span aria-hidden="true">↗</span></a
+					>
 				</div>
 			</div>
 		</div>

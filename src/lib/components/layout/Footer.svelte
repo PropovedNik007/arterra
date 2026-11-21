@@ -18,6 +18,7 @@
 	const site = [
 		{ href: '/about', label: 'About' },
 		{ href: '/contact', label: 'Contact' },
+		{ href: '/faq', label: 'FAQ' },
 		{ href: '/retro', label: 'Retro archive' }
 	];
 	const social = [
@@ -64,6 +65,11 @@
 					{#each site as link (link.href)}<li>
 							<a href={`${base}${link.href}`}>{link.label}</a>
 						</li>{/each}
+					<li>
+						<a href={cv.pdf.href} target="_blank" rel="noopener noreferrer"
+							>{cv.pdf.label} ({cv.pdf.note})</a
+						>
+					</li>
 				</ul>
 			</div>
 		</nav>

@@ -16,4 +16,12 @@ describe('cv', () => {
 		expect(text).toContain('2022–2026');
 		expect(deniedWords(text)).toEqual([]);
 	});
+
+	it('links the CV as an https PDF', () => {
+		const url = new URL(cv.pdf.href);
+		expect(url.protocol).toBe('https:');
+		expect(url.pathname.endsWith('.pdf')).toBe(true);
+		expect(cv.pdf.label).toBeTruthy();
+		expect(cv.pdf.note).toBe('PDF');
+	});
 });

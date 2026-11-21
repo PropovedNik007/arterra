@@ -5,6 +5,7 @@
 	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
 	import LinkedinIcon from '$lib/icons/LinkedinIcon.svelte';
 	import GithubIcon from '$lib/icons/GithubIcon.svelte';
+	import { cv } from '$lib/content/cv.js';
 
 	const contacts = [
 		{
@@ -70,17 +71,22 @@
 					</div>
 				</li>
 			</ol>
-			<a
-				class="button primary"
-				href="mailto:arthur.sogomonyan@gmail.com?subject=Project%20conversation">Write an email</a
-			>
+			<div class="message-actions">
+				<a
+					class="button primary"
+					href="mailto:arthur.sogomonyan@gmail.com?subject=Project%20conversation">Write an email</a
+				>
+				<a class="button" href={cv.pdf.href} target="_blank" rel="noopener noreferrer"
+					>{cv.pdf.label} ({cv.pdf.note}) <span aria-hidden="true">↗</span></a
+				>
+			</div>
 		</section>
 		<section class="channels" aria-label="Contact channels">
 			{#each contacts as contact (contact.label)}
 				<a
 					href={contact.href}
 					target={contact.href.startsWith('http') ? '_blank' : undefined}
-					rel={contact.href.startsWith('http') ? 'noreferrer' : undefined}
+					rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
 				>
 					<contact.icon class="contact-icon" />
 					<div><span>{contact.label}</span><strong>{contact.value}</strong></div>
@@ -114,6 +120,11 @@
 		padding: 0;
 		list-style: none;
 		border-top: 1px solid var(--color-border);
+	}
+	.message-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-3);
 	}
 	li {
 		display: grid;

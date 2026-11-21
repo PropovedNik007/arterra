@@ -70,6 +70,14 @@ import { itemPath } from '../design/sections.js';
  */
 
 /**
+ * Public CV document. The owner approved linking this PDF from the site.
+ * @typedef {object} CvPdf
+ * @property {string} href Absolute https URL of the PDF.
+ * @property {string} label Visible call-to-action text.
+ * @property {string} note File-type hint shown next to the label.
+ */
+
+/**
  * @typedef {object} Cv
  * @property {string} name
  * @property {string} headline
@@ -82,6 +90,7 @@ import { itemPath } from '../design/sections.js';
  * @property {LanguageEntry[]} languages
  * @property {AwardEntry[]} awards
  * @property {PublicationEntry[]} publications
+ * @property {CvPdf} pdf
  */
 
 /** @type {Cv} */
@@ -256,7 +265,12 @@ export const cv = {
 			year: '2024',
 			title: 'Surrogate modelling for railway digital twins'
 		}
-	]
+	],
+	pdf: {
+		href: 'https://github.com/PropovedNik007/cv/raw/main/Artur_Sogomonyan_cv_long.pdf',
+		label: 'Download CV',
+		note: 'PDF'
+	}
 };
 
 /**

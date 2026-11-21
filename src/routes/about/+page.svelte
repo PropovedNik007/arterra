@@ -21,10 +21,8 @@
 		title="About"
 		description="I work where models meet products: shaping the data, testing the method, building the service, and making the result understandable to the person using it."
 	>
-		<a
-			class="button primary"
-			href="https://github.com/PropovedNik007/cv/raw/main/Artur_Sogomonyan_cv_long.pdf"
-			>Download CV ↗</a
+		<a class="button primary" href={cv.pdf.href} target="_blank" rel="noopener noreferrer"
+			>{cv.pdf.label} ({cv.pdf.note}) <span aria-hidden="true">↗</span></a
 		>
 		<a class="button" href="{base}/projects">See projects</a>
 		<a class="button" href="{base}/contact">Get in touch</a>
