@@ -89,7 +89,10 @@ export function focusSubgraph(graph, focus) {
 	return induced(graph, ids);
 }
 
-/** Relationship weights for ranking related notes. */
+/**
+ * Relationship weights for ranking related notes.
+ * @type {Partial<Record<import('./build.js').EdgeKind, number>>}
+ */
 const WEIGHTS = { link: 4, org: 3, field: 2, topic: 1 };
 
 /**
@@ -114,7 +117,7 @@ export function relatedItems(graph, slug, limit = 3) {
 	};
 	for (const edge of graph.edges) {
 		if (edge.kind === 'link' && (edge.source === slug || edge.target === slug)) {
-			bump(edge.source === slug ? edge.target : edge.source, WEIGHTS.link);
+			bump(edge.source === slug ? edge.target : edge.source, WEIGHTS.link ?? 0);
 		}
 	}
 	const hubs = graph.edges.filter(
@@ -125,10 +128,11 @@ export function relatedItems(graph, slug, limit = 3) {
 	for (const edge of hubs) {
 		const via = edge.source === slug ? edge.target : edge.source;
 		const label = byId.get(via)?.label;
+		const weight = WEIGHTS[edge.kind] ?? 0;
 		for (const other of graph.edges) {
 			if (other.kind !== edge.kind) continue;
-			if (other.source === via) bump(other.target, WEIGHTS[edge.kind], label);
-			else if (other.target === via) bump(other.source, WEIGHTS[edge.kind], label);
+			if (other.source === via) bump(other.target, weight, label);
+			else if (other.target === via) bump(other.source, weight, label);
 		}
 	}
 	return [...scores.entries()]

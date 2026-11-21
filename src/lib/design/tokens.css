@@ -61,3 +61,14 @@
 [data-section='sport'] {
 	--accent: var(--accent-sport);
 }
+
+/* Knowledge graph palette. GraphView reads these at runtime (plain hex only),
+   so node and edge colours stay defined here alongside the section accents. */
+:root {
+	--graph-bg: #10110f;
+	--graph-field: #5fbf9f;
+	--graph-org: #a48be6;
+	--graph-topic: #8fa6bd;
+	--graph-edge: #57544c;
+	--graph-label: #ebe6dc;
+}
