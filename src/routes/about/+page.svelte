@@ -1,358 +1,306 @@
 <script>
-	import { Breadcrumb, BreadcrumbItem, Card, Button } from 'flowbite-svelte';
-	import { ArrowRightOutline, InstagramSolid, CodeOutline, LinkOutline } from 'flowbite-svelte-icons';
 	import { base } from '$app/paths';
-	import { onMount } from 'svelte';
+	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
+	import PageIntro from '$lib/components/ui/PageIntro.svelte';
 
-	let mounted = false;
-	onMount(() => {
-		mounted = true;
-	});
+	const experience = [
+		{
+			period: '2024',
+			role: 'Data Scientist · Rail4Future',
+			place: 'TU Wien',
+			text: 'Analyzed railway irregularities, strengthened LSTM experiments, and worked with Siemens and ÖBB collaborators.'
+		},
+		{
+			period: '2023–2025',
+			role: 'CTO & Data Scientist',
+			place: 'susteam',
+			text: 'Architected an ESG reporting product across OCR, retrieval, applied NLP, APIs, and product delivery.'
+		},
+		{
+			period: '2021',
+			role: 'Machine Learning Analyst',
+			place: 'GLOSAV',
+			text: 'Built real-time computer-vision methods for railway route and obstacle detection.'
+		},
+		{
+			period: '2020–2021',
+			role: 'Engineer & Project Manager',
+			place: 'Arterra Miniature',
+			text: 'Combined 3D modelling, prototyping, software, and end-to-end project delivery.'
+		},
+		{
+			period: '2017–2020',
+			role: 'Full-stack & Frontend Engineering',
+			place: 'Product teams and freelance',
+			text: 'Built and extended web products, commerce systems, and educational interfaces.'
+		}
+	];
+
+	const skills = {
+		'Applied ML': ['PyTorch', 'TensorFlow', 'scikit-learn', 'OpenCV', 'YOLO', 'NLP', 'RAG'],
+		'Product engineering': ['Python', 'FastAPI', 'Svelte', 'React', 'JavaScript', 'Docker'],
+		'Data & infrastructure': ['PostgreSQL', 'MongoDB', 'Redis', 'AWS', 'Linux', 'CI/CD']
+	};
 </script>
 
-<svelte:head>
-	<title>About - Artur Sogomonyan</title>
-	<meta name="description" content="About Artur Sogomonyan - Software Developer and 3D Printing Enthusiast" />
-</svelte:head>
+<svelte:head
+	><title>About — Artur Sogomonyan</title><meta
+		name="description"
+		content="About Artur Sogomonyan, a software and machine-learning engineer in Vienna."
+	/></svelte:head
+>
 
-<div class="content">
-	<Breadcrumb color="primary" aria-label="Default breadcrumb example">
-		<BreadcrumbItem color="primary" href="{base}/" home>Home</BreadcrumbItem>
-		<BreadcrumbItem href="{base}/about">About</BreadcrumbItem>
-	</Breadcrumb>
+<div class="shell page">
+	<Breadcrumb items={[{ label: 'About' }]} />
+	<PageIntro
+		eyebrow="Engineer, researcher, maker"
+		title="About"
+		description="I work where models meet products: shaping the data, testing the method, building the service, and making the result understandable to the person using it."
+	>
+		<a
+			class="button primary"
+			href="https://github.com/PropovedNik007/cv/raw/main/Artur_Sogomonyan_cv_long.pdf"
+			>Download CV ↗</a
+		>
+		<a class="button" href="{base}/contact">Get in touch</a>
+	</PageIntro>
 
-	<div class="about-container">
-		<div class="hero-section" class:fade-in={mounted}>
-			<div class="hero-content">
-				<h1>About Me</h1>
-				<p class="subtitle">Software Developer & Creative Maker</p>
-				<div class="hero-decoration"></div>
+	<section class="profile-grid">
+		<div class="portrait"><img src="{base}/images/profile.png" alt="Artur Sogomonyan" /></div>
+		<div class="manifesto">
+			<p class="eyebrow">How I work</p>
+			<h2>Technical depth without losing the shape of the problem.</h2>
+			<p>
+				I am most useful on ambiguous work: incomplete data, a model that needs a real product
+				around it, or a prototype that has to become dependable.
+			</p>
+			<p>
+				My background spans applied machine learning, computer vision, full-stack development, and
+				hands-on making. That mix makes me comfortable moving between research questions, system
+				boundaries, and user-facing details.
+			</p>
+			<div class="facts">
+				<div><strong>Vienna</strong><span>Based in Austria</span></div>
+				<div><strong>MSc</strong><span>Data Science · TU Wien</span></div>
+				<div><strong>4</strong><span>Languages spoken</span></div>
 			</div>
 		</div>
+	</section>
 
-		<div class="profile-section" class:slide-up={mounted}>
-			<Card class="profile-card" size="xl">
-				<div class="profile-content">
-					<div class="profile-text">
-						<h2>Hi, I'm Artur 👋</h2>
-						<p>
-							I'm a data scientist and deep learning engineer with a passion for creating intelligent systems. 
-							My expertise spans machine learning, computer vision, and natural language processing. 
-							When I'm not building AI models, you'll find me exploring various hobbies that combine technology and creativity.
-						</p>
-						<div class="profile-stats">
-							<div class="stat">
-								<span class="stat-number">5+</span>
-								<span class="stat-label">Years in AI</span>
-							</div>
-							<div class="stat">
-								<span class="stat-number">8+</span>
-								<span class="stat-label">Years in IT</span>
-							</div>
-							<div class="stat">
-								<span class="stat-number">20+</span>
-								<span class="stat-label">Projects</span>
-							</div>
-						</div>
+	<section class="resume-section">
+		<div class="section-label">
+			<p class="eyebrow">Experience</p>
+			<h2>A practical route through software and AI.</h2>
+		</div>
+		<div class="timeline">
+			{#each experience as entry (entry.role)}
+				<article>
+					<time>{entry.period}</time>
+					<div>
+						<h3>{entry.role}</h3>
+						<p class="place">{entry.place}</p>
+						<p>{entry.text}</p>
 					</div>
-					<div class="profile-image">
-						<div class="image-container">
-							<img src="{base}/images/profile.png" alt="Artur Sogomonyan" />
-							<div class="image-decoration"></div>
-						</div>
-					</div>
+				</article>
+			{/each}
+		</div>
+	</section>
+
+	<section class="resume-section skills-section">
+		<div class="section-label">
+			<p class="eyebrow">Toolkit</p>
+			<h2>Built around problems, not buzzwords.</h2>
+		</div>
+		<div class="skill-groups">
+			{#each Object.entries(skills) as [group, values] (group)}
+				<div>
+					<h3>{group}</h3>
+					<ul>
+						{#each values as value (value)}<li>{value}</li>{/each}
+					</ul>
 				</div>
-			</Card>
+			{/each}
 		</div>
+	</section>
 
-		<div class="interests-section" class:slide-up={mounted}>
-			<h2>My Interests</h2>
-			<div class="interests-grid">
-				<Card class="interest-card">
-					<div class="interest-icon">🏔️</div>
-					<h3>Hiking</h3>
-					<p>Exploring nature trails and challenging myself with new hiking adventures.</p>
-				</Card>
-				<Card class="interest-card">
-					<div class="interest-icon">🏓</div>
-					<h3>Table Tennis</h3>
-					<p>Enjoying fast-paced matches and improving my skills in this dynamic sport.</p>
-				</Card>
-				<Card class="interest-card">
-					<div class="interest-icon">🖨️</div>
-					<h3>3D Printing</h3>
-					<p>Creating and bringing digital designs to life through additive manufacturing.</p>
-				</Card>
+	<section class="education">
+		<p class="eyebrow">Education &amp; recognition</p>
+		<div class="education-grid">
+			<div><strong>MSc Data Science</strong><span>TU Wien · 2022–2025</span></div>
+			<div>
+				<strong>BSc Information Technologies</strong><span
+					>Bauman Moscow State Technical University · 2014–2020</span
+				>
+			</div>
+			<div>
+				<strong>Two 2nd-place finishes</strong><span
+					>AIM Hackathon &amp; Tourism Technology Hackathon</span
+				>
+			</div>
+			<div>
+				<strong>IEEE publication · 2024</strong><span
+					>Surrogate modelling for railway digital twins</span
+				>
 			</div>
 		</div>
-
-		<div class="social-section" class:slide-up={mounted}>
-			<h2>Connect With Me</h2>
-			<div class="social-links">
-				<a href="https://www.instagram.com/arterra.miniature" target="_blank" class="social-link">
-					<Card class="social-card">
-						<InstagramSolid class="w-6 h-6" />
-						<span>@arterra.miniature</span>
-					</Card>
-				</a>
-				<a href="https://github.com/PropovedNik007" target="_blank" class="social-link">
-					<Card class="social-card">
-						<CodeOutline class="w-6 h-6" />
-						<span>GitHub</span>
-					</Card>
-				</a>
-				<a href="https://linkedin.com/in/artur-sogomonyan" target="_blank" class="social-link">
-					<Card class="social-card">
-						<LinkOutline class="w-6 h-6" />
-						<span>LinkedIn</span>
-					</Card>
-				</a>
-			</div>
-		</div>
-	</div>
+	</section>
 </div>
 
 <style>
-	.content {
-		padding: 20px;
-		margin-top: 5vh;
-	}
-
-	.about-container {
-		max-width: 1200px;
-		margin: 0 auto;
-	}
-
-	.hero-section {
-		text-align: center;
-		margin-bottom: 4rem;
-		opacity: 0;
-		transform: translateY(20px);
-		transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-		position: relative;
-	}
-
-	.hero-content {
-		position: relative;
-		z-index: 1;
-	}
-
-	.hero-decoration {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		width: 300px;
-		height: 300px;
-		background: radial-gradient(circle, var(--color-primary-100) 0%, transparent 70%);
-		opacity: 0.3;
-		border-radius: 50%;
-		z-index: 0;
-	}
-
-	.hero-section.fade-in {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-	h1 {
-		color: var(--color-text-or);
-		font-size: 4rem;
-		font-weight: bold;
-		margin-bottom: 1rem;
-		background: linear-gradient(45deg, var(--color-text-or), var(--color-primary-600));
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		animation: gradient 8s ease infinite;
-	}
-
-	@keyframes gradient {
-		0% { background-position: 0% 50%; }
-		50% { background-position: 100% 50%; }
-		100% { background-position: 0% 50%; }
-	}
-
-	.subtitle {
-		font-size: 1.8rem;
-		color: var(--color-text);
-		opacity: 0.8;
-	}
-
-	.profile-section, .interests-section, .social-section {
-		margin-bottom: 4rem;
-		opacity: 0;
-		transform: translateY(20px);
-		transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-	}
-
-	.slide-up {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-
-	.profile-content {
+	.profile-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 3rem;
+		grid-template-columns: minmax(16rem, 0.72fr) 1.28fr;
+		gap: clamp(3rem, 8vw, 8rem);
 		align-items: center;
+		margin-bottom: var(--space-9);
 	}
-
-	.profile-text {
-		font-size: 1.1rem;
-		line-height: 1.8;
-	}
-
-	.profile-stats {
-		display: flex;
-		gap: 2rem;
-		margin-top: 2rem;
-	}
-
-	.stat {
-		text-align: center;
-	}
-
-	.stat-number {
-		display: block;
-		font-size: 2rem;
-		font-weight: bold;
-		color: var(--color-primary-600);
-	}
-
-	.stat-label {
-		font-size: 0.9rem;
-		color: var(--color-text);
-		opacity: 0.8;
-	}
-
-	.image-container {
+	.portrait {
 		position: relative;
-		width: 100%;
-		padding-top: 100%;
 	}
-
-	.profile-image img {
+	.portrait::before {
+		content: '';
 		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		border-radius: 0.5rem;
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-		transition: transform 0.3s ease;
-	}
-
-	.image-decoration {
-		position: absolute;
-		top: -20px;
-		right: -20px;
-		width: 100px;
-		height: 100px;
-		background: var(--color-primary-100);
-		border-radius: 20px;
-		opacity: 0.3;
+		inset: -1rem 1rem 1rem -1rem;
+		border: 1px solid var(--color-border-strong);
+		border-radius: var(--radius-xl);
 		z-index: -1;
 	}
-
-	.profile-image:hover img {
-		transform: scale(1.02);
+	.portrait img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 4 / 5;
+		border-radius: var(--radius-xl);
+		object-fit: cover;
+		filter: saturate(0.75) contrast(1.05);
 	}
-
-	.interests-grid {
+	.manifesto h2 {
+		max-width: 16ch;
+	}
+	.manifesto > p:not(.eyebrow) {
+		max-width: 42rem;
+		color: var(--color-text);
+		font-size: 1.08rem;
+	}
+	.facts {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
-		margin-top: 2rem;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--space-4);
+		margin-top: var(--space-7);
+		padding-top: var(--space-5);
+		border-top: 1px solid var(--color-border);
 	}
-
-	.interest-card {
-		background: linear-gradient(135deg, var(--color-surface-50) 0%, var(--color-surface-100) 100%);
-		border: none;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-		transition: all 0.3s ease;
-		padding: 2rem;
-		text-align: center;
+	.facts strong,
+	.facts span {
+		display: block;
 	}
-
-	.interest-icon {
-		font-size: 3rem;
-		margin-bottom: 1rem;
+	.facts strong {
+		color: var(--color-heading);
+		font-size: var(--text-lg);
 	}
-
-	.interest-card:hover {
-		transform: translateY(-10px);
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+	.facts span {
+		margin-top: 0.2rem;
+		color: var(--color-text-muted);
+		font-size: var(--text-xs);
 	}
-
-	.social-links {
+	.resume-section {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 1.5rem;
-		margin-top: 2rem;
+		grid-template-columns: 0.72fr 1.28fr;
+		gap: clamp(3rem, 8vw, 8rem);
+		padding-block: var(--space-9);
+		border-top: 1px solid var(--color-border);
 	}
-
-	.social-link {
-		text-decoration: none;
-		color: inherit;
+	.section-label h2 {
+		max-width: 11ch;
 	}
-
-	.social-card {
+	.timeline {
+		border-top: 1px solid var(--color-border);
+	}
+	.timeline article {
+		display: grid;
+		grid-template-columns: 7rem 1fr;
+		gap: var(--space-5);
+		padding: var(--space-5) 0;
+		border-bottom: 1px solid var(--color-border);
+	}
+	time {
+		color: var(--accent);
+		font: 700 var(--text-xs) var(--font-body);
+		letter-spacing: 0.08em;
+	}
+	.timeline h3 {
+		margin: 0;
+	}
+	.timeline p {
+		margin: 0.4rem 0 0;
+		color: var(--color-text-muted);
+	}
+	.timeline .place {
+		color: var(--color-text);
+		font-weight: 650;
+	}
+	.skill-groups {
+		display: grid;
+		gap: var(--space-5);
+	}
+	.skill-groups > div {
+		padding-bottom: var(--space-5);
+		border-bottom: 1px solid var(--color-border);
+	}
+	.skill-groups h3 {
+		margin-bottom: var(--space-4);
+	}
+	.skill-groups ul {
 		display: flex;
-		align-items: center;
-		gap: 1rem;
-		padding: 1.5rem;
-		background: linear-gradient(135deg, var(--color-surface-50) 0%, var(--color-surface-100) 100%);
-		border: none;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-		transition: all 0.3s ease;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin: 0;
+		padding: 0;
+		list-style: none;
 	}
-
-	.social-card:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+	.skill-groups li {
+		padding: 0.42rem 0.72rem;
+		border: 1px solid var(--color-border-strong);
+		border-radius: var(--radius-full);
+		color: var(--color-text);
+		font-size: var(--text-sm);
 	}
-
-	h2 {
-		color: var(--color-text-or);
-		font-size: 2.5rem;
-		margin-bottom: 2rem;
-		text-align: center;
+	.education {
+		padding-top: var(--space-9);
+		border-top: 1px solid var(--color-border);
 	}
-
-	h3 {
-		color: var(--color-text-or);
-		font-size: 1.8rem;
-		margin-bottom: 1rem;
+	.education-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-4);
 	}
-
-	@media (max-width: 768px) {
-		.profile-content {
+	.education-grid div {
+		padding: var(--space-5);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background: var(--color-bg-raised);
+	}
+	.education-grid strong,
+	.education-grid span {
+		display: block;
+	}
+	.education-grid strong {
+		color: var(--color-heading);
+	}
+	.education-grid span {
+		margin-top: var(--space-2);
+		color: var(--color-text-muted);
+	}
+	@media (max-width: 760px) {
+		.profile-grid,
+		.resume-section {
 			grid-template-columns: 1fr;
-			text-align: center;
 		}
-
-		.profile-image {
-			display: flex;
-			justify-content: center;
+		.portrait {
+			max-width: 26rem;
 		}
-
-		.image-container {
-			width: 80%;
-			margin: 0 auto;
-		}
-
-		.profile-stats {
-			justify-content: center;
-		}
-
-		h1 {
-			font-size: 3rem;
-		}
-
-		.subtitle {
-			font-size: 1.5rem;
+		.facts,
+		.education-grid {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>

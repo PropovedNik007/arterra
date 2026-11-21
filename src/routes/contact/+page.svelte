@@ -1,208 +1,187 @@
 <script>
-	import { Breadcrumb, BreadcrumbItem, Card, Button, Input, Textarea } from 'flowbite-svelte';
-	import { ArrowRightOutline, EnvelopeOutline, PhoneOutline } from 'flowbite-svelte-icons';
-	import { base } from '$app/paths';
+	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
+	import PageIntro from '$lib/components/ui/PageIntro.svelte';
+	import EnvelopeIcon from '$lib/icons/EnvelopeIcon.svelte';
+	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
+	import LinkedinIcon from '$lib/icons/LinkedinIcon.svelte';
+	import GithubIcon from '$lib/icons/GithubIcon.svelte';
 
-	let name = '';
-	let email = '';
-	let message = '';
-	let subject = '';
-
-	function handleSubmit() {
-		// Create mailto link with form data
-		const mailtoLink = `mailto:arthur.sogomonyan@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0A${message}`)}`;
-		
-		// Open default email client in a new window
-		window.open(mailtoLink, '_blank');
-		
-		// Reset form
-		name = '';
-		email = '';
-		subject = '';
-		message = '';
-	}
+	const contacts = [
+		{
+			label: 'Email',
+			value: 'arthur.sogomonyan@gmail.com',
+			href: 'mailto:arthur.sogomonyan@gmail.com',
+			icon: EnvelopeIcon
+		},
+		{ label: 'Telegram', value: '@arterrai', href: 'https://t.me/arterrai', icon: TelegramIcon },
+		{
+			label: 'LinkedIn',
+			value: 'artur-sogomonyan',
+			href: 'https://linkedin.com/in/artur-sogomonyan',
+			icon: LinkedinIcon
+		},
+		{
+			label: 'GitHub',
+			value: 'PropovedNik007',
+			href: 'https://github.com/PropovedNik007',
+			icon: GithubIcon
+		}
+	];
 </script>
 
-<svelte:head>
-	<title>Contact - Artur Sogomonyan</title>
-	<meta name="description" content="Contact Artur Sogomonyan" />
-</svelte:head>
+<svelte:head
+	><title>Contact — Artur Sogomonyan</title><meta
+		name="description"
+		content="Contact Artur Sogomonyan about applied AI, machine learning, and product engineering work."
+	/></svelte:head
+>
 
-
-<div class="content">
-	<Breadcrumb color="primary" aria-label="Default breadcrumb example">
-		<BreadcrumbItem color="primary" href="{base}/" home>Home</BreadcrumbItem>
-		<BreadcrumbItem href="{base}/projects">Projects</BreadcrumbItem>
-		<!-- <BreadcrumbItem>Flowbite Svelte</BreadcrumbItem> -->
-	</Breadcrumb>
-</div>
-
-<div class="contact-page">
-
-	<h1>Get in Touch</h1>
-	
-	<div class="contact-container">
-		<div class="contact-info">
-			<Card>
-				<h2>Contact Information</h2>
-				<p>Feel free to reach out to me through any of the following channels:</p>
-				
-				<div class="contact-methods">
-					<div class="contact-method">
-						<EnvelopeOutline class="w-6 h-6 text-primary-600" />
-						<a href="mailto:arthur.sogomonyan@gmail.com">arthur.sogomonyan@gmail.com</a>
+<div class="shell page">
+	<Breadcrumb items={[{ label: 'Contact' }]} />
+	<PageIntro
+		eyebrow="Open channel"
+		title="Let’s make the problem concrete."
+		description="If you are working on an applied-AI product, a computer-vision pipeline, or a system that needs both model and interface thinking, send me the context."
+	/>
+	<div class="contact-layout">
+		<section class="message-card">
+			<p class="eyebrow">A useful first message</p>
+			<h2>Three details are enough.</h2>
+			<ol>
+				<li>
+					<span>01</span>
+					<div>
+						<strong>The outcome</strong>
+						<p>What should work when we are done?</p>
 					</div>
-					
-					<div class="contact-method">
-						<PhoneOutline class="w-6 h-6 text-primary-600" />
-						<a href="https://wa.me/4367764114581">+43 677 641 145 81</a>
+				</li>
+				<li>
+					<span>02</span>
+					<div>
+						<strong>The current constraint</strong>
+						<p>Data, model quality, delivery, time, or something else?</p>
 					</div>
-					
-					<div class="contact-method">
-						<div class="icon-placeholder linkedin-icon"></div>
-						<a href="https://linkedin.com/in/artur-sogomonyan" target="_blank">LinkedIn Profile</a>
+				</li>
+				<li>
+					<span>03</span>
+					<div>
+						<strong>The next decision</strong>
+						<p>What do you need to decide after our conversation?</p>
 					</div>
-					
-					<div class="contact-method">
-						<div class="icon-placeholder github-icon"></div>
-						<a href="https://github.com/PropovedNik007" target="_blank">GitHub Profile</a>
-					</div>
-				</div>
-				
-				<div class="download-cv">
-					<Button class="bg-primary-600" on:click={() => {
-						const link = document.createElement('a');
-						link.href = 'https://github.com/PropovedNik007/cv/raw/main/Artur_Sogomonyan_cv_long.pdf';
-						link.download = 'Artur_Sogomonyan_CV.pdf';
-						document.body.appendChild(link);
-						link.click();
-						document.body.removeChild(link);
-					}}>
-						Download CV <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-					</Button>
-				</div>
-			</Card>
-		</div>
-		
-		<div class="contact-form">
-			<Card>
-				<h2>Send Me a Message</h2>
-				<p>Have a question or want to work together? Fill out the form below:</p>
-				
-				<form on:submit|preventDefault={handleSubmit}>
-					<div class="form-group">
-						<label for="name">Name</label>
-						<Input id="name" type="text" placeholder="Your name" bind:value={name} required />
-					</div>
-					
-					<div class="form-group">
-						<label for="email">Email</label>
-						<Input id="email" type="email" placeholder="Your email" bind:value={email} required />
-					</div>
-					
-					<div class="form-group">
-						<label for="subject">Subject</label>
-						<Input id="subject" type="text" placeholder="Subject" bind:value={subject} required />
-					</div>
-					
-					<div class="form-group">
-						<label for="message">Message</label>
-						<Textarea id="message" placeholder="Your message" bind:value={message} rows="5" required />
-					</div>
-					
-					<Button type="submit" class="bg-primary-600">
-						Send Message <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-					</Button>
-				</form>
-			</Card>
-		</div>
+				</li>
+			</ol>
+			<a
+				class="button primary"
+				href="mailto:arthur.sogomonyan@gmail.com?subject=Project%20conversation">Write an email</a
+			>
+		</section>
+		<section class="channels" aria-label="Contact channels">
+			{#each contacts as contact (contact.label)}
+				<a
+					href={contact.href}
+					target={contact.href.startsWith('http') ? '_blank' : undefined}
+					rel={contact.href.startsWith('http') ? 'noreferrer' : undefined}
+				>
+					<svelte:component this={contact.icon} class="contact-icon" />
+					<div><span>{contact.label}</span><strong>{contact.value}</strong></div>
+					<b aria-hidden="true">↗</b>
+				</a>
+			{/each}
+		</section>
 	</div>
 </div>
 
 <style>
-
-    .content {
-		padding: 20px;
-		margin-top: 5vh;
-	}
-	.contact-page {
-		max-width: 1200px;
-		margin: 0 auto;
-
-	}
-	
-	h1 {
-		color: var(--color-text-or);
-		font-size: 2.5rem;
-		font-weight: bold;
-		margin-bottom: 2rem;
-	}
-	
-	h2 {
-		color: var(--color-text-or);
-		font-size: 1.8rem;
-		font-weight: bold;
-		margin-bottom: 1rem;
-	}
-	
-	.contact-container {
+	.contact-layout {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 2rem;
+		grid-template-columns: 1.1fr 0.9fr;
+		gap: var(--space-6);
 	}
-	
-	.contact-info, .contact-form {
-		width: 100%;
+	.message-card,
+	.channels {
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-xl);
+		background: var(--color-bg-raised);
 	}
-	
-	.contact-methods {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		margin: 1.5rem 0;
+	.message-card {
+		padding: clamp(2rem, 5vw, 4rem);
 	}
-	
-	.contact-method {
-		display: flex;
+	.message-card h2 {
+		max-width: 12ch;
+	}
+	ol {
+		margin: var(--space-7) 0;
+		padding: 0;
+		list-style: none;
+		border-top: 1px solid var(--color-border);
+	}
+	li {
+		display: grid;
+		grid-template-columns: 2rem 1fr;
+		gap: var(--space-4);
+		padding: var(--space-5) 0;
+		border-bottom: 1px solid var(--color-border);
+	}
+	li > span {
+		color: var(--accent);
+		font-size: var(--text-xs);
+		font-weight: 700;
+	}
+	li strong {
+		color: var(--color-heading);
+	}
+	li p {
+		margin: 0.25rem 0 0;
+		color: var(--color-text-muted);
+	}
+	.channels {
+		overflow: hidden;
+	}
+	.channels a {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
 		align-items: center;
-		gap: 1rem;
-	}
-	
-	.contact-method a {
+		gap: var(--space-4);
+		min-height: 7.5rem;
+		padding: var(--space-5);
+		border-bottom: 1px solid var(--color-border);
 		color: var(--color-text);
+		transition: background 180ms ease;
+	}
+	.channels a:last-child {
+		border-bottom: 0;
+	}
+	.channels a:hover {
+		background: var(--color-bg-elevated);
 		text-decoration: none;
-		transition: color 0.3s ease;
 	}
-	
-	.contact-method a:hover {
-		color: var(--color-text-or);
+	.channels :global(.contact-icon) {
+		width: 1.4rem;
+		height: 1.4rem;
+		color: var(--accent);
 	}
-	
-	.download-cv {
-		margin-top: 2rem;
-	}
-	
-	.form-group {
-		margin-bottom: 1.5rem;
-	}
-	
-	label {
+	.channels span,
+	.channels strong {
 		display: block;
-		margin-bottom: 0.5rem;
-		font-weight: 500;
 	}
-	
-	.icon-placeholder {
-		width: 1.5rem;
-		height: 1.5rem;
-		background-color: var(--color-primary-600);
-		border-radius: 50%;
+	.channels span {
+		color: var(--color-text-muted);
+		font-size: var(--text-xs);
+		font-weight: 700;
+		letter-spacing: 0.09em;
+		text-transform: uppercase;
 	}
-	
-	/* Responsive design */
-	@media (max-width: 768px) {
-		.contact-container {
+	.channels strong {
+		margin-top: 0.25rem;
+		color: var(--color-heading);
+		overflow-wrap: anywhere;
+	}
+	.channels b {
+		color: var(--accent);
+	}
+	@media (max-width: 800px) {
+		.contact-layout {
 			grid-template-columns: 1fr;
 		}
 	}
-</style> 
+</style>

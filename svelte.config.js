@@ -23,9 +23,9 @@ const config = {
 		paths: {
 			// base,
 			// base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
-			base: dev ? '' : process.env.BASE_PATH ?? '/arterra'
+			base: dev ? '' : (process.env.BASE_PATH ?? '/arterra')
 			// base: process.env.BASE_PATH ?? '/arterra'
-        },
+		},
 		prerender: {
 			handleHttpError: ({ status, path, referrer }) => {
 				if (status === 404) {

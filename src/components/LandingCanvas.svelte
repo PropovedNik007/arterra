@@ -1,219 +1,186 @@
-<!-- LandingCanvas.svelte -->
 <script lang="ts">
-  import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
-  let canvas: HTMLCanvasElement;
-  let ctx: CanvasRenderingContext2D;
-  let width: number;
-  let height: number;
-  let points: Point[] = [];
-  let target = { x: 0, y: 0 };
-  let animateHeader = true;
+	let canvas: HTMLCanvasElement;
 
-  interface Point {
-    x: number;
-    y: number;
-    originX: number;
-    originY: number;
-    closest?: Point[];
-    circle?: Circle;
-    active?: number;
-  }
+	interface Point {
+		x: number;
+		y: number;
+		originX: number;
+		originY: number;
+		closest?: Point[];
+		circle?: Circle;
+		active?: number;
+	}
 
-  class Circle {
-    pos: Point;
-    radius: number;
-    color: string;
-    active?: number;
+	class Circle {
+		pos: Point;
+		radius: number;
+		active?: number;
+		context: CanvasRenderingContext2D;
 
-    constructor(pos: Point, radius: number, color: string) {
-      this.pos = pos;
-      this.radius = radius;
-      this.color = color;
-    }
+		constructor(pos: Point, radius: number, context: CanvasRenderingContext2D) {
+			this.pos = pos;
+			this.radius = radius;
+			this.context = context;
+		}
 
-    draw() {
-      if (!this.active) return;
-      ctx.beginPath();
-      ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI, false);
-      ctx.fillStyle = `rgba(156,217,249,${this.active})`;
-      // ctx.fillStyle = `rgba(228,213,183,${this.active})`;
-      ctx.fill();
-    }
-  }
+		draw() {
+			if (!this.active) return;
+			this.context.beginPath();
+			this.context.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI, false);
+			this.context.fillStyle = `rgba(156,217,249,${this.active})`;
+			this.context.fill();
+		}
+	}
 
-  const initHeader = () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    target = { x: width / 2, y: height / 2 };
+	onMount(() => {
+		let context = canvas.getContext('2d')!;
+		let width = window.innerWidth;
+		let height = window.innerHeight;
+		let points: Point[] = [];
+		let target = { x: width / 2, y: height / 2 };
+		let animateHeader = true;
+		let frame = 0;
+		let disposed = false;
+		let gsapContext: typeof import('gsap').gsap | null = null;
 
-    if (canvas) {
-      canvas.width = width;
-      canvas.height = height;
-      ctx = canvas.getContext('2d')!;
-    }
+		const getDistance = (p1: { x: number; y: number }, p2: { x: number; y: number }) =>
+			Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
 
-    // create points
-    points = [];
-    for (let x = 0; x < width; x += width / 20) {
-      for (let y = 0; y < height; y += height / 20) {
-        const px = x + Math.random() * width / 20;
-        const py = y + Math.random() * height / 20;
-        const p = { x: px, originX: px, y: py, originY: py };
-        points.push(p);
-      }
-    }
+		function initHeader() {
+			width = window.innerWidth;
+			height = window.innerHeight;
+			target = { x: width / 2, y: height / 2 };
+			canvas.width = width;
+			canvas.height = height;
+			context = canvas.getContext('2d')!;
 
-    // for each point find the 5 closest points
-    for (let i = 0; i < points.length; i++) {
-      const closest: Point[] = [];
-      const p1 = points[i];
-      for (let j = 0; j < points.length; j++) {
-        const p2 = points[j];
-        if (!(p1 === p2)) {
-          let placed = false;
-          for (let k = 0; k < 5; k++) {
-            if (!placed) {
-              if (closest[k] === undefined) {
-                closest[k] = p2;
-                placed = true;
-              }
-            }
-          }
+			points = [];
+			for (let x = 0; x < width; x += width / 20) {
+				for (let y = 0; y < height; y += height / 20) {
+					const px = x + Math.random() * (width / 20);
+					const py = y + Math.random() * (height / 20);
+					points.push({ x: px, originX: px, y: py, originY: py });
+				}
+			}
 
-          for (let k = 0; k < 5; k++) {
-            if (!placed) {
-              if (getDistance(p1, p2) < getDistance(p1, closest[k])) {
-                closest[k] = p2;
-                placed = true;
-              }
-            }
-          }
-        }
-      }
-      p1.closest = closest;
-    }
+			for (const point of points) {
+				const closest: Point[] = [];
+				for (const candidate of points) {
+					if (point === candidate) continue;
+					let placed = false;
+					for (let index = 0; index < 5; index += 1) {
+						if (!placed && closest[index] === undefined) {
+							closest[index] = candidate;
+							placed = true;
+						}
+					}
+					for (let index = 0; index < 5; index += 1) {
+						if (!placed && getDistance(point, candidate) < getDistance(point, closest[index])) {
+							closest[index] = candidate;
+							placed = true;
+						}
+					}
+				}
+				point.closest = closest;
+				point.circle = new Circle(point, 2 + Math.random() * 2, context);
+			}
+		}
 
-    // assign a circle to each point
-    for (const p of points) {
-      const c = new Circle(p, 2 + Math.random() * 2, 'rgba(255,255,255,0.3)');
-      // const c = new Circle(p, 2 + Math.random() * 2, 'rgba(228,213,183,0.3)');
-      p.circle = c;
-    }
-  };
+		function drawLines(point: Point) {
+			if (!point.active) return;
+			for (const closest of point.closest!) {
+				context.beginPath();
+				context.moveTo(point.x, point.y);
+				context.lineTo(closest.x, closest.y);
+				context.strokeStyle = `rgba(156,217,249,${point.active})`;
+				context.stroke();
+			}
+		}
 
-  const getDistance = (p1: Point, p2: Point): number => {
-    return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
-  };
+		function shiftPoint(point: Point) {
+			if (!gsapContext || disposed) return;
+			gsapContext.to(point, {
+				duration: 1 + Math.random(),
+				x: point.originX - 50 + Math.random() * 100,
+				y: point.originY - 50 + Math.random() * 100,
+				ease: 'circ.inOut',
+				onComplete: () => shiftPoint(point)
+			});
+		}
 
-  const drawLines = (p: Point) => {
-    if (!p.active) return;
-    for (const closest of p.closest!) {
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y);
-      ctx.lineTo(closest.x, closest.y);
-      ctx.strokeStyle = `rgba(156,217,249,${p.active})`;
-      // ctx.strokeStyle = `rgba(228,213,183,${p.active})`;
-      ctx.stroke();
-    }
-  };
+		function animate() {
+			if (animateHeader) {
+				context.clearRect(0, 0, width, height);
+				for (const point of points) {
+					const distance = Math.abs(getDistance(target, point));
+					if (distance < 4000) {
+						point.active = 0.3;
+						point.circle!.active = 0.6;
+					} else if (distance < 20000) {
+						point.active = 0.1;
+						point.circle!.active = 0.3;
+					} else if (distance < 40000) {
+						point.active = 0.02;
+						point.circle!.active = 0.1;
+					} else {
+						point.active = 0;
+						point.circle!.active = 0;
+					}
+					drawLines(point);
+					point.circle!.draw();
+				}
+			}
+			frame = requestAnimationFrame(animate);
+		}
 
-  const shiftPoint = (p: Point) => {
-    import('gsap').then(({ TweenLite }) => {
-      TweenLite.to(p, 1 + 1 * Math.random(), {
-        x: p.originX - 50 + Math.random() * 100,
-        y: p.originY - 50 + Math.random() * 100,
-        ease: 'Circ.easeInOut',
-        onComplete: () => {
-          shiftPoint(p);
-        }
-      });
-    });
-  };
+		function mouseMove(event: MouseEvent) {
+			target.x = event.pageX;
+			target.y = event.pageY;
+		}
 
-  const animate = () => {
-    if (animateHeader) {
-      ctx.clearRect(0, 0, width, height);
-      for (const p of points) {
-        if (Math.abs(getDistance(target, p)) < 4000) {
-          p.active = 0.3;
-          p.circle!.active = 0.6;
-        } else if (Math.abs(getDistance(target, p)) < 20000) {
-          p.active = 0.1;
-          p.circle!.active = 0.3;
-        } else if (Math.abs(getDistance(target, p)) < 40000) {
-          p.active = 0.02;
-          p.circle!.active = 0.1;
-        } else {
-          p.active = 0;
-          p.circle!.active = 0;
-        }
+		function scrollCheck() {
+			animateHeader = window.scrollY <= height;
+		}
 
-        drawLines(p);
-        p.circle!.draw();
-      }
-    }
-    requestAnimationFrame(animate);
-  };
+		function resize() {
+			width = window.innerWidth;
+			height = window.innerHeight;
+			canvas.width = width;
+			canvas.height = height;
+		}
 
-  const initAnimation = () => {
-    animate();
-    for (const p of points) {
-      shiftPoint(p);
-    }
-  };
+		initHeader();
+		import('gsap').then(({ gsap }) => {
+			if (disposed) return;
+			gsapContext = gsap;
+			for (const point of points) shiftPoint(point);
+		});
+		animate();
+		if (!('ontouchstart' in window)) window.addEventListener('mousemove', mouseMove);
+		window.addEventListener('scroll', scrollCheck);
+		window.addEventListener('resize', resize);
 
-  const mouseMove = (e: MouseEvent) => {
-    let posx = 0;
-    let posy = 0;
-    if (e.pageX || e.pageY) {
-      posx = e.pageX;
-      posy = e.pageY;
-    } else if (e.clientX || e.clientY) {
-      posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-      posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-    }
-    target.x = posx;
-    target.y = posy;
-  };
-
-  const scrollCheck = () => {
-    if (document.body.scrollTop > height) animateHeader = false;
-    else animateHeader = true;
-  };
-
-  const resize = () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    if (canvas) {
-      canvas.width = width;
-      canvas.height = height;
-    }
-  };
-
-  const addListeners = () => {
-    if (!('ontouchstart' in window)) {
-      window.addEventListener('mousemove', mouseMove);
-    }
-    window.addEventListener('scroll', scrollCheck);
-    window.addEventListener('resize', resize);
-  };
-
-  onMount(() => {
-    initHeader();
-    initAnimation();
-    addListeners();
-  });
+		return () => {
+			disposed = true;
+			cancelAnimationFrame(frame);
+			gsapContext?.killTweensOf(points);
+			window.removeEventListener('mousemove', mouseMove);
+			window.removeEventListener('scroll', scrollCheck);
+			window.removeEventListener('resize', resize);
+		};
+	});
 </script>
 
-<style>
-  #demo-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    pointer-events: none;
-  }
-</style>
+<canvas id="demo-canvas" bind:this={canvas} aria-hidden="true"></canvas>
 
-<canvas id="demo-canvas" bind:this={canvas}></canvas>
+<style>
+	#demo-canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		pointer-events: none;
+	}
+</style>

@@ -12,29 +12,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
+          cache: npm
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm ci
 
       - name: Build site
         env:
           BASE_PATH: '/${{ github.event.repository.name }}' # Set the correct base path
         run: |
-          pnpm build
+          npm run build
 
       - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3.9.1
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build  # Directory to deploy
-          publish_branch: gh-pages  # Deploy to gh-pages branch
+          publish_dir: build
+          publish_branch: gh-pages

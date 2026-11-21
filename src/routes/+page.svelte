@@ -1,24 +1,119 @@
 <script>
-	import space from '$lib/images/space.jpg';
-
+	import { base } from '$app/paths';
 	import LandingCanvas from '../components/LandingCanvas.svelte';
+	import ContentCard from '$lib/components/cards/ContentCard.svelte';
 
-	import Projects from '../components/projects/Projects.svelte';
-	import Skills from '../components/skills/Skills.svelte';
-	import SkillsRadar from '../components/skills/SkillsRadar.svelte';
-	import Education from '../components/education/Education.svelte';
-	import Cv from '../components/Cv.svelte';
-
-	const tabs = ['Projects', 'Education', 'Work Expirience', 'Skills'];
+	let { data } = $props();
 	let activeTab = $state('Projects');
+	/** @type {HTMLDivElement | undefined} */
+	let tabAnchor;
+
+	const tabs = ['Projects', 'Education', 'Work Experience', 'Skills'];
+	const focus = [
+		'Data Scientist',
+		'Machine Learning Engineer',
+		'Computer Vision',
+		'Deep Learning',
+		'Full-stack Development'
+	];
+	const education = [
+		{
+			degree: 'Master of Science · Data Science',
+			school: 'Technische Universität Wien',
+			period: '2022–2025'
+		},
+		{
+			degree: 'Bachelor of Science · Information Technologies and Telecommunications',
+			school: 'Bauman Moscow State Technical University',
+			period: '2014–2020'
+		},
+		{
+			degree: 'Deep Learning School',
+			school: 'Moscow Institute of Physics and Technology',
+			period: '2020–2021'
+		},
+		{
+			degree: 'School of Data Analysis',
+			school: 'Higher School of Economics University and Yandex',
+			period: '2020'
+		}
+	];
+	const experience = [
+		{
+			role: 'Data Scientist · Rail4Future',
+			place: 'Technische Universität Wien',
+			period: '2024',
+			text: 'Rail-irregularity analysis and LSTM modelling with Siemens and ÖBB.'
+		},
+		{
+			role: 'CTO · Data Scientist',
+			place: 'susteam',
+			period: '2023–present',
+			text: 'Architecture and full-stack development for an ESG reporting platform.'
+		},
+		{
+			role: 'Machine Learning Analyst',
+			place: 'GLOSAV',
+			period: '2021',
+			text: 'Real-time railway-route and obstacle detection using computer vision.'
+		},
+		{
+			role: 'Project Manager · Software Engineer',
+			place: 'Arterra Miniature',
+			period: '2020–2021',
+			text: '3D visualisation, prototyping, software, and delivery management.'
+		}
+	];
+	const skillGroups = [
+		{
+			title: 'Software development',
+			items: ['Python', 'C++', 'JavaScript', 'Svelte', 'React', 'FastAPI', 'Docker']
+		},
+		{
+			title: 'Machine learning',
+			items: ['PyTorch', 'TensorFlow', 'OpenCV', 'scikit-learn', 'NLP', 'RAG', 'LLMs']
+		},
+		{
+			title: 'Data & infrastructure',
+			items: ['PostgreSQL', 'MongoDB', 'Redis', 'AWS', 'Linux', 'nginx', 'Git']
+		}
+	];
+	const channels = [
+		{
+			path: '/projects',
+			number: '01',
+			title: 'Projects',
+			text: 'Applied AI, computer vision, RAG, and full-stack systems.'
+		},
+		{
+			path: '/diy',
+			number: '02',
+			title: 'DIY',
+			text: 'Miniatures, 3D printing, and hands-on experiments.'
+		},
+		{
+			path: '/sport',
+			number: '03',
+			title: 'Sport',
+			text: 'Hiking, boxing, diving, and table-tennis notes.'
+		},
+		{
+			path: '/graph',
+			number: '04',
+			title: 'Graph',
+			text: 'Explore how projects and technologies connect.'
+		}
+	];
 
 	/** @param {string} tab */
 	function selectTab(tab) {
 		activeTab = tab;
-		window.scrollTo({
-			top: window.innerHeight * 0.8,
-			behavior: 'smooth'
-		});
+		requestAnimationFrame(() => tabAnchor?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+	}
+
+	/** @param {string} tab */
+	function tabId(tab) {
+		return `home-tab-${tab.toLowerCase().replaceAll(' ', '-')}`;
 	}
 </script>
 
@@ -26,362 +121,470 @@
 	<title>Artur Sogomonyan — Software &amp; ML Engineer</title>
 	<meta
 		name="description"
-		content="Artur Sogomonyan is a software and machine-learning engineer in Vienna, building ML systems, computer-vision pipelines, and full-stack products. Explore projects, an interactive knowledge graph, and more."
-	/>
-	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Artur Sogomonyan — Software &amp; ML Engineer" />
-	<meta
-		property="og:description"
-		content="Software &amp; ML engineer in Vienna. Machine learning, computer vision, and full-stack development."
+		content="Software and machine-learning engineer in Vienna building applied AI systems, computer-vision pipelines, and full-stack products."
 	/>
 </svelte:head>
 
-<section class="landing">
-	<LandingCanvas />
-	<div class="hero-inner">
-		<div class="name-header">
-			<p class="eyebrow">Software &amp; ML Engineer · Vienna</p>
-			<h1>Artur <br /> Sogomonyan</h1>
-		</div>
-		<div class="description">
-			<p class="lead">
-				I build machine-learning systems, computer-vision pipelines, and full-stack products —
-				and keep a public knowledge graph of the work along the way.
-			</p>
-			<ul class="focus-list">
-				<li>Machine Learning</li>
-				<li>Computer Vision</li>
-				<li>Deep Learning</li>
-				<li>Full-stack Development</li>
-			</ul>
-
-			<div class="button-container">
-				<a
-					class="btn btn-primary"
-					href="https://wa.me/4367764114581?text=Dear Artur%20I'm%20interested%20to%20work%20with%20you"
-					target="_blank"
-					rel="noreferrer"
-				>
-					Get in touch
-				</a>
-
-				<button
-					class="btn btn-ghost"
-					on:click={() => {
-						const link = document.createElement('a');
-						link.href =
-							'https://github.com/PropovedNik007/cv/raw/main/Artur_Sogomonyan_cv_long.pdf';
-						link.download = 'Artur_Sogomonyan_CV.pdf';
-						document.body.appendChild(link);
-						link.click();
-						document.body.removeChild(link);
-					}}
-				>
-					Download CV
-				</button>
+<div class="tab-flow">
+	<section class="landing">
+		<LandingCanvas />
+		<div class="shell hero-inner">
+			<div class="name-header">
+				<p class="eyebrow">Software &amp; ML Engineer · Vienna</p>
+				<h1>Artur<br />Sogomonyan</h1>
 			</div>
+			<div class="description">
+				{#each focus as item (item)}<p>{item}</p>{/each}
+				<div class="hero-actions">
+					<a class="button light" href="{base}/projects">Explore projects</a>
+					<a class="button glass" href="{base}/contact">Get in touch</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="tab-anchor" bind:this={tabAnchor} aria-hidden="true"></div>
+	<div class="tab-menu" role="tablist" aria-label="Portfolio sections">
+		{#each tabs as tab (tab)}
+			<button
+				id={tabId(tab)}
+				type="button"
+				role="tab"
+				class:active={activeTab === tab}
+				aria-selected={activeTab === tab}
+				aria-controls="home-tab-panel"
+				onclick={() => selectTab(tab)}
+			>
+				{tab}
+			</button>
+		{/each}
+	</div>
+
+	<div
+		id="home-tab-panel"
+		class="shell page tab-section"
+		role="tabpanel"
+		aria-labelledby={tabId(activeTab)}
+	>
+		{#key activeTab}
+			<div class="tab-content">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Portfolio / {activeTab}</p>
+						<h2>{activeTab}</h2>
+					</div>
+					{#if activeTab === 'Projects'}<a href="{base}/projects">All projects →</a>{/if}
+				</div>
+
+				{#if activeTab === 'Projects'}
+					<div class="project-grid">
+						{#each data.projects as item (item.slug)}<ContentCard {item} />{/each}
+					</div>
+				{:else if activeTab === 'Education'}
+					<div class="timeline-grid">
+						{#each education as item (item.degree)}
+							<article>
+								<time>{item.period}</time>
+								<h3>{item.degree}</h3>
+								<p>{item.school}</p>
+							</article>
+						{/each}
+					</div>
+				{:else if activeTab === 'Work Experience'}
+					<div class="timeline-grid">
+						{#each experience as item (item.role)}
+							<article>
+								<time>{item.period}</time>
+								<h3>{item.role}</h3>
+								<b>{item.place}</b>
+								<p>{item.text}</p>
+							</article>
+						{/each}
+					</div>
+				{:else}
+					<div class="skill-grid">
+						{#each skillGroups as group (group.title)}
+							<article>
+								<h3>{group.title}</h3>
+								<ul>
+									{#each group.items as item (item)}<li>{item}</li>{/each}
+								</ul>
+							</article>
+						{/each}
+					</div>
+				{/if}
+			</div>
+		{/key}
+	</div>
+</div>
+
+<section class="channels">
+	<div class="shell page">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Explore</p>
+				<h2>Work, making, and movement.</h2>
+			</div>
+		</div>
+		<div class="channel-grid">
+			{#each channels as channel (channel.path)}
+				<a href={`${base}${channel.path}`}>
+					<span>{channel.number}</span>
+					<h3>{channel.title}</h3>
+					<p>{channel.text}</p>
+					<b aria-hidden="true">↗</b>
+				</a>
+			{/each}
 		</div>
 	</div>
 </section>
 
-<div class="menu" role="tablist" aria-label="CV sections">
-	{#each tabs as tab (tab)}
-		<button
-			type="button"
-			role="tab"
-			class="menu-tab"
-			class:active={activeTab === tab}
-			aria-selected={activeTab === tab}
-			on:click={() => selectTab(tab)}
-		>
-			{tab}
-		</button>
-	{/each}
-</div>
-
-<div class="tab-panel" class:wide={activeTab === 'Projects'}>
-	{#if activeTab === 'Projects'}
-		<Projects />
-	{:else if activeTab === 'Education'}
-		<Education />
-	{:else if activeTab === 'Work Expirience'}
-		<div class="work-experience">
-			<p>
-				<b>Data Scientist, Project Rail4Future</b> <br /> Technische Universität Wien, Feb 2024 - Jul
-				2024
-			</p>
-			<ul>
-				<li>
-					Analyzed rail irregularities, optimized LSTM models, and collaborated with Siemens and
-					ÖBB.
-				</li>
-				<li>Performed significance tests and improved model robustness and performance.</li>
-			</ul>
-			<p><b>CTO, Data Scientist</b> <br /> susteam, Jan 2023 - present</p>
-			<ul>
-				<li>
-					Developed architecture and Full Stack ESG system with OCR, Data Analysis, and Machine
-					Learning.
-				</li>
-				<li>
-					Implemented RAG for LLMs using technologies like FastAPI, AWS, React.js, Bert, and LLama3.
-				</li>
-			</ul>
-			<p><b>Machine Learning Analyst</b> <br /> GLOSAV, Feb 2021 - Jul 2021</p>
-			<ul>
-				<li>
-					Engineered algorithms for object detection and tracking in railway routes, contributing to
-					a train autopilot system.
-				</li>
-			</ul>
-			<p>
-				<b>Project Manager, 3D-Modeller, Software Engineer</b> <br /> Arterra Miniature, Feb 2020 - Mar
-				2021
-			</p>
-			<ul>
-				<li>
-					Handled 3D visualization, prototyping, and project management from inception to delivery.
-				</li>
-			</ul>
-		</div>
-	{:else if activeTab === 'Skills'}
-		<div class="skills-container">
-			<Skills />
-			<div class="radar">
-				<SkillsRadar />
-			</div>
-		</div>
-	{/if}
-</div>
-
-<div class="content">
-	<Cv />
-</div>
-
 <style>
+	.tab-flow {
+		--tab-height: 5rem;
+		position: relative;
+	}
 	.landing {
 		position: relative;
-		width: 100%;
-		min-height: 100vh;
-		/* pull up under the transparent sticky header so the hero reads full-bleed */
+		min-height: calc(100vh - var(--tab-height));
+		min-height: calc(100dvh - var(--tab-height));
 		margin-top: -4.5rem;
 		overflow: hidden;
-		background-image: url('$lib/images/space.jpg');
-		background-size: cover;
-		background-position: center;
+		background:
+			linear-gradient(90deg, rgba(2, 8, 13, 0.32), rgba(2, 8, 13, 0.2)),
+			url('$lib/images/space.jpg') center / cover;
 	}
-	/* warm scrim so text is readable and the cold photo reads warmer */
-	.landing::before {
+	.landing::after {
 		content: '';
 		position: absolute;
 		inset: 0;
-		background:
-			radial-gradient(
-				120% 90% at 15% 20%,
-				color-mix(in srgb, var(--accent) 24%, transparent) 0%,
-				transparent 55%
-			),
-			linear-gradient(
-				180deg,
-				color-mix(in srgb, var(--color-bg-sunken) 55%, transparent) 0%,
-				color-mix(in srgb, var(--color-bg-sunken) 78%, transparent) 100%
-			);
 		z-index: 0;
+		background: linear-gradient(180deg, rgba(2, 7, 11, 0.08), rgba(2, 7, 11, 0.5));
+		pointer-events: none;
 	}
-
 	.hero-inner {
 		position: relative;
 		z-index: 2;
-		max-width: 78rem;
-		margin: 0 auto;
-		min-height: 100vh;
-		padding: 8rem 2rem 5rem;
 		display: grid;
-		grid-template-columns: 1.1fr 0.9fr;
-		gap: 3rem;
+		min-height: calc(100vh - var(--tab-height));
+		min-height: calc(100dvh - var(--tab-height));
+		grid-template-columns: 1.15fr 0.85fr;
 		align-items: center;
+		gap: clamp(2rem, 7vw, 7rem);
+		padding: clamp(6rem, 12vh, 8rem) 0 clamp(2.5rem, 7vh, 5rem);
 	}
-
-	/* staggered entrance */
 	.name-header,
 	.description > * {
-		animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation: rise 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
 	}
-	.eyebrow {
-		animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+	.description > *:nth-child(2) {
+		animation-delay: 60ms;
 	}
-	.name-header {
-		animation-delay: 0.05s;
+	.description > *:nth-child(3) {
+		animation-delay: 110ms;
 	}
-	.lead {
-		animation-delay: 0.18s;
+	.description > *:nth-child(4) {
+		animation-delay: 160ms;
 	}
-	.focus-list {
-		animation-delay: 0.28s;
+	.description > *:nth-child(5) {
+		animation-delay: 210ms;
 	}
-	.button-container {
-		animation-delay: 0.38s;
+	.hero-actions {
+		animation-delay: 280ms;
 	}
 	@keyframes rise {
 		from {
 			opacity: 0;
-			transform: translateY(16px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
+			transform: translateY(14px);
 		}
 	}
-
 	.eyebrow {
-		font-family: var(--font-body);
-		font-size: 0.85rem;
-		font-weight: 600;
-		letter-spacing: 0.14em;
+		color: #9cd9f9;
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.15em;
 		text-transform: uppercase;
-		color: var(--accent-coral-soft);
-		margin: 0 0 1rem;
 	}
-
-	.name-header h1 {
+	h1 {
 		margin: 0;
-		font-size: clamp(3rem, 8vw, 6rem);
-		font-weight: 500;
-		line-height: 0.98;
-		letter-spacing: -0.03em;
-		color: #faf9f5;
-	}
-
-	.description {
-		max-width: 30rem;
-	}
-	.lead {
-		font-size: 1.28rem;
-		line-height: 1.6;
-		color: #ece9e2;
-		margin: 0 0 1.75rem;
-	}
-	.focus-list {
-		list-style: none;
-		margin: 0 0 2.25rem;
-		padding: 0;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem 0.6rem;
-	}
-	.focus-list li {
-		font-size: 0.9rem;
-		font-weight: 500;
-		color: #f2efe9;
-		padding: 0.4rem 0.9rem;
-		border: 1px solid rgba(250, 249, 245, 0.28);
-		border-radius: var(--radius-full);
-		backdrop-filter: blur(4px);
-	}
-
-	.button-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.85rem;
-	}
-	.btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
+		color: #d4e0e6;
 		font-family: var(--font-body);
-		font-size: 0.95rem;
-		font-weight: 600;
-		padding: 0.8rem 1.5rem;
-		border-radius: var(--radius-full);
-		cursor: pointer;
-		border: 1px solid transparent;
+		font-size: clamp(4rem, 8vw, 7rem);
+		font-weight: 700;
+		letter-spacing: -0.06em;
+		line-height: 0.88;
+	}
+	.description {
+		display: grid;
+		justify-items: center;
+		gap: 0.65rem;
+		color: #9fb0b9;
+	}
+	.description p {
+		margin: 0;
+		font-size: clamp(1rem, 1.5vw, 1.22rem);
 		transition:
-			transform 0.2s ease,
-			background 0.2s ease,
-			border-color 0.2s ease;
-		text-decoration: none;
+			color 220ms ease,
+			transform 220ms ease;
 	}
-	.btn:hover {
-		text-decoration: none;
-		transform: translateY(-2px);
+	.description p:hover {
+		color: white;
+		transform: scale(1.045);
 	}
-	.btn-primary {
-		background: var(--accent);
-		/* dark ink on the light coral — white fails WCAG AA on #d97757 */
-		color: #1f1e1d;
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.75rem;
+		margin-top: var(--space-5);
 	}
-	.btn-primary:hover {
-		background: var(--accent-coral-soft);
+	.hero-actions .button {
+		border-radius: 999px;
 	}
-	.btn-ghost {
-		background: rgba(250, 249, 245, 0.06);
-		border-color: rgba(250, 249, 245, 0.35);
-		color: #faf9f5;
+	.button.light {
+		border-color: white;
+		background: white;
+		color: #101820;
 	}
-	.btn-ghost:hover {
-		border-color: #faf9f5;
-		background: rgba(250, 249, 245, 0.12);
+	.button.glass {
+		border-color: rgba(210, 235, 247, 0.35);
+		background: rgba(4, 11, 16, 0.35);
+		color: #dce8ee;
 	}
-
-	.tab-panel {
-		max-width: 72rem;
-		margin: 0 auto;
-		padding: 0 2rem;
+	.tab-menu {
+		position: sticky;
+		top: 4.5rem;
+		z-index: 40;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		height: var(--tab-height);
+		background: rgba(8, 13, 16, 0.92);
+		box-shadow: 0 1rem 2.8rem rgba(0, 0, 0, 0.24);
+		backdrop-filter: blur(18px) saturate(140%);
 	}
-	/* Projects fills the full page width, like the old version */
-	.tab-panel.wide {
-		max-width: none;
-		padding: 0 clamp(1.5rem, 5vw, 5rem);
+	.tab-anchor {
+		height: 0;
+		scroll-margin-top: 4.5rem;
 	}
-
-	.work-experience p {
-		margin-bottom: 0.25rem;
+	.tab-menu button {
+		min-width: 0;
+		height: var(--tab-height);
+		padding: 0.5rem;
+		border: 0;
+		border-top: 1px solid rgba(156, 217, 249, 0.12);
+		border-right: 1px solid rgba(156, 217, 249, 0.08);
+		background: transparent;
+		color: #80949f;
+		font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+		cursor: pointer;
+		transition:
+			color 220ms ease,
+			background 220ms ease,
+			box-shadow 220ms ease;
 	}
-	.work-experience b {
+	.tab-menu button:last-child {
+		border-right: 0;
+	}
+	.tab-menu button:hover,
+	.tab-menu button:focus-visible {
+		color: white;
+		outline: 1px solid rgba(156, 217, 249, 0.78);
+		outline-offset: -4px;
+		background: rgba(47, 72, 84, 0.26);
+	}
+	.tab-menu button.active {
+		color: white;
+		background: rgba(58, 78, 88, 0.62);
+		box-shadow: inset 0 -2px #9cd9f9;
+	}
+	.tab-section {
+		min-height: calc(100vh - 9.5rem);
+		min-height: calc(100dvh - 9.5rem);
+	}
+	.tab-content {
+		animation: reveal-tab 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+	@keyframes reveal-tab {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+	}
+	.section-heading {
+		display: flex;
+		align-items: end;
+		justify-content: space-between;
+		gap: var(--space-6);
+		margin-bottom: var(--space-7);
+	}
+	.section-heading h2 {
+		max-width: 17ch;
+		margin: 0;
+	}
+	.project-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-5);
+	}
+	.timeline-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-4);
+	}
+	.timeline-grid article,
+	.skill-grid article {
+		padding: var(--space-6);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background: var(--color-bg-raised);
+	}
+	.timeline-grid time {
+		color: var(--accent);
+		font: 600 var(--text-xs) var(--font-mono);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.timeline-grid h3,
+	.skill-grid h3 {
+		margin: var(--space-4) 0 var(--space-2);
 		color: var(--color-heading);
 	}
-	.work-experience ul {
-		margin: 0 0 1.5rem;
-		padding-left: 1.1rem;
+	.timeline-grid b {
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
+	.timeline-grid p {
+		margin-bottom: 0;
 		color: var(--color-text);
 	}
-	.work-experience li {
-		margin-bottom: 0.35rem;
-		line-height: 1.6;
-	}
-
-	.content {
-		max-width: 72rem;
-		margin: 3rem auto 0;
-		padding: 0 2rem;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.skills-container {
+	.skill-grid {
 		display: grid;
-		grid-template-columns: 1fr minmax(280px, 36vw);
-		gap: 2rem;
-		align-items: start;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--space-4);
 	}
-	.radar {
+	.skill-grid ul {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: var(--space-5) 0 0;
+		padding: 0;
+		list-style: none;
 	}
-
-	@media (max-width: 820px) {
-		.landing {
-			margin-top: 0;
-		}
+	.skill-grid li {
+		padding: 0.35rem 0.65rem;
+		border: 1px solid var(--color-border-strong);
+		border-radius: var(--radius-full);
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
+	.channels {
+		border-block: 1px solid var(--color-border);
+		background: var(--color-bg-sunken);
+	}
+	.channel-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+	}
+	.channel-grid a {
+		position: relative;
+		min-height: 13rem;
+		padding: var(--space-5);
+		border-right: 1px solid var(--color-border);
+		color: var(--color-text);
+	}
+	.channel-grid a:last-child {
+		border-right: 0;
+	}
+	.channel-grid a:hover {
+		background: var(--color-bg-raised);
+		text-decoration: none;
+	}
+	.channel-grid span {
+		color: var(--accent);
+		font: 600 var(--text-xs) var(--font-mono);
+	}
+	.channel-grid h3 {
+		margin: var(--space-6) 0 var(--space-3);
+		color: var(--color-heading);
+	}
+	.channel-grid p {
+		margin: 0;
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
+	.channel-grid b {
+		position: absolute;
+		right: var(--space-5);
+		bottom: var(--space-5);
+		color: var(--accent);
+	}
+	@media (max-width: 900px) {
 		.hero-inner {
 			grid-template-columns: 1fr;
-			gap: 2rem;
-			padding: 6rem 1.5rem 4rem;
-			min-height: auto;
+			align-content: center;
+			gap: var(--space-4);
+			padding: 6.5rem 0 2.25rem;
 		}
-		.skills-container {
+		.description {
+			justify-items: start;
+		}
+		.hero-actions {
+			justify-content: flex-start;
+		}
+		.project-grid,
+		.skill-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+		.channel-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+		.channel-grid a:nth-child(2) {
+			border-right: 0;
+		}
+		.channel-grid a:nth-child(-n + 2) {
+			border-bottom: 1px solid var(--color-border);
+		}
+	}
+	@media (max-width: 620px) {
+		.tab-flow {
+			--tab-height: 4.3rem;
+		}
+		.hero-inner {
+			padding: 7rem 0 2.5rem;
+		}
+		h1 {
+			font-size: clamp(3.2rem, 16vw, 5rem);
+		}
+		.description {
+			gap: 0.4rem;
+		}
+		.tab-menu {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+		.tab-menu button {
+			font-size: 0.72rem;
+			line-height: 1.2;
+		}
+		.project-grid,
+		.timeline-grid,
+		.skill-grid,
+		.channel-grid {
 			grid-template-columns: 1fr;
+		}
+		.channel-grid a {
+			min-height: 10rem;
+			border-right: 0;
+			border-bottom: 1px solid var(--color-border);
+		}
+		.channel-grid a:last-child {
+			border-bottom: 0;
+		}
+		.section-heading {
+			align-items: start;
+			flex-direction: column;
 		}
 	}
 </style>

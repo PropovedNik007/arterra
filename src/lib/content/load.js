@@ -45,6 +45,18 @@ function firstParagraph(body) {
 }
 
 /**
+ * Detail-page headers already render the note title and excerpt. Remove that
+ * same leading H1 and paragraph from the article body so they are not repeated.
+ * @param {string} body
+ * @returns {string}
+ */
+function articleBody(body) {
+	const withoutTitle = body.trimStart().replace(/^#\s+.*(?:\r?\n)+/, '');
+	if (withoutTitle.startsWith('#')) return withoutTitle;
+	return withoutTitle.replace(/^[\s\S]*?(?:\r?\n){2}/, '');
+}
+
+/**
  * Converts a Date or string value to a YYYY-MM-DD string.
  * Returns an empty string if value is undefined, null, or neither a string nor a Date.
  * @param {string | Date | undefined} dateValue
@@ -97,14 +109,18 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 		}
 
 		if (!isSection(data.section)) {
-			console.warn(`[content] skipping "${slug}": missing/invalid section "${String(data.section)}"`);
+			console.warn(
+				`[content] skipping "${slug}": missing/invalid section "${String(data.section)}"`
+			);
 			continue;
 		}
 
 		const section = data.section;
 
 		if (section === 'sport' && !isDiscipline(data.discipline)) {
-			console.warn(`[content] skipping "${slug}": section is "sport" but discipline is missing/invalid`);
+			console.warn(
+				`[content] skipping "${slug}": section is "sport" but discipline is missing/invalid`
+			);
 			continue;
 		}
 
@@ -123,7 +139,7 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 			tags: Array.isArray(data.tags) ? data.tags : [],
 			cover: typeof data.cover === 'string' ? data.cover : undefined,
 			excerpt: typeof data.description === 'string' ? data.description : firstParagraph(body),
-			html: await renderMarkdown(body),
+			html: await renderMarkdown(articleBody(body)),
 			links,
 			tech: Array.isArray(data.tech) ? data.tech : undefined,
 			externalLink: typeof data.link === 'string' ? data.link : undefined,

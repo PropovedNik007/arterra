@@ -1,9 +1,12 @@
 <script>
 	import '../app.css';
+	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 
 	let { children } = $props();
+	let isRetro = $derived(($page.url.pathname.replace(base, '') || '/') === '/retro');
 
 	const personSchema = {
 		'@context': 'https://schema.org',
@@ -37,16 +40,16 @@
 	<meta name="robots" content="index, follow" />
 	<meta property="og:site_name" content="Artur Sogomonyan" />
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="theme-color" content="#262624" />
+	<meta name="theme-color" content="#151514" />
 	{@html `<script type="application/ld+json">${JSON.stringify(personSchema)}</` + `script>`}
 </svelte:head>
 
 <div class="app">
-	<Header />
+	{#if !isRetro}<Header />{/if}
 	<main>
 		{@render children()}
 	</main>
-	<Footer />
+	{#if !isRetro}<Footer />{/if}
 </div>
 
 <style>

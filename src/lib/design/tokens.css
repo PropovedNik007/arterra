@@ -11,10 +11,12 @@
 	--space-6: 2rem;
 	--space-7: 3rem;
 	--space-8: 4rem;
+	--space-9: 6rem;
 
-	--radius-sm: 0.375rem;
-	--radius-md: 0.625rem;
-	--radius-lg: 1rem;
+	--radius-sm: 0.4rem;
+	--radius-md: 0.75rem;
+	--radius-lg: 1.15rem;
+	--radius-xl: 1.75rem;
 	--radius-full: 999px;
 
 	--text-xs: 0.75rem;
@@ -27,51 +29,27 @@
 	--text-4xl: 3.052rem;
 	--text-5xl: 3.815rem;
 
-	/* Claude "clay" coral — the signature accent */
-	--accent-coral: #d97757;
-	--accent-coral-soft: #e08a6b;
-
-	/* Per-section accents (used on section pages) */
-	--accent-projects: #d97757;
-	--accent-diy: #e0a03b;
-	--accent-sport: #c85c4e;
-
-	/* base accent (overridden per data-section) */
+	--color-bg: #151514;
+	--color-bg-raised: #1d1d1b;
+	--color-bg-elevated: #242421;
+	--color-bg-sunken: #10100f;
+	--color-text: #cbc7bd;
+	--color-text-muted: #8f8c84;
+	--color-heading: #fbf8f2;
+	--color-border: #31312d;
+	--color-border-strong: #48463f;
+	--accent-coral: #e17b5a;
+	--accent-coral-soft: #f09a7d;
+	--accent-projects: #e17b5a;
+	--accent-diy: #dda544;
+	--accent-sport: #d76060;
 	--accent: var(--accent-coral);
-
-	--content-width: 46rem;
-}
-
-/* Claude warm dark — the default landing theme */
-:root[data-theme='dark'] {
-	--color-bg: #262624;
-	--color-bg-raised: #30302e;
-	--color-bg-sunken: #1f1e1d;
-	--color-text: #c6c2b8;
-	--color-text-muted: #94918a;
-	--color-heading: #faf9f5;
-	--color-border: #3c3b37;
-	--color-border-strong: #4a4844;
-	--accent-contrast: #1f1e1d;
-	/* lighter coral for link TEXT so it clears AA on both bg and raised surfaces */
-	--link: #e08a6b;
-	--header-scrim: rgba(31, 30, 29, 0.72);
-}
-
-/* Claude warm light (ivory + clay) */
-:root[data-theme='light'] {
-	--color-bg: #f4f3ec;
-	--color-bg-raised: #ffffff;
-	--color-bg-sunken: #eceadf;
-	--color-text: #46453f;
-	--color-text-muted: #6e6d64;
-	--color-heading: #1f1e1b;
-	--color-border: #e2e0d4;
-	--color-border-strong: #d3d0c2;
-	--accent-contrast: #ffffff;
-	/* darker coral for link TEXT so it clears AA on the ivory background */
-	--link: #b0562f;
-	--header-scrim: rgba(244, 243, 236, 0.78);
+	--accent-contrast: #151514;
+	--link: #f09a7d;
+	--header-scrim: rgba(21, 21, 20, 0.88);
+	--content-width: 76rem;
+	--reading-width: 46rem;
+	--shadow-card: 0 24px 70px -45px rgba(0, 0, 0, 0.9);
 }
 
 [data-section='projects'] {
