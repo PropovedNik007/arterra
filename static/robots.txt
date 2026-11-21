@@ -1,3 +1,9 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Disallow:
+
+# NOTE: this file is served at /arterra/robots.txt, and crawlers only read
+# robots.txt at the host root, so they ignore this copy. Submit the sitemap
+# below in Google Search Console / Bing Webmaster Tools, or add this line to a
+# root robots.txt in the propovednik007.github.io user-site repository.
+Sitemap: https://propovednik007.github.io/arterra/sitemap.xml
