@@ -153,8 +153,7 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 			html: await renderMarkdown(articleBody(body)),
 			links,
 			tech: Array.isArray(data.tech) ? data.tech : undefined,
-			externalLink:
-				typeof data.link === 'string' && data.link ? data.link : linksSectionUrl(body),
+			externalLink: typeof data.link === 'string' && data.link ? data.link : linksSectionUrl(body),
 			featured: data.featured === true,
 			featuredOrder: typeof data.featured_order === 'number' ? data.featured_order : undefined,
 			printer: typeof data.printer === 'string' ? data.printer : undefined,
