@@ -219,7 +219,9 @@
 		width: var(--icon-sm);
 		height: var(--icon-sm);
 	}
-	@media (max-width: 1040px) {
+	/* Below 760px one row no longer fits: name and all four icons on the first
+	   row, the six menu items spread evenly across the second. */
+	@media (max-width: 760px) {
 		.bar {
 			box-sizing: border-box;
 			flex-wrap: wrap;
@@ -232,42 +234,48 @@
 		.header-actions {
 			order: 2;
 			margin-left: auto;
+			margin-right: -0.5rem;
 		}
 		.nav {
 			order: 3;
 			width: 100%;
 			margin: 0;
 		}
-		/* Horizontal scroll row; the fade on the right hints at more items. */
 		.nav-links {
-			overflow-x: auto;
-			padding-right: var(--space-6);
-			scrollbar-width: none;
-			-webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 2.5rem), transparent);
-			mask-image: linear-gradient(90deg, #000 calc(100% - 2.5rem), transparent);
-		}
-		.nav-links::-webkit-scrollbar {
-			display: none;
+			justify-content: center;
+			gap: 1.75rem;
 		}
 		.nav-links a {
-			padding: 0.75rem 0 0.9rem;
+			padding: 0.8rem 0 0.85rem;
 		}
 	}
+	/* Phones: the six items span the full width, edge to edge. */
 	@media (max-width: 520px) {
-		.header-actions a:nth-child(-n + 2) {
-			display: none;
+		.nav-links {
+			justify-content: space-between;
+			gap: 0.5rem;
 		}
+	}
+	@media (max-width: 400px) {
 		.brand {
 			font-size: 1rem;
 		}
-		.nav-links {
-			gap: 1.05rem;
+		.header-actions {
+			gap: 0;
 		}
-		/* Off the type scale on purpose: at 375px all six items must clear the
-		   fade at the right edge. */
+		.header-actions a {
+			padding: 0.45rem;
+		}
+		/* Off the type scale on purpose: all six items share one row down to 320px. */
 		.nav-links a {
 			font-size: 0.8rem;
 			letter-spacing: 0.02em;
+		}
+	}
+	@media (max-width: 340px) {
+		.nav-links a {
+			font-size: 0.75rem;
+			letter-spacing: 0;
 		}
 	}
 </style>
