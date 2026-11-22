@@ -1,0 +1,1 @@
+import{n as e,t}from"./DiODRrJ2.js";function n(t){return e(t.replace(/^\//,``))}function r(e){return t(e.replace(/^\//,``))}export{r as n,n as t};
