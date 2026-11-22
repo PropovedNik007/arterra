@@ -43,7 +43,7 @@
 	let active = $derived(hovered ?? focused);
 
 	/** @type {SVGGElement[]} */
-	const axisTargets = [];
+	const axisTargets = $state([]);
 
 	/** @param {string} id */
 	function toggle(id) {

@@ -3,7 +3,7 @@
  * index and detail pages. Keep them pure (no filesystem access) so they can be
  * unit-tested and reused from any `+page.server.js`.
  */
-import { FIELDS, DOMAINS, FIELD_TAGS, fieldsFor } from '$lib/graph/taxonomy.js';
+import { FIELDS, DOMAINS, FIELD_TAGS, displayFields, fieldsFor } from '$lib/graph/taxonomy.js';
 import { focusSubgraph, relatedItems } from '$lib/graph/subgraph.js';
 
 /** @typedef {import('$lib/content/types.js').ContentItem} ContentItem */
@@ -109,7 +109,7 @@ export function toolTags(items) {
  */
 export function articleContext(graph, item) {
 	const byId = new Map(graph.nodes.map((node) => [node.id, node]));
-	const fields = fieldsFor(item).map((id) => {
+	const fields = displayFields(item.slug, fieldsFor(item)).map((id) => {
 		const field = /** @type {import('$lib/graph/taxonomy.js').Field} */ (
 			FIELDS.find((candidate) => candidate.id === id)
 		);

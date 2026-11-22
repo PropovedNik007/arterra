@@ -225,12 +225,12 @@ export const cv = {
 		],
 		'3D & manufacturing': [
 			'3D segmentation',
-			'Mesh processing',
-			'Slicing',
-			'Toolpath generation',
+			'mesh processing',
+			'slicing',
+			'toolpath generation',
 			'G-code',
-			'Robot arms',
-			'Multi-axis printing',
+			'robot arms',
+			'multi-axis printing',
 			'trimesh'
 		],
 		'Data & infrastructure': [

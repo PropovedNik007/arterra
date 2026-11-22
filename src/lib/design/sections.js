@@ -76,12 +76,38 @@ export function showsDate(section) {
 	return section !== 'projects';
 }
 
+/** Whole kebab tags whose display form isn't just "words with spaces". */
+const TAG_LABELS = /** @type {Record<string, string>} */ ({
+	'g-code': 'G-code',
+	'multi-axis': 'multi-axis'
+});
+/** Words inside kebab tags that are acronyms or have fixed casing. */
+const TAG_WORDS = /** @type {Record<string, string>} */ ({
+	'3d': '3D',
+	ai: 'AI',
+	api: 'API',
+	esg: 'ESG',
+	iot: 'IoT',
+	llm: 'LLM',
+	ml: 'ML',
+	nlp: 'NLP',
+	ocr: 'OCR',
+	rag: 'RAG'
+});
+
 /**
  * Display label for a tag: lower-case kebab tags ("digital-twins") read as
- * words ("digital twins"); proper names ("LLaMA-3", "Next.js") stay as written.
+ * words ("digital twins"), with acronyms cased ("3d-segmentation" → "3D
+ * segmentation", "g-code" → "G-code"); proper names ("LLaMA-3", "Next.js")
+ * stay as written. The slug itself is still what `?tag=` URLs carry.
  * @param {string} tag
  * @returns {string}
  */
 export function tagLabel(tag) {
-	return /^[a-z0-9]+(?:-[a-z0-9]+)+$/.test(tag) ? tag.replace(/-/g, ' ') : tag;
+	if (TAG_LABELS[tag]) return TAG_LABELS[tag];
+	if (!/^[a-z0-9]+(?:-[a-z0-9]+)+$/.test(tag)) return tag;
+	return tag
+		.split('-')
+		.map((word) => TAG_WORDS[word] ?? word)
+		.join(' ');
 }

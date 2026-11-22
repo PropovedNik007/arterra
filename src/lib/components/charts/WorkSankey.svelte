@@ -20,7 +20,12 @@
 	 * A table fallback sits in a <details> under the chart.
 	 */
 	import { base } from '$app/paths';
-	import { buildHighlights, buildSankeyData, layoutSankey } from '$lib/charts/sankey-data.js';
+	import {
+		buildHighlights,
+		buildSankeyData,
+		layoutSankey,
+		spreadLabels
+	} from '$lib/charts/sankey-data.js';
 
 	/** @type {{ graphData: import('$lib/graph/build.js').GraphData, title?: string }} */
 	let { graphData, title = 'How the work flows' } = $props();
@@ -30,10 +35,13 @@
 	const data = $derived(buildSankeyData(graphData));
 	const highlights = $derived(buildHighlights(data));
 
+	// Height follows the project count, with a floor so every field label has a
+	// line of its own even when many fields carry only a small share.
+	const minHeight = $derived(data.fields.length * 22 + 40);
 	const wide = $derived(
 		layoutSankey(data, {
 			width: 960,
-			height: Math.max(320, data.total * 34),
+			height: Math.max(320, data.total * 34, minHeight),
 			nodeWidth: 12,
 			nodePadding: 8,
 			right: 215,
@@ -44,7 +52,7 @@
 	const narrow = $derived(
 		layoutSankey(data, {
 			width: 330,
-			height: Math.max(300, data.total * 34),
+			height: Math.max(300, data.total * 34, minHeight),
 			nodeWidth: 10,
 			nodePadding: 6,
 			right: 26,
@@ -178,6 +186,71 @@
 		return [words.slice(0, best).join(' '), words.slice(best).join(' ')];
 	}
 
+	/** Label font sizes in viewBox units; keep in sync with the `.label` styles below. */
+	const FONT_SIZE = {
+		wide: { domain: 15, field: 14, project: 14 },
+		narrow: { domain: 13.5, field: 13, project: 13 }
+	};
+	/** Rendered height of a label (one line, or two wrapped lines), in em. */
+	const LINE_EM = { 1: 1.32, 2: 2.5 };
+	/** Average glyph width in em, a conservative estimate for wrapping. */
+	const GLYPH_EM = 0.56;
+
+	/**
+	 * Where each node's label goes: its lines (narrow labels wrap when they would
+	 * run into the project column) and a y position that never overlaps a
+	 * neighbouring label in the same column, so small adjacent nodes stay legible.
+	 * @param {import('$lib/charts/sankey-data.js').SankeyLayoutResult} layout
+	 * @param {'wide' | 'narrow'} variant
+	 */
+	function labelPlan(layout, variant) {
+		const projectX = layout.nodes.find((node) => node.column === 2)?.x0 ?? layout.width;
+		const offset = variant === 'wide' ? 8 : 6;
+		/** @type {Map<string, { x: number, y: number, lines: string[], leader: boolean }>} */
+		const plan = new Map();
+		for (const column of [0, 1, 2]) {
+			const items = layout.nodes
+				.filter((node) => node.column === column)
+				.map((node) => {
+					const x = node.x1 + offset;
+					const size = FONT_SIZE[variant][node.kind];
+					const room = (column === 2 ? layout.width : projectX) - x - 4;
+					const wrap =
+						variant === 'narrow' &&
+						node.kind !== 'project' &&
+						node.label.includes(' ') &&
+						(node.kind === 'domain' || node.label.length * size * GLYPH_EM > room);
+					const lines = wrap ? splitLabel(node.label) : [node.shortLabel];
+					return { node, x, lines, height: size * LINE_EM[wrap ? 2 : 1] };
+				});
+			const placed = spreadLabels(
+				items.map(({ node, height }) => ({ id: node.id, y: midY(node), size: height })),
+				{ min: 16, max: layout.height, gap: 1 }
+			);
+			for (const { node, x, lines, height } of items) {
+				const y = placed.get(node.id) ?? midY(node);
+				plan.set(node.id, { x, y, lines, leader: Math.abs(y - midY(node)) > height / 2 });
+			}
+		}
+		return plan;
+	}
+	const wideLabels = $derived(labelPlan(wide, 'wide'));
+	const narrowLabels = $derived(labelPlan(narrow, 'narrow'));
+	/**
+	 * @param {{ id: string, x1: number, y0: number, y1: number, shortLabel: string }} node
+	 * @param {'wide' | 'narrow'} variant
+	 */
+	function labelOf(node, variant) {
+		return (
+			(variant === 'wide' ? wideLabels : narrowLabels).get(node.id) ?? {
+				x: node.x1 + (variant === 'wide' ? 8 : 6),
+				y: midY(node),
+				lines: [node.shortLabel],
+				leader: false
+			}
+		);
+	}
+
 	/** @param {string} id */
 	const isLit = (id) => Boolean(lit && (lit.nodes.has(id) || lit.links.has(id)));
 	const midY = (/** @type {{ y0: number, y1: number }} */ node) =>
@@ -227,7 +300,8 @@
 		</g>
 		<g class="nodes">
 			{#each layout.nodes as node (node.id)}
-				{@const labelX = node.x1 + (variant === 'wide' ? 8 : 6)}
+				{@const place = labelOf(node, variant)}
+				{@const labelX = place.x}
 				{@const showLabel = variant === 'wide' || node.kind !== 'project'}
 				{#snippet body()}
 					<rect
@@ -239,20 +313,22 @@
 						height={Math.max(1, node.y1 - node.y0)}
 						rx="2"
 					/>
-					{#if variant === 'narrow' && node.kind === 'domain' && node.label.includes(' ')}
-						{@const [first, second] = splitLabel(node.label)}
-						<text class="label domain" x={labelX} y={midY(node)}
-							><tspan x={labelX} dy="-0.25em">{first}</tspan><tspan x={labelX} dy="1.2em"
-								>{second}</tspan
+					{#if place.leader}
+						<line class="leader" x1={node.x1 + 1} y1={midY(node)} x2={labelX - 2} y2={place.y} />
+					{/if}
+					{#if place.lines.length === 2}
+						<text class="label {node.kind}" x={labelX} y={place.y}
+							><tspan x={labelX} dy="-0.25em">{place.lines[0]}</tspan><tspan x={labelX} dy="1.2em"
+								>{place.lines[1]}</tspan
 							></text
 						>
 					{:else if showLabel}
-						<text class="label {node.kind}" x={labelX} y={midY(node)} dy="0.35em"
+						<text class="label {node.kind}" x={labelX} y={place.y} dy="0.35em"
 							>{node.shortLabel}{#if node.tone === 'diy'}<tspan class="tag" dx="5">{DIY_TAG}</tspan
 								>{/if}</text
 						>
 					{:else}
-						<text class="label number" x={labelX} y={midY(node)} dy="0.35em"
+						<text class="label number" x={labelX} y={place.y} dy="0.35em"
 							>{projectNumber.get(node.id)}</text
 						>
 					{/if}
@@ -569,6 +645,10 @@
 		text-underline-offset: 3px;
 	}
 
+	.leader {
+		stroke: var(--color-text-muted);
+		stroke-width: 1;
+	}
 	.label {
 		fill: var(--graph-label);
 		font-size: 14px;

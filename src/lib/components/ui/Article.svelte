@@ -233,7 +233,8 @@
 	}
 	.gallery-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+		align-items: start;
 		gap: var(--space-5);
 		margin-top: var(--space-4);
 	}
@@ -243,11 +244,13 @@
 	.gallery img {
 		display: block;
 		width: 100%;
-		aspect-ratio: 16 / 10;
+		/* A fixed frame keeps rows even and avoids layout shift; contain shows
+		   the whole image (plots and square renders are never cropped). */
+		aspect-ratio: 4 / 3;
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-lg);
 		background: var(--color-bg-raised);
-		object-fit: cover;
+		object-fit: contain;
 	}
 	.gallery figcaption {
 		margin-top: var(--space-2);

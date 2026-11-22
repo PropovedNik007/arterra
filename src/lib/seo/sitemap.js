@@ -10,19 +10,18 @@ import { SITE_URL } from './site.js';
 /** Public routes without parameters, in navigation order. */
 export const STATIC_PATHS = [
 	'/',
-	'/about',
+	'/insights',
 	SECTION_META.projects.path,
 	SECTION_META.diy.path,
 	SECTION_META.sport.path,
 	...DISCIPLINES.map((discipline) => DISCIPLINE_META[discipline].path),
-	'/graph',
-	'/insights',
-	'/faq',
-	'/contact'
+	'/about',
+	'/contact',
+	'/faq'
 ];
 
-/** Routes that exist but are kept out of the sitemap (the archived design). */
-export const EXCLUDED_PATHS = ['/retro'];
+/** Routes that exist but are kept out of the sitemap (the archived design, the /graph redirect). */
+export const EXCLUDED_PATHS = ['/retro', '/graph'];
 
 /**
  * @typedef {object} SitemapEntry

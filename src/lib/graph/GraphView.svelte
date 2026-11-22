@@ -41,11 +41,8 @@
 		{ id: 'diy', label: 'DIY notes', test: (n) => n.kind === 'item' && n.section === 'diy' },
 		{ id: 'sport', label: 'Sport notes', test: (n) => n.kind === 'item' && n.section === 'sport' },
 		{ id: 'sections', label: 'Sections', test: (n) => n.kind === 'hub' || n.kind === 'discipline' },
-		{
-			id: 'fields',
-			label: 'Fields of work',
-			test: (n) => n.kind === 'domain' || n.kind === 'field'
-		},
+		{ id: 'domains', label: 'Domains', test: (n) => n.kind === 'domain' },
+		{ id: 'fields', label: 'Fields of work', test: (n) => n.kind === 'field' },
 		{ id: 'orgs', label: 'Organisations', test: (n) => n.kind === 'org' },
 		{ id: 'topics', label: 'Tools & topics', test: (n) => n.kind === 'topic' }
 	];
@@ -580,7 +577,7 @@
 			const tone = palette.tones[node.tone] ?? palette.tones.topic;
 			const alwaysLabel = isCompact
 				? node.kind === 'hub' || node.id === ui.focus
-				: node.kind === 'hub' || node.kind === 'domain' || (node.kind === 'field' && !narrow);
+				: node.kind === 'hub' || (!narrow && (node.kind === 'domain' || node.kind === 'field'));
 			graph.addNode(node.id, {
 				x: simNode.x,
 				y: simNode.y,
@@ -656,12 +653,37 @@
 			const size = settings.labelSize * scale;
 			return { size, font: `${weight} ${size}px ${settings.labelFont}` };
 		}
+		/**
+		 * Labels sit right of their node, or left of it when they would run off
+		 * the stage's right edge (on phones the long domain names otherwise clip).
+		 */
+		function labelX(context, data, width) {
+			const right = data.x + data.size + 5;
+			const stage = context.canvas.clientWidth || Infinity;
+			return right + width > stage - 4 ? Math.max(4, data.x - data.size - 5 - width) : right;
+		}
+		/**
+		 * Phones, resting view only (nothing selected, hovered or searched): label
+		 * boxes drawn this frame. A label that would overprint one of them is
+		 * skipped unless it is a hub; hovering or tapping the node still shows it.
+		 */
+		const drawnLabels = [];
 		function drawLabel(context, data, settings) {
 			if (!data.label) return;
 			const { size, font } = labelFont(data, settings);
 			context.font = font;
-			const x = data.x + data.size + 5;
+			const width = context.measureText(data.label).width;
+			const x = labelX(context, data, width);
 			const y = data.y + size / 3;
+			if (narrow && !isCompact && !activeNode() && !ui.matches) {
+				const box = [x - 2, data.y - size * 0.75, x + width + 2, data.y + size * 0.75];
+				const clash = drawnLabels.some(
+					(other) =>
+						box[0] < other[2] && other[0] < box[2] && box[1] < other[3] && other[1] < box[3]
+				);
+				if (clash && data.kind !== 'hub') return;
+				drawnLabels.push(box);
+			}
 			context.lineJoin = 'round';
 			context.lineWidth = 4;
 			context.strokeStyle = labelBg;
@@ -678,8 +700,8 @@
 			if (!data.label) return;
 			const { size, font } = labelFont(data, settings);
 			context.font = font;
-			const x = data.x + data.size + 5;
 			const width = context.measureText(data.label).width;
+			const x = labelX(context, data, width);
 			context.fillStyle = labelBg;
 			context.beginPath();
 			if (context.roundRect)
@@ -790,6 +812,9 @@
 		}
 		renderer = instance;
 		token.renderer = instance;
+		renderer.on('beforeRender', () => {
+			drawnLabels.length = 0;
+		});
 
 		// Pin the normalisation box after the settle so the camera never "breathes"
 		// as nodes move or are dragged toward the edge.
@@ -1231,7 +1256,7 @@
 		</div>
 		{#if compact}
 			{#if showFullLink}
-				<a class="full-link" href="{base}/graph"
+				<a class="full-link" href="{base}/insights#graph"
 					>Open full graph <span aria-hidden="true">→</span></a
 				>
 			{/if}

@@ -23,7 +23,7 @@ export const LLMS_PAGES = [
 		path: '/projects',
 		title: 'Projects',
 		description:
-			'Case studies across applied AI, computer vision, document intelligence, data products, and the interfaces that make them useful.'
+			'Case studies across applied AI, computer vision, 3D geometry and toolpaths for multi-axis manufacturing, document intelligence, data products, and the interfaces that make them useful.'
 	},
 	{
 		path: '/diy',
@@ -36,15 +36,10 @@ export const LLMS_PAGES = [
 		description: 'Notes on hiking, boxing, diving, and table tennis.'
 	},
 	{
-		path: '/graph',
-		title: 'Knowledge graph',
-		description: 'Interactive graph connecting projects, notes, fields of work, and shared topics.'
-	},
-	{
 		path: '/insights',
 		title: 'Insights',
 		description:
-			'Charts of how projects flow through fields of work, a self-assessed skills profile, and public GitHub activity plus anonymised totals from private organisation work.'
+			'An interactive knowledge graph connecting projects, notes, fields of work, organisations, and shared tools; a chart of how projects flow through fields of work; a self-assessed skills profile; and public GitHub activity plus anonymised totals from private organisation work.'
 	},
 	{
 		path: '/faq',
@@ -74,7 +69,7 @@ export function buildLlmsTxt({ faq, featured, siteUrl = SITE_URL }) {
 	const lines = [
 		`# ${cv.name}`,
 		'',
-		`> ${cv.name} is ${article} ${cv.headline} based in ${CITY}, ${COUNTRY}. This is his public portfolio: applied machine learning, computer vision, LLM and RAG systems, and full-stack product work, plus DIY build notes and sport notes.`,
+		`> ${cv.name} is ${article} ${cv.headline} based in ${CITY}, ${COUNTRY}. This is his public portfolio: applied machine learning, computer vision, 3D geometry and toolpath software for multi-axis manufacturing, LLM and RAG systems, and full-stack product work, plus DIY build notes and sport notes.`,
 		'',
 		'## Pages',
 		'',

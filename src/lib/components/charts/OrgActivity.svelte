@@ -99,7 +99,7 @@
 	/** Roving tab stop: the last month by default. */
 	let roving = $state(/** @type {number | null} */ (null));
 	/** @type {SVGRectElement[]} */
-	const columnRefs = [];
+	const columnRefs = $state([]);
 
 	/** @param {number} i */
 	const total = (i) => (data.combined[i]?.public ?? 0) + (data.combined[i]?.private ?? 0);

@@ -38,9 +38,10 @@
 				around it, or a prototype that has to become dependable.
 			</p>
 			<p>
-				My background spans applied machine learning, computer vision, full-stack development, and
-				hands-on making. That mix makes me comfortable moving between research questions, system
-				boundaries, and user-facing details.
+				My background spans applied machine learning, computer vision, 3D geometry and toolpath
+				software for multi-axis manufacturing, full-stack development, and hands-on making. That mix
+				makes me comfortable moving between research questions, system boundaries, and user-facing
+				details.
 			</p>
 			<dl class="facts">
 				<div>

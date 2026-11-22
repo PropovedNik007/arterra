@@ -9,10 +9,10 @@
 	// The brand link is the home link (and every breadcrumb starts with Home),
 	// so the row stays focused on destinations. Retro lives in the footer.
 	const navItems = [
+		{ href: '/insights', label: 'Insights' },
 		{ href: '/projects', label: 'Projects' },
 		{ href: '/diy', label: 'DIY' },
 		{ href: '/sport', label: 'Sport' },
-		{ href: '/graph', label: 'Graph' },
 		{ href: '/about', label: 'About' },
 		{ href: '/contact', label: 'Contact' }
 	];

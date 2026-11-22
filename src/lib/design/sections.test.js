@@ -21,6 +21,14 @@ describe('tagLabel', () => {
 		expect(tagLabel('Next.js')).toBe('Next.js');
 		expect(tagLabel('rail')).toBe('rail');
 	});
+
+	it('cases acronyms and fixed terms inside kebab tags', async () => {
+		const { tagLabel } = await import('./sections.js');
+		expect(tagLabel('3d-segmentation')).toBe('3D segmentation');
+		expect(tagLabel('g-code')).toBe('G-code');
+		expect(tagLabel('multi-axis')).toBe('multi-axis');
+		expect(tagLabel('social-media-automation')).toBe('social media automation');
+	});
 });
 
 describe('formatNoteDate', () => {

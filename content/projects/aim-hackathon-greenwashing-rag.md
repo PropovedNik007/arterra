@@ -11,7 +11,7 @@ tags: [RAG, LangChain, Flask, OpenAI, ESG]
 
 A platform built during the AIM Hackathon (hosted by TIMETOACT Group) that
 uses Retrieval-Augmented Generation to detect greenwashing in corporate ESG
-(Environmental, Social, Governance) reports. Placed 2nd Place Winner.
+(Environmental, Social, Governance) reports. It won 2nd place.
 
 ## Stack
 

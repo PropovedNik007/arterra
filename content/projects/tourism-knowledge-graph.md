@@ -12,7 +12,7 @@ tags: [knowledge-graph, Selenium, GeoPandas, Folium]
 Tourism Technology Hackathon 2023 project: a data pipeline mapping data
 from multiple sources into a knowledge graph on tourism subjects,
 visualized as an interactive map with an accompanying chatbot for analyzing
-points of interest. Placed 2nd Place Winner.
+points of interest. It won 2nd place.
 
 ## Stack
 

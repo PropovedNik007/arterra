@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { loadContent } from './load.js';
+import { loadContent, parseGallery } from './load.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const FIXTURES = join(here, '__fixtures__', 'content');
@@ -61,5 +62,52 @@ describe('loadContent', () => {
 		const items = await loadContent(FIXTURES);
 		const precedence = items.find((item) => item.slug === 'date-precedence');
 		expect(precedence?.date).toBe('2026-06-14');
+	});
+});
+
+describe('parseGallery', () => {
+	it('keeps valid entries and strips a leading slash from src', () => {
+		expect(
+			parseGallery(
+				[
+					{ src: '/images/a.webp', alt: 'A', caption: ' First ' },
+					{ src: 'images/b.webp', alt: 'B' }
+				],
+				'note'
+			)
+		).toEqual([
+			{ src: 'images/a.webp', alt: 'A', caption: 'First' },
+			{ src: 'images/b.webp', alt: 'B', caption: undefined }
+		]);
+	});
+
+	it('drops entries without alt text, remote URLs, and repeated src values', () => {
+		const gallery = parseGallery(
+			[
+				{ src: 'images/a.webp', alt: '' },
+				{ src: 'https://example.com/b.webp', alt: 'B' },
+				{ src: 'images/c.webp', alt: 'C' },
+				{ src: '/images/c.webp', alt: 'C again' }
+			],
+			'note'
+		);
+		expect(gallery).toEqual([{ src: 'images/c.webp', alt: 'C', caption: undefined }]);
+	});
+
+	it('returns undefined for a missing or empty gallery', () => {
+		expect(parseGallery(undefined, 'note')).toBeUndefined();
+		expect(parseGallery([{ src: '', alt: '' }], 'note')).toBeUndefined();
+	});
+});
+
+describe('published content', () => {
+	it('only references cover and gallery images that exist under static/', async () => {
+		const root = join(here, '..', '..', '..');
+		const items = await loadContent(join(root, 'content'));
+		const missing = items
+			.flatMap((item) => [item.cover, ...(item.gallery ?? []).map((image) => image.src)])
+			.filter((src) => typeof src === 'string')
+			.filter((src) => !existsSync(join(root, 'static', src)));
+		expect(missing).toEqual([]);
 	});
 });

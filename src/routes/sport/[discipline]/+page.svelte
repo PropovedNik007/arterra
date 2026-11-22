@@ -12,7 +12,7 @@
 </script>
 
 <svelte:head
-	><title>{meta.label} — Sport</title><meta
+	><title>{meta.label} — Sport — Artur Sogomonyan</title><meta
 		name="description"
 		content={`${meta.label} notes by Artur Sogomonyan.`}
 	/></svelte:head
@@ -48,10 +48,8 @@
 			</div>
 		</section>
 	{:else}
-		<EmptyState icon={meta.icon} title="No placeholder stories.">
-			<p>
-				The route is ready; the content will appear when there is a genuine field note to share.
-			</p>
+		<EmptyState icon={meta.icon} title={`No ${meta.label.toLowerCase()} notes yet.`}>
+			<p>The other sport notes are a click away.</p>
 			<a class="button" href="{base}/sport">Back to Sport</a>
 		</EmptyState>
 	{/if}

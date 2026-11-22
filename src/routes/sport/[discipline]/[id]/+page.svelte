@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.item.title} — {meta.label}</title>
+	<title>{data.item.title} — {meta.label} — Artur Sogomonyan</title>
 	<meta name="description" content={data.item.excerpt} />
 </svelte:head>
 

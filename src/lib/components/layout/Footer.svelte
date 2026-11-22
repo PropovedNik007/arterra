@@ -10,11 +10,10 @@
 	const year = new Date().getFullYear();
 
 	const work = [
+		{ href: '/insights', label: 'Insights' },
 		{ href: '/projects', label: 'Projects' },
 		{ href: '/diy', label: 'DIY' },
-		{ href: '/sport', label: 'Sport' },
-		{ href: '/graph', label: 'Knowledge graph' },
-		{ href: '/insights', label: 'Insights' }
+		{ href: '/sport', label: 'Sport' }
 	];
 	const site = [
 		{ href: '/about', label: 'About' },
@@ -76,7 +75,7 @@
 			</div>
 		</nav>
 		<p class="copyright">
-			© {year} · Built from a public <a href="{base}/graph">knowledge graph</a>.
+			© {year} · Built from a public <a href="{base}/insights#graph">knowledge graph</a>.
 		</p>
 	</div>
 </footer>

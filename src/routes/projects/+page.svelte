@@ -129,7 +129,7 @@
 	<title>Projects — Artur Sogomonyan</title>
 	<meta
 		name="description"
-		content="Applied AI, machine learning, computer vision, RAG, and full-stack engineering projects by Artur Sogomonyan."
+		content="Applied AI, machine learning, computer vision, 3D toolpath, RAG, and full-stack engineering projects by Artur Sogomonyan."
 	/>
 </svelte:head>
 
@@ -138,7 +138,7 @@
 	<PageIntro
 		eyebrow="Selected systems"
 		title="Projects"
-		description="Case studies across applied AI, computer vision, document intelligence, data products, and the interfaces that make them useful."
+		description="Case studies across applied AI, computer vision, 3D geometry and toolpaths for multi-axis manufacturing, document intelligence, data products, and the interfaces that make them useful."
 	/>
 
 	<FilterBar

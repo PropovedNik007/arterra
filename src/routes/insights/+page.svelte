@@ -1,6 +1,7 @@
 <script>
 	import { base } from '$app/paths';
 	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
+	import GraphView from '$lib/graph/GraphView.svelte';
 	import WorkSankey from '$lib/components/charts/WorkSankey.svelte';
 	import SkillsRadar from '$lib/components/charts/SkillsRadar.svelte';
 	import GithubDashboard from '$lib/components/charts/GithubDashboard.svelte';
@@ -10,15 +11,20 @@
 	let { data } = $props();
 
 	const sections = [
+		{ id: 'graph', label: 'Knowledge graph' },
 		{ id: 'flow', label: 'How the work flows' },
 		{ id: 'skills', label: 'Skills profile' },
 		{ id: 'github', label: 'On GitHub' }
 	];
 
+	const count = (/** @type {string} */ kind) =>
+		data.graphData.nodes.filter((/** @type {{ kind: string }} */ node) => node.kind === kind)
+			.length;
+
 	let stats = $derived([
-		{ value: data.summary.projects, label: 'projects & builds' },
+		{ value: count('item'), label: 'notes' },
 		{ value: data.summary.fields, label: 'fields of work' },
-		{ value: cv.radar.axes.length, label: 'skill areas' },
+		{ value: count('org'), label: 'organisations' },
 		{ value: data.summary.repos, label: 'public repositories' },
 		...(data.privateWork.isEmpty
 			? []
@@ -32,7 +38,7 @@
 	<title>Insights — Artur Sogomonyan</title>
 	<meta
 		name="description"
-		content="Charts of Artur Sogomonyan's work: how published projects flow through fields of work, a self-assessed skills profile, and public GitHub activity plus anonymised totals from private organisation work."
+		content="Artur Sogomonyan's work as data: an interactive knowledge graph of projects, fields of work and organisations, a project flow chart, a self-assessed skills profile, and public GitHub activity plus anonymised totals from private organisation work."
 	/>
 </svelte:head>
 
@@ -43,9 +49,9 @@
 			<p class="eyebrow">Charts &amp; numbers</p>
 			<h1>Insights</h1>
 			<p class="lede">
-				The same work, seen as data: where the projects sit across fields of work, how I rate my own
-				skills, what the public code history looks like, and anonymised totals from private
-				organisation work. Every chart has a table underneath.
+				The same work, seen as data: a map of how projects, fields of work and organisations
+				connect, where the projects sit across fields, how I rate my own skills, and what my code
+				history looks like, including anonymised totals from private organisation work.
 			</p>
 		</div>
 		<dl class="stats">
@@ -71,12 +77,20 @@
 		</ol>
 	</nav>
 
+	<section id="graph" class="insight" aria-label="Knowledge graph">
+		<GraphView
+			graphData={data.graphData}
+			eyebrow="Interactive knowledge graph"
+			title="How the work connects"
+		/>
+	</section>
+
 	<section id="flow" class="insight" aria-labelledby="flow-title">
 		<div class="section-head">
 			<h2 id="flow-title">How the work flows</h2>
 			<p>
 				Domains → fields of work → projects, built from the
-				<a href="{base}/graph">knowledge graph</a>.
+				<a href="#graph">knowledge graph</a> above.
 			</p>
 		</div>
 		<WorkSankey graphData={data.graphData} title="Domains, fields and projects" />
@@ -122,7 +136,7 @@
 </div>
 
 <style>
-	/* Intro mirrors /graph: short, with the numbers on the right. */
+	/* Short intro with the numbers on the right, so the graph starts near the fold. */
 	.insights-page {
 		padding-top: clamp(1.5rem, 4vw, 3rem);
 	}

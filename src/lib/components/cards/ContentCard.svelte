@@ -9,7 +9,14 @@
 		showsDate,
 		tagLabel
 	} from '$lib/design/sections.js';
-	import { FIELDS, DOMAINS, FIELD_TAGS, fieldsFor } from '$lib/graph/taxonomy.js';
+	import {
+		FIELDS,
+		DOMAINS,
+		FIELD_TAGS,
+		displayFields,
+		fieldsFor,
+		leadDomain
+	} from '$lib/graph/taxonomy.js';
 
 	/**
 	 * One card, one link: the title link's ::after stretches over the whole card,
@@ -21,7 +28,8 @@
 	let discipline = $derived(
 		item.section === 'sport' && item.discipline ? DISCIPLINE_META[item.discipline] : null
 	);
-	let fieldIds = $derived(item.fields ?? fieldsFor(item));
+	// Curated order first, so a card leads with the note's defining fields.
+	let fieldIds = $derived(displayFields(item.slug, item.fields ?? fieldsFor(item)));
 	let fields = $derived(
 		fieldIds
 			.map((id) => FIELDS.find((field) => field.id === id))
@@ -34,7 +42,7 @@
 	let kicker = $derived.by(() => {
 		if (discipline) return `${discipline.icon} ${discipline.label}`;
 		if (item.section === 'projects') {
-			const domain = DOMAINS.find((candidate) => candidate.id === fields[0]?.domain);
+			const domain = DOMAINS.find((candidate) => candidate.id === leadDomain(fieldIds));
 			return domain?.label ?? SECTION_META.projects.label;
 		}
 		return SECTION_META[item.section]?.label ?? item.section;

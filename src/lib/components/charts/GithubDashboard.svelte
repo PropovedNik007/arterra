@@ -97,7 +97,7 @@
 	let roving = $state(0);
 	let activeMonth = $derived(hovered ?? focused);
 	/** @type {Record<string, SVGRectElement>} */
-	const cellRefs = {};
+	const cellRefs = $state({});
 
 	/** @param {string} month */
 	function cellInfo(month) {

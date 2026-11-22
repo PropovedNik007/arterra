@@ -102,7 +102,8 @@ describe('sitemap', () => {
 		expect(xml).toContain(`<loc>${SITE_URL}/</loc>`);
 		expect(xml).toContain(`<loc>${SITE_URL}/faq</loc>`);
 		expect(xml).toContain(`<loc>${SITE_URL}/insights</loc>`);
-		expect(xml).toContain(`<loc>${SITE_URL}/graph</loc>`);
+		// /graph only forwards to /insights#graph, so it stays out of the sitemap.
+		expect(xml).not.toContain(`<loc>${SITE_URL}/graph</loc>`);
 		for (const item of items.slice(0, 5)) expect(xml).toContain(item.slug);
 		for (const match of xml.matchAll(/<loc>([^<]+)<\/loc>/g)) {
 			expect(match[1].startsWith(`${SITE_URL}/`), match[1]).toBe(true);

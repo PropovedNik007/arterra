@@ -461,3 +461,31 @@ export function layoutSankey(data, options) {
 		})
 	};
 }
+
+/**
+ * Vertical positions for one column of labels so that none overlap. Each label
+ * keeps its anchor (the node's centre) when it can; a label that would collide
+ * with the one above is pushed down, and labels that would run past `max` are
+ * pushed back up. Deterministic, so the prerendered chart never changes.
+ * @param {{ id: string, y: number, size: number }[]} labels `y` is the wanted centre, `size` the label's height
+ * @param {{ min: number, max: number, gap?: number }} bounds
+ * @returns {Map<string, number>} centre y per label id
+ */
+export function spreadLabels(labels, { min, max, gap = 0 }) {
+	const sorted = [...labels].sort((a, b) => a.y - b.y || a.id.localeCompare(b.id));
+	const centres = sorted.map((label) => label.y);
+	let floor = min;
+	sorted.forEach((label, index) => {
+		const top = Math.max(centres[index] - label.size / 2, floor);
+		centres[index] = top + label.size / 2;
+		floor = top + label.size + gap;
+	});
+	let ceiling = max;
+	for (let index = sorted.length - 1; index >= 0; index -= 1) {
+		const label = sorted[index];
+		const bottom = Math.min(centres[index] + label.size / 2, ceiling);
+		centres[index] = bottom - label.size / 2;
+		ceiling = bottom - label.size - gap;
+	}
+	return new Map(sorted.map((label, index) => [label.id, Math.round(centres[index] * 100) / 100]));
+}

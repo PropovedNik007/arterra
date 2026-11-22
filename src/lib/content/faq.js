@@ -156,14 +156,14 @@ export function buildFaq(featured) {
 			id: 'who-is-artur-sogomonyan',
 			group: 'profile',
 			question: `Who is ${name}?`,
-			answer: `${name} is ${withArticle(cv.headline)} based in ${place}. His background spans applied machine learning, computer vision, full-stack development, and hands-on making.`,
+			answer: `${name} is ${withArticle(cv.headline)} based in ${place}. His background spans applied machine learning, computer vision, 3D geometry and toolpath software for multi-axis manufacturing, full-stack development, and hands-on making.`,
 			links: [{ label: 'About', href: '/about' }]
 		},
 		{
 			id: 'what-does-he-work-on',
 			group: 'profile',
 			question: `What does ${name} work on?`,
-			answer: `${name} works where models meet products: shaping the data, testing the method, building the service, and making the result understandable to the person using it. His work covers applied machine learning, computer vision, LLM and retrieval-augmented generation (RAG) systems, and full-stack web development.`,
+			answer: `${name} works where models meet products: shaping the data, testing the method, building the service, and making the result understandable to the person using it. His work covers applied machine learning, computer vision, 3D geometry and toolpath software for multi-axis manufacturing, LLM and retrieval-augmented generation (RAG) systems, and full-stack web development.`,
 			links: [{ label: 'Projects', href: '/projects' }]
 		},
 		{
@@ -271,11 +271,13 @@ export function buildFaq(featured) {
 			id: 'contact',
 			group: 'site',
 			question: `How can I contact ${name}?`,
-			answer: `You can reach ${name} by email at ${PROFILE.email}, on LinkedIn (${PROFILE.linkedin.replace('https://', '')}), on Telegram (${PROFILE.telegram.replace('https://', '')}), on GitHub (${PROFILE.github.replace('https://', '')}), or on Medium (${PROFILE.medium.replace('https://', '')}). A useful first message names the outcome you want, the current constraint, and the next decision.`,
+			answer: `You can reach ${name} by email at ${PROFILE.email}, on LinkedIn (${PROFILE.linkedin.replace('https://', '')}), on Telegram (${PROFILE.telegram.replace('https://', '')}), or on GitHub (${PROFILE.github.replace('https://', '')}); he also writes on Medium (${PROFILE.medium.replace('https://', '')}). A useful first message names the outcome you want, the current constraint, and the next decision.`,
 			links: [
 				{ label: 'Contact', href: '/contact' },
 				{ label: 'Email', href: `mailto:${PROFILE.email}` },
 				{ label: 'LinkedIn', href: PROFILE.linkedin },
+				{ label: 'Telegram', href: PROFILE.telegram },
+				{ label: 'GitHub', href: PROFILE.github },
 				{ label: 'Medium', href: PROFILE.medium }
 			]
 		},
@@ -283,12 +285,12 @@ export function buildFaq(featured) {
 			id: 'what-else-is-here',
 			group: 'site',
 			question: `What else is on ${name}’s site besides projects?`,
-			answer: `Besides projects, the site has DIY build notes; sport notes on ${list(disciplines)}; an interactive knowledge graph that connects the notes; and an Insights page with charts of fields of work, a self-assessed skills profile, and public GitHub activity plus anonymised totals from private organisation work.`,
+			answer: `Besides projects, the site has DIY build notes; sport notes on ${list(disciplines)}; and an Insights page with an interactive knowledge graph that connects the notes, a chart of how projects flow through fields of work, a self-assessed skills profile, and public GitHub activity plus anonymised totals from private organisation work.`,
 			links: [
 				{ label: 'DIY', href: '/diy' },
 				{ label: 'Sport', href: '/sport' },
-				{ label: 'Knowledge graph', href: '/graph' },
-				{ label: 'Insights', href: '/insights' }
+				{ label: 'Insights', href: '/insights' },
+				{ label: 'Knowledge graph', href: '/insights#graph' }
 			]
 		}
 	];

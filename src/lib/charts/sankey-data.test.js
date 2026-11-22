@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import graphData from '$lib/graphs/graph.json';
-import { buildHighlights, buildSankeyData, layoutSankey, shortLabel } from './sankey-data.js';
+import {
+	buildHighlights,
+	buildSankeyData,
+	layoutSankey,
+	shortLabel,
+	spreadLabels
+} from './sankey-data.js';
 
 /** @typedef {import('$lib/graph/build.js').GraphData} GraphData */
 
@@ -202,5 +208,50 @@ describe('layoutSankey', () => {
 				.map((node) => node.y0);
 			expect(ys).toEqual([...ys].sort((a, b) => a - b));
 		}
+	});
+});
+
+describe('spreadLabels', () => {
+	/** @param {Map<string, number>} placed @param {{ id: string, size: number }[]} labels */
+	function overlaps(placed, labels) {
+		const boxes = labels
+			.map((label) => {
+				const y = /** @type {number} */ (placed.get(label.id));
+				return [y - label.size / 2, y + label.size / 2];
+			})
+			.sort((a, b) => a[0] - b[0]);
+		return boxes.some((box, index) => index > 0 && box[0] < boxes[index - 1][1] - 1e-9);
+	}
+
+	it('keeps labels that already fit at their anchors', () => {
+		const labels = [
+			{ id: 'a', y: 20, size: 16 },
+			{ id: 'b', y: 60, size: 16 }
+		];
+		expect(spreadLabels(labels, { min: 0, max: 100 })).toEqual(
+			new Map([
+				['a', 20],
+				['b', 60]
+			])
+		);
+	});
+
+	it('pushes colliding labels apart and keeps them inside the bounds', () => {
+		const labels = [
+			{ id: 'robotics', y: 495, size: 18 },
+			{ id: 'toolpaths', y: 506, size: 18 },
+			{ id: 'geometry', y: 300, size: 36 },
+			{ id: 'series', y: 290, size: 18 }
+		];
+		const placed = spreadLabels(labels, { min: 0, max: 510, gap: 1 });
+		expect(overlaps(placed, labels)).toBe(false);
+		for (const label of labels) {
+			const y = /** @type {number} */ (placed.get(label.id));
+			expect(y - label.size / 2).toBeGreaterThanOrEqual(0);
+			expect(y + label.size / 2).toBeLessThanOrEqual(510);
+		}
+		expect(/** @type {number} */ (placed.get('robotics'))).toBeLessThan(
+			/** @type {number} */ (placed.get('toolpaths'))
+		);
 	});
 });

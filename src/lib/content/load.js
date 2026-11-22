@@ -75,12 +75,13 @@ function linksSectionUrl(body) {
 
 /**
  * Validated `gallery` frontmatter: a list of `{ src, alt, caption? }` with
- * site-relative image paths. Malformed entries are dropped with a warning.
+ * site-relative image paths. Malformed entries and repeated `src` values
+ * (the gallery is keyed by `src`) are dropped with a warning.
  * @param {unknown} value
  * @param {string} slug
  * @returns {import('./types.js').GalleryImage[] | undefined}
  */
-function parseGallery(value, slug) {
+export function parseGallery(value, slug) {
 	if (!Array.isArray(value)) return undefined;
 	/** @type {import('./types.js').GalleryImage[]} */
 	const images = [];
@@ -89,6 +90,10 @@ function parseGallery(value, slug) {
 		const alt = typeof entry?.alt === 'string' ? entry.alt.trim() : '';
 		if (!src || !alt || /^[a-z]+:/i.test(src)) {
 			console.warn(`[content] "${slug}": skipping gallery entry without a local src and alt text`);
+			continue;
+		}
+		if (images.some((image) => image.src === src)) {
+			console.warn(`[content] "${slug}": skipping repeated gallery image "${src}"`);
 			continue;
 		}
 		const caption =

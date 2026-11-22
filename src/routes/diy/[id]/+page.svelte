@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.item.title} — DIY</title>
+	<title>{data.item.title} — DIY — Artur Sogomonyan</title>
 	<meta name="description" content={data.item.excerpt} />
 </svelte:head>
 

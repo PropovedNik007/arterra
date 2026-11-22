@@ -13,6 +13,8 @@
  * appear in ORGS. Never add private employers, clients, or confidential work.
  */
 
+import { cv } from '../content/cv.js';
+
 /** @typedef {{ id: string, label: string, description: string }} Domain */
 /** @typedef {{ id: string, label: string, domain: string, description: string }} Field */
 /**
@@ -223,6 +225,16 @@ export const FIELD_TAGS = new Set([
 	'web3',
 	'iot',
 	'3d-printing',
+	'additive-manufacturing',
+	'multi-axis',
+	'3d-segmentation',
+	'mesh-processing',
+	'computational-geometry',
+	'slicing',
+	'toolpath-generation',
+	'g-code',
+	'robotics',
+	'robot-arms',
 	'software-engineering'
 ]);
 
@@ -258,20 +270,34 @@ export const ITEM_FIELDS = {
 	'2026-04-miniature-batch': ['3d-printing']
 };
 
+/**
+ * Tooltip line for an organisation, read from the CV so the two never drift.
+ * @param {'education' | 'experience'} list
+ * @param {string} id CV entry id
+ * @returns {string}
+ */
+function cvMeta(list, id) {
+	/** @type {{ id: string, degree?: string, role?: string, period: string }[]} */
+	const entries = cv[list];
+	const entry = entries.find((candidate) => candidate.id === id);
+	if (!entry) throw new Error(`taxonomy: no CV ${list} entry "${id}"`);
+	return `${entry.degree ?? entry.role} · ${entry.period}`;
+}
+
 /** @type {Org[]} */
 export const ORGS = [
 	{
 		id: 'tu-wien',
 		label: 'TU Wien',
 		kind: 'university',
-		meta: 'MSc Data Science · 2022–2026',
+		meta: cvMeta('education', 'msc-tu-wien'),
 		items: ['rail4future', 'davu-ocr']
 	},
 	{
 		id: 'bmstu',
 		label: 'Bauman Moscow State Technical University',
 		kind: 'university',
-		meta: 'BSc Information Technologies · 2014–2020',
+		meta: cvMeta('education', 'bsc-bmstu'),
 		items: ['printerra']
 	},
 	{
@@ -320,21 +346,21 @@ export const ORGS = [
 		id: 'linwood',
 		label: 'Linwood',
 		kind: 'company',
-		meta: 'Full-stack developer · 2018–2019',
+		meta: cvMeta('experience', 'linwood'),
 		items: ['web-development-path']
 	},
 	{
 		id: 'krk-group',
 		label: 'KRK Group',
 		kind: 'company',
-		meta: 'Frontend developer · 2019',
+		meta: cvMeta('experience', 'krk-group'),
 		items: ['web-development-path']
 	},
 	{
 		id: 'arterra-miniature',
 		label: 'Arterra Miniature',
 		kind: 'company',
-		meta: 'Engineer & project manager · 2020–2021',
+		meta: cvMeta('experience', 'arterra-miniature'),
 		fields: ['3d-printing']
 	},
 	{
@@ -366,4 +392,42 @@ export function fieldsFor(item) {
 		for (const id of TAG_FIELDS[String(tag).toLowerCase()] ?? []) ids.add(id);
 	}
 	return FIELDS.filter((field) => ids.has(field.id)).map((field) => field.id);
+}
+
+/**
+ * Field ids ordered for display: the curated ITEM_FIELDS order first (it puts
+ * a note's defining fields up front), then any tag-derived fields in FIELDS order.
+ * @param {string} slug
+ * @param {string[]} ids field ids, e.g. from `fieldsFor`
+ * @returns {string[]}
+ */
+export function displayFields(slug, ids) {
+	const present = new Set(ids);
+	const curated = (ITEM_FIELDS[slug] ?? []).filter((id) => present.has(id));
+	const chosen = new Set(curated);
+	return [...curated, ...ids.filter((id) => !chosen.has(id))];
+}
+
+/**
+ * Domain id that best describes a list of fields: the domain with the most
+ * fields, ties broken by the earliest field in the list.
+ * @param {string[]} ids field ids in display order
+ * @returns {string | undefined}
+ */
+export function leadDomain(ids) {
+	/** @type {Map<string, number>} */
+	const counts = new Map();
+	for (const id of ids) {
+		const domain = FIELDS.find((field) => field.id === id)?.domain;
+		if (domain) counts.set(domain, (counts.get(domain) ?? 0) + 1);
+	}
+	let best;
+	let bestCount = 0;
+	for (const [domain, count] of counts) {
+		if (count > bestCount) {
+			best = domain;
+			bestCount = count;
+		}
+	}
+	return best;
 }

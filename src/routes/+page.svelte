@@ -13,7 +13,7 @@
 	/** @type {HTMLDivElement | undefined} */
 	let tabAnchor;
 	/** @type {HTMLButtonElement[]} */
-	const tabButtons = [];
+	const tabButtons = $state([]);
 
 	/**
 	 * @param {number} count
@@ -51,7 +51,7 @@
 			number: '01',
 			title: 'Projects',
 			count: plural(data.counts.projects, 'project'),
-			text: 'Applied AI, computer vision, RAG, and full-stack systems.'
+			text: 'Applied AI, computer vision, 3D toolpaths, RAG, and full-stack systems.'
 		},
 		{
 			path: '/diy',
@@ -70,11 +70,11 @@
 				: 'Hiking, boxing, diving, and table tennis.'
 		},
 		{
-			path: '/graph',
+			path: '/insights',
 			number: '04',
-			title: 'Graph',
+			title: 'Insights',
 			count: `${plural(graphCounts.field ?? 0, 'field')} · ${plural(graphCounts.org ?? 0, 'organisation')}`,
-			text: 'How projects, fields of work, and organisations connect.'
+			text: 'The knowledge graph, project flow, skills profile, and GitHub activity.'
 		}
 	]);
 
@@ -126,7 +126,7 @@
 	<title>{cv.name} — {cv.headline}</title>
 	<meta
 		name="description"
-		content="{cv.headline} in {cv.location} building applied machine-learning systems, computer-vision pipelines, and full-stack products."
+		content="{cv.headline} in {cv.location} building applied machine-learning systems, computer-vision pipelines, 3D geometry and toolpath software for multi-axis manufacturing, and full-stack products."
 	/>
 </svelte:head>
 
