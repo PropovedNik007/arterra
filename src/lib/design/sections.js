@@ -76,6 +76,17 @@ export function showsDate(section) {
 	return section !== 'projects';
 }
 
+/**
+ * Label for an item's primary external-link button, from the link's kind: a
+ * write-up about the work, a live deployment, or a related site.
+ * @param {{ externalKind?: import('$lib/content/types.js').ExternalKind, externalLive?: boolean }} item
+ * @returns {string}
+ */
+export function externalLinkLabel(item) {
+	if (item.externalKind === 'article') return 'Read the write-up';
+	return item.externalLive ? 'Visit live site' : 'Project website';
+}
+
 /** Whole kebab tags whose display form isn't just "words with spaces". */
 const TAG_LABELS = /** @type {Record<string, string>} */ ({
 	'g-code': 'G-code',

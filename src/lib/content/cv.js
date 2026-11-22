@@ -16,7 +16,8 @@ import { itemPath } from '../design/sections.js';
  * @property {string} school
  * @property {string} [schoolShort] Compact school name for tight layouts.
  * @property {string} period
- * @property {string} [note]
+ * @property {string} [thesis] Diploma-thesis topic, without a trailing period.
+ * @property {string} [note] Display line; for a thesis, built by `thesisNote()`.
  * @property {string} [project] Content slug in `content/projects`.
  */
 
@@ -40,17 +41,25 @@ import { itemPath } from '../design/sections.js';
 /**
  * @typedef {object} AwardEntry
  * @property {string} id
- * @property {string} title
- * @property {string} detail
- * @property {string} [project] Content slug in `content/projects`.
+ * @property {string} title "<place> · <event>", e.g. "2nd place · AIM Hackathon".
+ * @property {string} period Month and year, e.g. "Oct 2024".
+ * @property {string} detail One sentence.
+ * @property {string} [project] Content slug in `content/projects`; omitted when
+ *   the award has no project page.
  */
 
 /**
  * @typedef {object} PublicationEntry
  * @property {string} id
- * @property {string} venue
+ * @property {string} title Exact published title.
+ * @property {string} venue Full proceedings name.
+ * @property {string} venueShort Compact venue label, e.g. "IEEE IEEM 2024".
  * @property {string} year
- * @property {string} title
+ * @property {string} pages Page range with an en dash.
+ * @property {string} doi DOI without the resolver prefix.
+ * @property {string} url DOI resolver URL (https://doi.org/<doi>).
+ * @property {string} credit Authorship line, e.g. "Co-authored with S. Zhou et al.".
+ * @property {string} leadAuthor First author as credited publicly, e.g. "S. Zhou".
  */
 
 /**
@@ -93,6 +102,8 @@ import { itemPath } from '../design/sections.js';
  * @property {CvPdf} pdf
  */
 
+const BSC_THESIS = '3D-printer failure-detection system based on computer vision';
+
 /** @type {Cv} */
 export const cv = {
 	name: 'Artur Sogomonyan',
@@ -119,7 +130,8 @@ export const cv = {
 			school: 'Bauman Moscow State Technical University',
 			schoolShort: 'Bauman MSTU',
 			period: '2014–2020',
-			note: 'Thesis: 3D-printer failure-detection system based on computer vision.',
+			thesis: BSC_THESIS,
+			note: thesisNote(BSC_THESIS),
 			project: 'printerra'
 		},
 		{
@@ -269,26 +281,44 @@ export const cv = {
 		{ name: 'Armenian', level: 'B2' },
 		{ name: 'German', level: 'A2' }
 	],
+	// Newest first.
 	awards: [
+		{
+			id: 'ai-mission-hackathon-3',
+			title: '1st place · AI Mission Hackathon 3',
+			period: 'Oct 2025',
+			detail:
+				'Team “Nightwalkers” — a multi-tool AI agent that autonomously answered complex sustainability questions, reaching over 70% accuracy on database and Wikipedia queries.'
+		},
 		{
 			id: 'aim-hackathon',
 			title: '2nd place · AIM Hackathon',
+			period: 'Oct 2024',
 			detail: 'Hosted by TIMETOACT Group — RAG for greenwashing detection.',
 			project: 'aim-hackathon-greenwashing-rag'
 		},
 		{
 			id: 'tourism-hackathon',
-			title: '2nd place · Tourism Technology Hackathon 2023',
+			title: '2nd place · Tourism Technology Hackathon',
+			period: 'Nov 2023',
 			detail: 'Tourism knowledge graph with an interactive map.',
 			project: 'tourism-knowledge-graph'
 		}
 	],
 	publications: [
 		{
-			id: 'ieee-2024-surrogate',
-			venue: 'IEEE',
+			id: 'ieee-ieem-2024-surrogate',
+			title:
+				'Comparative Analysis of Machine Learning-based Surrogate Modeling Approaches for Multi-body Dynamic Simulation in Railway Digital Twin Platform',
+			venue:
+				'2024 IEEE International Conference on Industrial Engineering and Engineering Management (IEEM)',
+			venueShort: 'IEEE IEEM 2024',
 			year: '2024',
-			title: 'Surrogate modelling for railway digital twins'
+			pages: '1074–1078',
+			doi: '10.1109/IEEM62345.2024.10857013',
+			url: 'https://doi.org/10.1109/IEEM62345.2024.10857013',
+			credit: 'Co-authored with S. Zhou et al.',
+			leadAuthor: 'S. Zhou'
 		}
 	],
 	pdf: {
@@ -297,6 +327,16 @@ export const cv = {
 		note: 'PDF'
 	}
 };
+
+/**
+ * Display line for a thesis topic: "Diploma thesis: <topic>." (the BSc thesis
+ * is a diploma thesis in the owner's CV).
+ * @param {string} topic
+ * @returns {string}
+ */
+export function thesisNote(topic) {
+	return `Diploma thesis: ${topic}.`;
+}
 
 /**
  * Site-relative path (without `base`) of a project referenced from the CV.

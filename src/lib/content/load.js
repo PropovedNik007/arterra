@@ -58,17 +58,22 @@ function articleBody(body) {
 
 /**
  * First public http(s) URL listed under a `## Links` heading, used as the
- * project's external link when the note has no `link:` frontmatter. `live` is
- * true only when its line is labelled `Live:` — a partner or programme homepage
- * (e.g. Rail4Future's) is not a live deployment of the work.
+ * project's external link when the note has no `link:` frontmatter. Its line
+ * label sets the kind: `Live:` is a live deployment of the work, `Write-up…:`
+ * or `Article…:` (e.g. "Write-up on Medium:") is an article about it, and an
+ * unlabelled URL is a related site — a partner or programme homepage (e.g.
+ * Rail4Future's) is not a live deployment of the work.
  * @param {string} body
- * @returns {{ url: string, live: boolean } | undefined}
+ * @returns {{ url: string, live: boolean, kind: import('./types.js').ExternalKind } | undefined}
  */
-function linksSectionUrl(body) {
+export function linksSectionUrl(body) {
 	const section = body.match(/^##\s+Links\s*$([\s\S]*?)(?=^#{1,2}\s|(?![\s\S]))/im)?.[1] ?? '';
 	for (const line of section.split(/\r?\n/)) {
 		const url = line.match(/https?:\/\/[^\s)>\]]+/)?.[0];
-		if (url) return { url, live: /^\s*[-*]?\s*live\s*:/i.test(line) };
+		if (!url) continue;
+		const live = /^\s*[-*]?\s*live\s*:/i.test(line);
+		const article = /^\s*[-*]?\s*(?:write-?up|article)\b[^:]*:/i.test(line);
+		return { url, live, kind: live ? 'live' : article ? 'article' : 'site' };
 	}
 	return undefined;
 }
@@ -195,6 +200,7 @@ export async function loadContent(root = join(process.cwd(), 'content')) {
 			externalLink: typeof data.link === 'string' && data.link ? data.link : listed?.url,
 			// Frontmatter `link:` is the project's own link; a listed URL is live only if labelled so.
 			externalLive: typeof data.link === 'string' && data.link ? true : Boolean(listed?.live),
+			externalKind: typeof data.link === 'string' && data.link ? 'live' : listed?.kind,
 			featured: data.featured === true,
 			featuredOrder: typeof data.featured_order === 'number' ? data.featured_order : undefined,
 			printer: typeof data.printer === 'string' ? data.printer : undefined,

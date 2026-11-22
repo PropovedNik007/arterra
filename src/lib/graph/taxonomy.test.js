@@ -33,5 +33,7 @@ describe('taxonomy', () => {
 		expect(meta.bmstu).toBe(`${bsc?.degree} · ${bsc?.period}`);
 		const arterra = cv.experience.find((entry) => entry.id === 'arterra-miniature');
 		expect(meta['arterra-miniature']).toBe(`${arterra?.role} · ${arterra?.period}`);
+		expect(meta.timetoact).toBe('Oct 2024 · 2nd place');
+		expect(meta['tourism-technology-hackathon']).toBe('Nov 2023 · 2nd place');
 	});
 });

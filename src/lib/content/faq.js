@@ -3,7 +3,7 @@
  * llms.txt. Answers are short, self-contained, and quotable on their own, so
  * search and answer engines can cite them without the surrounding page.
  *
- * Names, dates, slugs, the thesis, roles and awards come from `cv.js`, and the
+ * Names, dates, slugs, the thesis, roles, awards and the publication come from `cv.js`, and the
  * featured projects from content frontmatter, so those facts cannot drift from
  * the About page. The remaining connective prose is checked against `cv.js` in
  * faq.test.js. Internal link hrefs are site-relative (no `base`); pages and
@@ -134,17 +134,17 @@ export function buildFaq(featured) {
 	const skillGroups = Object.entries(cv.skills).map(
 		([group, values]) => `${lowerFirst(group)} (${values.join(', ')})`
 	);
-	const awards = cv.awards.map(
-		(award) =>
-			`${award.title.replace(' · ', ' at the ')} (${lowerFirst(withoutPeriod(award.detail))})`
-	);
+	const awards = cv.awards.map((award) => {
+		const parts = awardParts(award.title);
+		return `${parts.place} place at the ${parts.event} (${award.period}; ${lowerFirst(withoutPeriod(award.detail))})`;
+	});
 	const publications = cv.publications.map(
-		(publication) => `“${publication.title}” (${publication.venue}, ${publication.year})`
+		(publication) =>
+			`“${publication.title}”, published in the proceedings of the ${publication.venue}, pages ${publication.pages} (DOI ${publication.doi})`
 	);
 	const disciplines = DISCIPLINES.map((id) => DISCIPLINE_META[id].label.toLowerCase());
-	const thesis = withArticle(
-		lowerFirst(withoutPeriod((bsc.note ?? '').replace(/^Thesis:\s*/, '')))
-	);
+	if (!bsc.thesis) throw new Error('cv.js: the BSc entry has no thesis');
+	const thesis = withArticle(bsc.thesis);
 	const glosav = byId(cv.experience, 'glosav');
 	const susteam = byId(cv.experience, 'susteam');
 	const aim = byId(cv.awards, 'aim-hackathon');
@@ -170,7 +170,7 @@ export function buildFaq(featured) {
 			id: 'education',
 			group: 'profile',
 			question: `What is ${name}’s education?`,
-			answer: `${name}’s education includes an ${msc.degree} at ${msc.school} (${msc.schoolShort}, ${msc.period}) and a ${bsc.degree} at ${bsc.school} (${bsc.period}), where his thesis was ${thesis}. He also attended ${list(courses.map((entry) => `${entry.degree} (${entry.schoolShort ?? entry.school}, ${entry.period})`))}.`,
+			answer: `${name}’s education includes an ${msc.degree} at ${msc.school} (${msc.schoolShort}, ${msc.period}) and a ${bsc.degree} at ${bsc.school} (${bsc.period}), where his diploma thesis was ${thesis}. He also attended ${list(courses.map((entry) => `${entry.degree} (${entry.schoolShort ?? entry.school}, ${entry.period})`))}.`,
 			links: bsc.project
 				? [
 						{ label: 'About', href: '/about' },
@@ -220,7 +220,7 @@ export function buildFaq(featured) {
 			id: 'computer-vision',
 			group: 'work',
 			question: `What computer-vision work has ${name} done?`,
-			answer: `${name} worked on ${lowerFirst(withoutPeriod(glosav.summary))} at ${glosav.org}, and his thesis at ${bsc.school} was ${thesis}.`,
+			answer: `${name} worked on ${lowerFirst(withoutPeriod(glosav.summary))} at ${glosav.org}, and his diploma thesis at ${bsc.school} was ${thesis}.`,
 			links: [
 				...(glosav.project ? [{ label: glosav.org, href: cvProjectPath(glosav.project) }] : []),
 				...(bsc.project ? [{ label: 'Thesis project', href: cvProjectPath(bsc.project) }] : [])
@@ -242,13 +242,19 @@ export function buildFaq(featured) {
 			id: 'awards-and-publications',
 			group: 'work',
 			question: `What awards and publications does ${name} have?`,
-			answer: `${name} took ${list(awards)}. He also has ${publications.length === 1 ? 'a publication' : 'publications'}: ${list(publications)}.`,
-			links: cv.awards
-				.filter((award) => award.project)
-				.map((award) => ({
-					label: award.title.split(' · ')[1] ?? award.title,
-					href: cvProjectPath(/** @type {string} */ (award.project))
+			answer: `${name} took ${list(awards, ';')}. He also co-authored ${list(publications, ';')}.`,
+			links: [
+				...cv.awards
+					.filter((award) => award.project)
+					.map((award) => ({
+						label: `${awardParts(award.title).event} project`,
+						href: cvProjectPath(/** @type {string} */ (award.project))
+					})),
+				...cv.publications.map((publication) => ({
+					label: `${publication.venueShort} paper (DOI)`,
+					href: publication.url
 				}))
+			]
 		},
 		{
 			id: 'fit',

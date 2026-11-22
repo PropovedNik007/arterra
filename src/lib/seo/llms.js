@@ -85,6 +85,15 @@ export function buildLlmsTxt({ faq, featured, siteUrl = SITE_URL }) {
 		lines.push(`- [${entry.question}](${url(`/faq#${entry.id}`)}): ${entry.answer}`);
 	}
 	lines.push('');
+	if (cv.publications.length) {
+		lines.push('## Publications', '');
+		for (const publication of cv.publications) {
+			lines.push(
+				`- [${publication.title}](${publication.url}): ${publication.venue}, pages ${publication.pages}. ${publication.credit} DOI ${publication.doi}.`
+			);
+		}
+		lines.push('');
+	}
 	if (featured.length) {
 		lines.push('## Projects', '');
 		for (const project of featured) {

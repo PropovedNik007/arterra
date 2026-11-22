@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { loadContent, parseGallery } from './load.js';
+import { linksSectionUrl, loadContent, parseGallery } from './load.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const FIXTURES = join(here, '__fixtures__', 'content');
@@ -51,6 +51,29 @@ describe('loadContent', () => {
 		expect(hike?.distance_km).toBe(14);
 		expect(hike?.gain_m).toBe(950);
 		expect(hike?.region).toBe('Rax, Lower Austria');
+	});
+
+	it('classifies the first ## Links URL by its line label', () => {
+		const note = (/** @type {string} */ line) => `# T\n\nBody.\n\n## Links\n\n${line}\n`;
+		expect(linksSectionUrl(note('- Live: https://example.com'))).toEqual({
+			url: 'https://example.com',
+			live: true,
+			kind: 'live'
+		});
+		expect(
+			linksSectionUrl(note('- Write-up on Medium: https://medium.com/@someone/post-1'))
+		).toEqual({ url: 'https://medium.com/@someone/post-1', live: false, kind: 'article' });
+		expect(
+			linksSectionUrl(note('- Write-up on Medium: [A post](https://medium.com/@someone/post-1)'))
+		).toEqual({ url: 'https://medium.com/@someone/post-1', live: false, kind: 'article' });
+		expect(linksSectionUrl(note('Article: https://example.org/a'))?.kind).toBe('article');
+		expect(linksSectionUrl(note('https://partner.example'))).toEqual({
+			url: 'https://partner.example',
+			live: false,
+			kind: 'site'
+		});
+		expect(linksSectionUrl(note('No link here.'))).toBeUndefined();
+		expect(linksSectionUrl('# T\n\nhttps://outside.example\n')).toBeUndefined();
 	});
 
 	it('returns an empty array for a missing content root instead of throwing', async () => {

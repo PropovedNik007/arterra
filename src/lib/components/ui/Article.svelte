@@ -3,7 +3,7 @@
 	import Breadcrumb from './Breadcrumb.svelte';
 	import GraphView from '$lib/graph/GraphView.svelte';
 	import { FIELD_TAGS } from '$lib/graph/taxonomy.js';
-	import { formatNoteDate, showsDate, tagLabel } from '$lib/design/sections.js';
+	import { externalLinkLabel, formatNoteDate, showsDate, tagLabel } from '$lib/design/sections.js';
 
 	/**
 	 * @typedef {object} ArticleContext
@@ -66,7 +66,7 @@
 		{#if item.externalLink}
 			<div class="actions">
 				<a class="button primary" href={item.externalLink} target="_blank" rel="noopener noreferrer"
-					>{item.externalLive ? 'Visit live site' : 'Project website'}
+					>{externalLinkLabel(item)}
 					<span aria-hidden="true">↗</span><span class="visually-hidden">
 						(opens in a new tab)</span
 					></a
@@ -258,14 +258,19 @@
 		font-size: var(--text-sm);
 		line-height: 1.5;
 	}
+	/* Covers keep their natural size and full frame: never upscaled, never cropped
+	   (UI screenshots keep their top bar); smaller covers sit centred. */
 	.hero-image {
 		display: block;
-		width: 100%;
+		width: auto;
+		max-width: 100%;
+		height: auto;
 		max-height: 38rem;
+		margin-inline: auto;
 		margin-bottom: clamp(3rem, 7vw, 6rem);
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-xl);
-		object-fit: cover;
+		object-fit: contain;
 	}
 	.article-grid {
 		display: grid;

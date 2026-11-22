@@ -338,6 +338,30 @@
 			]
 		},
 		{
+			"id": "aim-hackathon-greenwashing-rag",
+			"label": "AIM Hackathon — greenwashing RAG",
+			"kind": "item",
+			"tone": "projects",
+			"section": "projects",
+			"href": "/projects/aim-hackathon-greenwashing-rag",
+			"subtitle": "Projects",
+			"excerpt": "A platform built during the AIM Hackathon (hosted by TIMETOACT Group, October 2024) that uses Retrieval-Augmented Generation to detect greenwashing in corporate ESG…",
+			"cover": "images/projects/aim-hackathon.jpg",
+			"tags": [
+				"RAG",
+				"LangChain",
+				"Flask",
+				"OpenAI",
+				"ESG"
+			],
+			"fields": [
+				"Machine Learning",
+				"NLP",
+				"LLMs & RAG",
+				"Back-end"
+			]
+		},
+		{
 			"id": "lawsyncr",
 			"label": "LawSyncr",
 			"kind": "item",
@@ -393,7 +417,7 @@
 			"section": "projects",
 			"href": "/projects/printerra",
 			"subtitle": "Projects",
-			"excerpt": "Diploma thesis (BMSTU): a 3D-printer failure detection system based on computer-vision detection.",
+			"excerpt": "Diploma thesis (BSc, BMSTU): a 3D-printer failure-detection system based on computer vision.",
 			"cover": "images/projects/3dprinterthesis.png",
 			"tags": [
 				"machine-learning",
@@ -533,30 +557,6 @@
 			"featured": true
 		},
 		{
-			"id": "aim-hackathon-greenwashing-rag",
-			"label": "AIM Hackathon — greenwashing RAG",
-			"kind": "item",
-			"tone": "projects",
-			"section": "projects",
-			"href": "/projects/aim-hackathon-greenwashing-rag",
-			"subtitle": "Projects",
-			"excerpt": "A platform built during the AIM Hackathon (hosted by TIMETOACT Group) that uses Retrieval-Augmented Generation to detect greenwashing in corporate ESG (Environmental,…",
-			"cover": "images/projects/aim-hackathon.jpg",
-			"tags": [
-				"RAG",
-				"LangChain",
-				"Flask",
-				"OpenAI",
-				"ESG"
-			],
-			"fields": [
-				"Machine Learning",
-				"NLP",
-				"LLMs & RAG",
-				"Back-end"
-			]
-		},
-		{
 			"id": "tourism-knowledge-graph",
 			"label": "Tourism knowledge graph",
 			"kind": "item",
@@ -564,7 +564,7 @@
 			"section": "projects",
 			"href": "/projects/tourism-knowledge-graph",
 			"subtitle": "Projects",
-			"excerpt": "Tourism Technology Hackathon 2023 project: a data pipeline mapping data from multiple sources into a knowledge graph on tourism subjects, visualized as an interactive…",
+			"excerpt": "Tourism Technology Hackathon project (November 2023): a data pipeline mapping data from multiple sources into a knowledge graph on tourism subjects, visualized as an…",
 			"cover": "images/projects/tourism.webp",
 			"tags": [
 				"knowledge-graph",
@@ -656,7 +656,7 @@
 			"kind": "org",
 			"tone": "org",
 			"href": null,
-			"subtitle": "Hackathon · 2nd place"
+			"subtitle": "Hackathon · Oct 2024 · 2nd place"
 		},
 		{
 			"id": "org-tourism-technology-hackathon",
@@ -664,7 +664,7 @@
 			"kind": "org",
 			"tone": "org",
 			"href": null,
-			"subtitle": "Hackathon · 2023 · 2nd place"
+			"subtitle": "Hackathon · Nov 2023 · 2nd place"
 		},
 		{
 			"id": "org-linwood",
@@ -756,6 +756,14 @@
 			"subtitle": "Tool / topic · 2 notes"
 		},
 		{
+			"id": "topic-esg",
+			"label": "ESG",
+			"kind": "topic",
+			"tone": "topic",
+			"href": "/projects?tag=ESG",
+			"subtitle": "Tool / topic · 2 notes"
+		},
+		{
 			"id": "topic-opencv",
 			"label": "OpenCV",
 			"kind": "topic",
@@ -785,14 +793,6 @@
 			"kind": "topic",
 			"tone": "topic",
 			"href": "/projects?tag=LLaMA-3",
-			"subtitle": "Tool / topic · 2 notes"
-		},
-		{
-			"id": "topic-esg",
-			"label": "ESG",
-			"kind": "topic",
-			"tone": "topic",
-			"href": "/projects?tag=ESG",
 			"subtitle": "Tool / topic · 2 notes"
 		},
 		{
@@ -957,6 +957,11 @@
 		},
 		{
 			"source": "hub-projects",
+			"target": "aim-hackathon-greenwashing-rag",
+			"kind": "section"
+		},
+		{
+			"source": "hub-projects",
 			"target": "lawsyncr",
 			"kind": "section"
 		},
@@ -993,11 +998,6 @@
 		{
 			"source": "hub-projects",
 			"target": "glosav",
-			"kind": "section"
-		},
-		{
-			"source": "hub-projects",
-			"target": "aim-hackathon-greenwashing-rag",
 			"kind": "section"
 		},
 		{
@@ -1081,6 +1081,26 @@
 			"kind": "field"
 		},
 		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "field-ml",
+			"kind": "field"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "field-nlp",
+			"kind": "field"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "field-llm",
+			"kind": "field"
+		},
+		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "field-backend",
+			"kind": "field"
+		},
+		{
 			"source": "lawsyncr",
 			"target": "field-ml",
 			"kind": "field"
@@ -1238,26 +1258,6 @@
 		{
 			"source": "glosav",
 			"target": "field-iot",
-			"kind": "field"
-		},
-		{
-			"source": "aim-hackathon-greenwashing-rag",
-			"target": "field-ml",
-			"kind": "field"
-		},
-		{
-			"source": "aim-hackathon-greenwashing-rag",
-			"target": "field-nlp",
-			"kind": "field"
-		},
-		{
-			"source": "aim-hackathon-greenwashing-rag",
-			"target": "field-llm",
-			"kind": "field"
-		},
-		{
-			"source": "aim-hackathon-greenwashing-rag",
-			"target": "field-backend",
 			"kind": "field"
 		},
 		{
@@ -1456,13 +1456,23 @@
 			"kind": "topic"
 		},
 		{
+			"source": "aim-hackathon-greenwashing-rag",
+			"target": "topic-flask",
+			"kind": "topic"
+		},
+		{
 			"source": "lawsyncr",
 			"target": "topic-flask",
 			"kind": "topic"
 		},
 		{
 			"source": "aim-hackathon-greenwashing-rag",
-			"target": "topic-flask",
+			"target": "topic-esg",
+			"kind": "topic"
+		},
+		{
+			"source": "susteam",
+			"target": "topic-esg",
 			"kind": "topic"
 		},
 		{
@@ -1503,16 +1513,6 @@
 		{
 			"source": "susteam",
 			"target": "topic-llama-3",
-			"kind": "topic"
-		},
-		{
-			"source": "susteam",
-			"target": "topic-esg",
-			"kind": "topic"
-		},
-		{
-			"source": "aim-hackathon-greenwashing-rag",
-			"target": "topic-esg",
 			"kind": "topic"
 		},
 		{

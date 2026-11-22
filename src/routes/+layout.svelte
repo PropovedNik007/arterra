@@ -62,8 +62,26 @@
 					'@type': 'Language',
 					name: language.name
 				})),
+				award: cv.awards.map((award) => `${award.title} (${award.period})`),
 				sameAs: [PROFILE.linkedin, PROFILE.github, PROFILE.telegram, PROFILE.medium]
 			},
+			...cv.publications.map((publication) => ({
+				'@type': 'ScholarlyArticle',
+				'@id': publication.url,
+				url: publication.url,
+				name: publication.title,
+				headline: publication.title,
+				datePublished: publication.year,
+				pagination: publication.pages,
+				identifier: { '@type': 'PropertyValue', propertyID: 'DOI', value: publication.doi },
+				isPartOf: { '@type': 'Book', name: publication.venue },
+				// Not sole-authored: the lead author first, the owner as co-author.
+				author: [
+					{ '@type': 'Person', name: publication.leadAuthor },
+					{ '@id': `${SITE_URL}/#person` }
+				],
+				creditText: `${publication.leadAuthor} et al.`
+			})),
 			{
 				'@type': 'WebSite',
 				'@id': `${SITE_URL}/#website`,

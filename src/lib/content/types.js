@@ -6,6 +6,11 @@
  */
 
 /** @typedef {'projects' | 'diy' | 'sport'} Section */
+/**
+ * What `externalLink` points at: a live deployment of the work, an article
+ * about it (e.g. a Medium write-up), or a related site such as a partner's.
+ * @typedef {'live' | 'article' | 'site'} ExternalKind
+ */
 /** @typedef {'hiking' | 'boxing' | 'diving' | 'table-tennis'} Discipline */
 
 /**
@@ -25,6 +30,7 @@
  * @property {string[]} [tech]
  * @property {string} [externalLink]
  * @property {boolean} [externalLive] True when externalLink is a live deployment of the work.
+ * @property {ExternalKind} [externalKind] Kind of externalLink; drives the button label.
  * @property {boolean} [featured]
  * @property {number} [featuredOrder]
  * @property {string} [printer]

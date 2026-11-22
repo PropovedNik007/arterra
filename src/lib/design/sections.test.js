@@ -38,3 +38,16 @@ describe('formatNoteDate', () => {
 		expect(formatNoteDate('')).toBe('');
 	});
 });
+
+describe('externalLinkLabel', () => {
+	it('labels write-ups, live deployments and related sites honestly', async () => {
+		const { externalLinkLabel } = await import('./sections.js');
+		expect(externalLinkLabel({ externalKind: 'article', externalLive: false })).toBe(
+			'Read the write-up'
+		);
+		expect(externalLinkLabel({ externalKind: 'live', externalLive: true })).toBe('Visit live site');
+		expect(externalLinkLabel({ externalKind: 'site', externalLive: false })).toBe(
+			'Project website'
+		);
+	});
+});

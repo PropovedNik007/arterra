@@ -42,7 +42,10 @@ describe('faq', () => {
 
 	it('mentions no phone numbers', () => {
 		expect(PHONE.test('Call +43 664 123 4567')).toBe(true);
-		for (const entry of faq) expect(entry.answer, entry.id).not.toMatch(PHONE);
+		// DOIs ("10.1109/IEEM….2024.10857013") contain digit runs that look like numbers.
+		const withoutDois = (/** @type {string} */ text) => text.replace(/\b10\.\d{4,9}\/\S+/g, '');
+		expect(PHONE.test(withoutDois('DOI 10.1109/IEEM62345.2024.10857013'))).toBe(false);
+		for (const entry of faq) expect(withoutDois(entry.answer), entry.id).not.toMatch(PHONE);
 	});
 
 	it('links internally with site-relative paths that exist', () => {
@@ -69,10 +72,14 @@ describe('faq', () => {
 		/** @param {string} id */
 		const answer = (id) => faq.find((entry) => entry.id === id)?.answer ?? '';
 		const bsc = cv.education.find((entry) => entry.id === 'bsc-bmstu');
-		const thesis = (bsc?.note ?? '').replace(/^Thesis:\s*/, '').replace(/\.$/, '');
+		const thesis = bsc?.thesis ?? '';
 		expect(thesis.length).toBeGreaterThan(10);
-		expect(answer('education').toLowerCase()).toContain(thesis.toLowerCase());
-		expect(answer('computer-vision').toLowerCase()).toContain(thesis.toLowerCase());
+		expect(bsc?.note).toBe(`Diploma thesis: ${thesis}.`);
+		for (const id of ['education', 'computer-vision']) {
+			expect(answer(id), id).toContain(`diploma thesis`);
+			expect(answer(id), id).toContain(thesis);
+			expect(answer(id), id).not.toMatch(/thesis was a diploma|bachelor thesis/i);
+		}
 		const glosav = cv.experience.find((entry) => entry.id === 'glosav');
 		expect(answer('computer-vision').toLowerCase()).toContain(
 			(glosav?.summary ?? '?').replace(/\.$/, '').toLowerCase()
@@ -85,6 +92,25 @@ describe('faq', () => {
 		for (const slug of [bsc?.project, glosav?.project, aim?.project]) {
 			expect(slug).toBeTruthy();
 			expect(linked).toContain(cvProjectPath(/** @type {string} */ (slug)));
+		}
+	});
+
+	it('quotes the exact publication title and links its DOI', () => {
+		const entry = faq.find((candidate) => candidate.id === 'awards-and-publications');
+		for (const publication of cv.publications) {
+			expect(entry?.answer).toContain(`“${publication.title}”`);
+			expect(entry?.answer).toContain(publication.doi);
+			expect(entry?.answer).toContain(publication.pages);
+			expect(entry?.links?.some((link) => link.href === publication.url)).toBe(true);
+		}
+		expect(entry?.answer).toContain('co-authored');
+	});
+
+	it('lists every award with its place, event, and period', () => {
+		const answer = faq.find((candidate) => candidate.id === 'awards-and-publications')?.answer;
+		for (const award of cv.awards) {
+			const [place, event] = award.title.split(' · ');
+			expect(answer).toContain(`${place} at the ${event} (${award.period};`);
 		}
 	});
 
@@ -135,6 +161,14 @@ describe('llms.txt', () => {
 		for (const line of lines)
 			expect(line).toMatch(/^- \[[^\]]+\]\(https:\/\/[^)\s]+\/faq#[a-z0-9-]+\): \S/);
 		expect(text).not.toMatch(/^###/m);
+	});
+
+	it('cites every publication with its exact title and DOI link', () => {
+		const section = text.split('## Publications')[1]?.split('\n## ')[0] ?? '';
+		for (const publication of cv.publications) {
+			expect(section).toContain(`- [${publication.title}](${publication.url}): `);
+			expect(section).toContain(publication.doi);
+		}
 	});
 
 	it('excludes the retro archive and names no confidential work', () => {

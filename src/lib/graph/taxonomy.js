@@ -284,6 +284,17 @@ function cvMeta(list, id) {
 	return `${entry.degree ?? entry.role} · ${entry.period}`;
 }
 
+/**
+ * Tooltip line for a hackathon, read from the CV awards: "Oct 2024 · 2nd place".
+ * @param {string} id CV award id
+ * @returns {string}
+ */
+function awardMeta(id) {
+	const award = cv.awards.find((candidate) => candidate.id === id);
+	if (!award) throw new Error(`taxonomy: no CV award "${id}"`);
+	return `${award.period} · ${award.title.split(' · ')[0]}`;
+}
+
 /** @type {Org[]} */
 export const ORGS = [
 	{
@@ -332,14 +343,14 @@ export const ORGS = [
 		id: 'timetoact',
 		label: 'AIM Hackathon · TIMETOACT Group',
 		kind: 'event',
-		meta: '2nd place',
+		meta: awardMeta('aim-hackathon'),
 		items: ['aim-hackathon-greenwashing-rag']
 	},
 	{
 		id: 'tourism-technology-hackathon',
 		label: 'Tourism Technology Hackathon',
 		kind: 'event',
-		meta: '2023 · 2nd place',
+		meta: awardMeta('tourism-hackathon'),
 		items: ['tourism-knowledge-graph']
 	},
 	{

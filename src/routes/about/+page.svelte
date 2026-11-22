@@ -137,7 +137,8 @@
 		<div class="education-grid recognition">
 			{#each cv.awards as award (award.id)}
 				<div>
-					<strong>{award.title}</strong><span>{award.detail}</span>
+					<strong>{award.title}</strong><span>{award.period}</span>
+					<p>{award.detail}</p>
 					{#if award.project}
 						<a class="entry-link" href="{base}{cvProjectPath(award.project)}"
 							>View project <span aria-hidden="true">→</span></a
@@ -147,8 +148,15 @@
 			{/each}
 			{#each cv.publications as publication (publication.id)}
 				<div>
-					<strong>{publication.venue} publication · {publication.year}</strong><span
-						>{publication.title}</span
+					<strong>Publication · {publication.venueShort}</strong><span
+						>{publication.venue} · pp. {publication.pages}</span
+					>
+					<p><cite>{publication.title}</cite></p>
+					<p class="credit">{publication.credit}</p>
+					<a class="entry-link" href={publication.url} target="_blank" rel="noopener noreferrer"
+						>DOI {publication.doi} <span aria-hidden="true">↗</span><span class="visually-hidden">
+							(opens in a new tab)</span
+						></a
 					>
 				</div>
 			{/each}
@@ -273,6 +281,7 @@
 		margin-top: var(--space-3);
 		font-size: var(--text-sm);
 		font-weight: 650;
+		overflow-wrap: anywhere;
 	}
 	.timeline h3 {
 		margin: 0;
@@ -347,6 +356,12 @@
 		margin: var(--space-3) 0 0;
 		color: var(--color-text);
 		font-size: var(--text-sm);
+	}
+	.education-grid cite {
+		font-style: normal;
+	}
+	.education-grid .credit {
+		color: var(--color-text-muted);
 	}
 	.subhead {
 		margin: var(--space-7) 0 var(--space-4);
