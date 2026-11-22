@@ -164,7 +164,7 @@
 			{/if}
 		</p>
 		{#if filtering}
-			<button type="button" class="clear" onclick={reset}>Clear filters</button>
+			<button type="button" class="chip-toggle" onclick={reset}>Clear filters</button>
 		{/if}
 	</div>
 
@@ -233,18 +233,6 @@
 	}
 	.status strong {
 		color: var(--color-heading);
-	}
-	.clear {
-		padding: 0.35rem 0.8rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-full);
-		background: transparent;
-		color: var(--color-heading);
-		cursor: pointer;
-		font-size: var(--text-sm);
-	}
-	.clear:hover {
-		border-color: var(--accent);
 	}
 	.group + .group {
 		margin-top: var(--space-8);

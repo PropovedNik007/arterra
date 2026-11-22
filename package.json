@@ -4,8 +4,8 @@
 	"private": true,
 	"packageManager": "npm@11.19.0",
 	"scripts": {
-		"dev": "node scripts/build-graph.mjs && vite dev",
-		"build": "node scripts/build-graph.mjs && vite build",
+		"dev": "node scripts/build-graph.mjs && node scripts/build-ornaments.mjs && vite dev",
+		"build": "node scripts/build-graph.mjs && node scripts/build-ornaments.mjs && vite build && node scripts/build-404-fallback.mjs",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -15,7 +15,8 @@
 		"format": "prettier --write .",
 		"deploy": "gh-pages -d build -t",
 		"github:refresh": "node scripts/build-github.mjs",
-		"github:orgs": "node scripts/build-github-orgs.mjs"
+		"github:orgs": "node scripts/build-github-orgs.mjs",
+		"github:refresh:all": "npm run github:refresh && if [ -n \"$GITHUB_PRIVATE_ORGS\" ]; then npm run github:orgs; else echo '[github:refresh:all] GITHUB_PRIVATE_ORGS not set: private-work snapshot kept (see scripts/build-github-orgs.mjs)'; fi"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
@@ -24,6 +25,7 @@
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"@types/eslint": "^9.6.0",
 		"@types/node": "^20.14.15",
+		"@types/three": "^0.187.0",
 		"eslint": "^9.8.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.22.0",
@@ -58,6 +60,7 @@
 		"remark-parse": "^11.0.0",
 		"remark-rehype": "^11.1.0",
 		"sigma": "^3.0.3",
+		"three": "^0.187.0",
 		"unified": "^11.0.5"
 	}
 }

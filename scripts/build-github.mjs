@@ -1,8 +1,15 @@
 /**
- * Manual refresh of the public GitHub snapshot shown on the dashboard.
+ * Manual refresh of the public GitHub snapshot shown on the dashboard (see
+ * "Refreshing GitHub data" in scripts/build-github-orgs.mjs for both snapshots).
  *
- *   npm run github:refresh            # uses the authenticated `gh` CLI
+ *   GITHUB_EXTRA_AUTHORS="<commit email>[,…]" npm run github:refresh
  *   node scripts/build-github.mjs 2026-11-21T00:00:00Z   # pin generatedAt
+ *
+ * Authentication: `gh` logged in locally, or GH_TOKEN (only public endpoints
+ * are read). It never prompts. HTTP 404/409 (missing or empty repository) are skipped; any other
+ * failure aborts without writing, so a good snapshot is never replaced by a
+ * partial one. The file is left untouched when only `generatedAt` would change
+ * within the same month.
  *
  * This is intentionally NOT part of `dev`/`build`: the site is static and must
  * build without network access, so the snapshot is committed as JSON.
@@ -15,21 +22,51 @@
  * commit messages, SHAs, emails or author names.
  */
 import { execFileSync } from 'node:child_process';
-import { writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deniedWords } from '../src/lib/testing/denylist.js';
+import { writeSnapshot } from '../src/lib/github/write-snapshot.js';
 
 const LOGIN = 'PropovedNik007';
 const PER_PAGE = 100;
 const MAX_REPO_PAGES = 10;
 /** Cap per repository: 20 pages × 100 = 2,000 commits. */
 const MAX_COMMIT_PAGES = 20;
+/**
+ * Commit authors: the login plus GITHUB_EXTRA_AUTHORS (comma-separated emails
+ * used for commits that are not linked to the account). Emails arrive through
+ * the environment only; they are never stored or printed (log lines drop the
+ * query string), and commits are de-duplicated by SHA in memory.
+ */
+const AUTHORS = [
+	LOGIN,
+	...(process.env.GITHUB_EXTRA_AUTHORS ?? '')
+		.split(',')
+		.map((item) => item.trim())
+		.filter(Boolean)
+];
+if (AUTHORS.length === 1) {
+	console.warn(
+		'[build-github] GITHUB_EXTRA_AUTHORS is not set: commits made with unlinked emails are not counted'
+	);
+}
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const outPath = join(root, 'src/lib/github/github.json');
 const generatedAt = process.argv[2] ? new Date(process.argv[2]) : new Date();
 if (Number.isNaN(generatedAt.getTime())) throw new Error('Invalid generatedAt argument');
+
+/** Environment for every gh call: never prompt, never print update notices. */
+const ghEnv = { ...process.env, GH_PROMPT_DISABLED: '1', GH_NO_UPDATE_NOTIFIER: '1' };
+
+if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+	try {
+		execFileSync('gh', ['auth', 'status'], { env: ghEnv, stdio: 'ignore' });
+	} catch {
+		console.error('[build-github] no GitHub credentials: set GH_TOKEN or run `gh auth login`');
+		process.exit(1);
+	}
+}
 
 /**
  * GET a public REST endpoint through the authenticated gh CLI.
@@ -39,6 +76,7 @@ if (Number.isNaN(generatedAt.getTime())) throw new Error('Invalid generatedAt ar
 function api(path) {
 	const out = execFileSync('gh', ['api', '-H', 'Accept: application/vnd.github+json', path], {
 		encoding: 'utf8',
+		env: ghEnv,
 		maxBuffer: 64 * 1024 * 1024,
 		stdio: ['ignore', 'pipe', 'pipe']
 	});
@@ -46,7 +84,8 @@ function api(path) {
 }
 
 /**
- * Like api() but returns `fallback` on HTTP errors (e.g. 409 for an empty repo).
+ * Like api() but returns `fallback` on 404/409 (missing or empty repository).
+ * Any other failure (401, 403, 429, 5xx, network) aborts the run.
  * @param {string} path
  * @param {any} fallback
  */
@@ -55,9 +94,14 @@ function apiOr(path, fallback) {
 		return api(path);
 	} catch (error) {
 		const message = /** @type {any} */ (error)?.stderr?.toString?.() ?? String(error);
-		console.warn(
-			`[build-github] ${path.split('?')[0]} unavailable: ${message.trim().split('\n')[0]}`
-		);
+		const status = message.match(/HTTP (\d{3})/)?.[1];
+		const where = path.split('?')[0];
+		if (status !== '404' && status !== '409') {
+			throw new Error(
+				`[build-github] ${where} failed (${status ?? 'error'}); snapshot not written`
+			);
+		}
+		console.warn(`[build-github] ${where} unavailable: ${message.trim().split('\n')[0]}`);
 		return fallback;
 	}
 }
@@ -139,12 +183,21 @@ for (const raw of rawRepos) {
 	// Forks are excluded from activity stats, so their (mostly upstream) history
 	// is not fetched at all.
 	if (!raw.fork && raw.size > 0) {
-		const commits = paginate(`repos/${LOGIN}/${enc}/commits?author=${LOGIN}`, MAX_COMMIT_PAGES);
-		for (const commit of commits) {
-			const date = commit?.commit?.author?.date ?? commit?.commit?.committer?.date;
-			if (typeof date !== 'string') continue;
-			const month = date.slice(0, 7);
-			commitsByMonth[month] = (commitsByMonth[month] ?? 0) + 1;
+		/** SHAs already counted in this repository; memory only, never stored. */
+		const seen = new Set();
+		for (const author of AUTHORS) {
+			const commits = paginate(
+				`repos/${LOGIN}/${enc}/commits?author=${encodeURIComponent(author)}`,
+				MAX_COMMIT_PAGES
+			);
+			for (const commit of commits) {
+				const sha = commit?.sha;
+				const date = commit?.commit?.author?.date ?? commit?.commit?.committer?.date;
+				if (typeof sha !== 'string' || seen.has(sha) || typeof date !== 'string') continue;
+				seen.add(sha);
+				const month = date.slice(0, 7);
+				commitsByMonth[month] = (commitsByMonth[month] ?? 0) + 1;
+			}
 		}
 	}
 
@@ -193,19 +246,13 @@ const snapshot = {
 const leaked = strings(snapshot).flatMap(deniedWords);
 if (leaked.length) throw new Error('Denied word survived filtering; snapshot not written');
 
-// Format like the rest of the repo so `prettier --check` stays clean.
-const prettier = await import('prettier');
-const options = (await prettier.resolveConfig(outPath)) ?? {};
-writeFileSync(
-	outPath,
-	await prettier.format(JSON.stringify(snapshot), { ...options, parser: 'json' })
-);
+const written = await writeSnapshot(outPath, snapshot, { force: Boolean(process.argv[2]) });
 const commitTotal = repos.reduce(
 	(sum, r) => sum + Object.values(r.commitsByMonth).reduce((a, b) => a + b, 0),
 	0
 );
 console.log(
-	`[build-github] wrote ${repos.length} repos (${repos.filter((r) => r.fork).length} forks, ` +
+	`[build-github] ${written ? 'wrote' : 'unchanged, kept'} ${repos.length} repos (${repos.filter((r) => r.fork).length} forks, ` +
 		`${commitTotal} commits) to ${outPath}; skipped ${skippedPrivate} non-public/foreign, ` +
 		`dropped ${droppedDenied} by denylist`
 );

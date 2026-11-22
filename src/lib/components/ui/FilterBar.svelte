@@ -79,7 +79,7 @@
 							<li>
 								<button
 									type="button"
-									class="chip"
+									class="chip-toggle"
 									aria-pressed={field === option.id}
 									title={option.description}
 									onclick={() => toggleField(option.id)}
@@ -113,7 +113,7 @@
 					<li>
 						<button
 							type="button"
-							class="chip small"
+							class="chip-toggle small"
 							aria-pressed={tag?.toLowerCase() === option.tag.toLowerCase()}
 							onclick={() => toggleTag(option.tag)}
 						>
@@ -149,7 +149,7 @@
 		color: var(--color-text-muted);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.search-input {
@@ -199,7 +199,7 @@
 		margin: 0 0 var(--space-2);
 		color: var(--accent);
 		font-size: var(--text-xs);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	ul {
 		display: flex;
@@ -209,39 +209,19 @@
 		padding: 0;
 		list-style: none;
 	}
-	.chip {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.45rem;
-		min-height: 2.25rem;
-		padding: 0.4rem 0.8rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-full);
-		background: transparent;
-		color: var(--color-text);
-		cursor: pointer;
-		font-size: var(--text-sm);
-		line-height: 1.2;
-		transition:
-			border-color 160ms ease,
-			background 160ms ease,
-			color 160ms ease;
-	}
-	.chip.small {
+	/* Base pill: .chip-toggle in app.css. Here: the compact tool row and the
+	   selected state of a filter (fill + check). */
+	.chip-toggle.small {
 		min-height: 2rem;
 		padding: 0.3rem 0.7rem;
 		font-size: var(--text-xs);
 	}
-	.chip:hover {
-		border-color: var(--accent);
-		color: var(--color-heading);
-	}
-	.chip[aria-pressed='true'] {
+	.chip-toggle[aria-pressed='true'] {
 		border-color: var(--accent);
 		background: color-mix(in srgb, var(--accent) 18%, transparent);
 		color: var(--color-heading);
 	}
-	.chip[aria-pressed='true']::before {
+	.chip-toggle[aria-pressed='true']::before {
 		content: '✓';
 		color: var(--accent);
 		font-weight: 700;
@@ -252,7 +232,7 @@
 		border-radius: var(--radius-full);
 		background: var(--color-bg-elevated);
 		color: var(--color-text-muted);
-		font-size: 0.7rem;
+		font-size: var(--text-xs);
 		font-variant-numeric: tabular-nums;
 		text-align: center;
 	}
@@ -270,7 +250,7 @@
 		color: var(--color-heading);
 		cursor: pointer;
 		font-size: var(--text-sm);
-		font-weight: 650;
+		font-weight: 700;
 		list-style: none;
 	}
 	summary::-webkit-details-marker {

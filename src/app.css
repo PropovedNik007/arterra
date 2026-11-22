@@ -22,7 +22,12 @@ body {
 	margin: 0;
 	min-width: 320px;
 	background:
-		radial-gradient(circle at 8% 2%, rgba(225, 123, 90, 0.08), transparent 28rem), var(--color-bg);
+		radial-gradient(
+			circle at 8% 2%,
+			color-mix(in srgb, var(--accent-coral) 8%, transparent),
+			transparent 28rem
+		),
+		var(--color-bg);
 	color: var(--color-text);
 	font-family: var(--font-body);
 	-webkit-font-smoothing: antialiased;
@@ -56,11 +61,11 @@ h1 {
 }
 
 h2 {
-	font-size: clamp(2rem, 4vw, 3.25rem);
+	font-size: var(--heading-display);
 }
 
 h3 {
-	font-size: clamp(1.3rem, 2vw, 1.7rem);
+	font-size: var(--heading-card);
 }
 
 p {
@@ -92,7 +97,7 @@ textarea:focus-visible {
 }
 
 ::selection {
-	background: rgba(225, 123, 90, 0.35);
+	background: color-mix(in srgb, var(--accent-coral) 35%, transparent);
 	color: var(--color-heading);
 }
 
@@ -110,7 +115,7 @@ textarea:focus-visible {
 	color: var(--accent);
 	font-size: var(--text-xs);
 	font-weight: 700;
-	letter-spacing: 0.16em;
+	letter-spacing: var(--tracking-eyebrow);
 	text-transform: uppercase;
 }
 
@@ -131,9 +136,10 @@ textarea:focus-visible {
 	border-radius: var(--radius-full);
 	background: transparent;
 	color: var(--color-heading);
-	font-weight: 650;
+	font-weight: 700;
 	text-decoration: none;
-	transition: 180ms ease;
+	cursor: pointer;
+	transition: var(--duration-base) ease;
 }
 
 .button:hover {
@@ -146,6 +152,13 @@ textarea:focus-visible {
 	border-color: var(--accent);
 	background: var(--accent);
 	color: var(--accent-contrast);
+}
+
+/* Secondary actions inside panels and articles (Back, graph panel links). */
+.button.small {
+	min-height: 2.5rem;
+	padding: 0.45rem 1rem;
+	font-size: var(--text-sm);
 }
 
 .grid {
@@ -182,7 +195,7 @@ textarea:focus-visible {
 
 .section-head h2 {
 	margin: 0;
-	font-size: clamp(1.6rem, 3vw, 2.2rem);
+	font-size: var(--heading-section);
 }
 
 .section-head p {
@@ -194,6 +207,201 @@ textarea:focus-visible {
 summary:focus-visible {
 	outline: 2px solid var(--accent);
 	outline-offset: 4px;
+}
+
+/* ==========================================================================
+   Shared patterns. One spec each, used across pages and charts; components
+   keep only their layout and state on top of these.
+   ========================================================================== */
+
+/* --- CV labels: a period ("2021 – 2023"), the "Current" badge and a
+   language level, identical on Home and About. --- */
+.cv-period,
+.cv-level,
+.badge {
+	color: var(--accent);
+	font: 700 var(--text-xs) / 1.4 var(--font-body);
+	letter-spacing: var(--tracking-label);
+	text-transform: uppercase;
+}
+.badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.15rem 0.55rem;
+	border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+	border-radius: var(--radius-full);
+}
+.badge::before {
+	content: '';
+	width: 0.4rem;
+	height: 0.4rem;
+	border-radius: 50%;
+	background: var(--accent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.cv-level {
+	margin-left: 0.3rem;
+}
+
+/* --- Pills. A static tag (skills, card and article tags; .field marks a
+   field of work) and the base of an interactive toggle chip. Toggles keep
+   their own state style: a filter chip fills when selected, a series or
+   node-kind toggle is struck through when hidden. --- */
+.tag-chip {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.3rem 0.65rem;
+	border: 1px solid var(--color-border-strong);
+	border-radius: var(--radius-full);
+	color: var(--color-text);
+	font-size: var(--text-xs);
+	line-height: 1.3;
+}
+/* Skill lists (Home and About): the same pill one step larger. */
+.tag-chip.md {
+	padding: 0.35rem 0.7rem;
+	font-size: var(--text-sm);
+}
+.tag-chip.field {
+	border-color: color-mix(in srgb, var(--accent) 45%, var(--color-border));
+	background: color-mix(in srgb, var(--accent) 10%, transparent);
+	color: var(--color-heading);
+}
+a.tag-chip:hover {
+	border-color: var(--accent);
+	color: var(--color-heading);
+	text-decoration: none;
+}
+.chip-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	min-height: 2.25rem;
+	padding: 0.4rem 0.8rem;
+	border: 1px solid var(--color-border-strong);
+	border-radius: var(--radius-full);
+	background: transparent;
+	color: var(--color-text);
+	font-size: var(--text-sm);
+	line-height: 1.2;
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		border-color var(--duration-fast) ease,
+		background var(--duration-fast) ease,
+		color var(--duration-fast) ease;
+}
+.chip-toggle:hover {
+	border-color: var(--accent);
+	color: var(--color-heading);
+	text-decoration: none;
+}
+
+/* --- Headline numbers: label (dt) then value (dd), the value in the display
+   face. .boxed puts each in a raised tile. --- */
+.stat-list {
+	margin: 0;
+}
+.stat-list .stat {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+.stat-list dt,
+.stat-list dd {
+	margin: 0;
+}
+.stat-label {
+	order: 1;
+	color: var(--color-text-muted);
+	font-size: var(--text-xs);
+	font-weight: 700;
+	letter-spacing: var(--tracking-label);
+	text-transform: uppercase;
+}
+.stat-value {
+	order: 2;
+	margin-top: var(--space-2);
+	color: var(--color-heading);
+	font-family: var(--font-display);
+	font-size: var(--text-2xl);
+	line-height: 1.1;
+	font-variant-numeric: tabular-nums;
+	overflow-wrap: anywhere;
+}
+.stat-note {
+	order: 3;
+	margin-top: var(--space-2);
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+	line-height: 1.4;
+}
+.stat-list.boxed {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+	gap: var(--space-3);
+}
+.stat-list.boxed .stat {
+	padding: var(--space-4);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background: var(--color-bg-raised);
+}
+
+/* --- Chart surface and the "Show as table" fallback under every chart. --- */
+.chart-panel {
+	min-width: 0;
+	margin: 0;
+	padding: clamp(var(--space-4), 3vw, var(--space-5));
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background: var(--color-bg-raised);
+}
+.data-details > summary {
+	width: fit-content;
+	color: var(--link);
+	font-size: var(--text-sm);
+	font-weight: 700;
+	cursor: pointer;
+}
+.data-table {
+	width: 100%;
+	margin-top: var(--space-3);
+	border-collapse: collapse;
+	font-size: var(--text-sm);
+	font-variant-numeric: tabular-nums;
+}
+.data-table :is(th, td) {
+	padding: var(--space-2) var(--space-3) var(--space-2) 0;
+	border-bottom: 1px solid var(--color-border);
+	text-align: left;
+	vertical-align: top;
+}
+.data-table :is(th, td):last-child {
+	padding-right: 0;
+}
+.data-table thead th {
+	color: var(--color-text-muted);
+	font-size: var(--text-xs);
+	font-weight: 700;
+	letter-spacing: var(--tracking-label);
+	text-transform: uppercase;
+}
+.data-table tbody th {
+	color: var(--color-heading);
+	font-weight: 600;
+}
+.data-table .num {
+	text-align: right;
+}
+
+/* --- A numbered index ("01") before a list item or card title. --- */
+.index-num {
+	color: var(--accent);
+	font: 400 var(--text-xs) var(--font-mono);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.08em;
 }
 
 @media (max-width: 860px) {
@@ -217,7 +425,150 @@ summary:focus-visible {
 	*::after {
 		scroll-behavior: auto !important;
 		animation-duration: 0.001ms !important;
+		/* Staggered entrances (fill: both) must not hold content invisible. */
+		animation-delay: 0s !important;
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.001ms !important;
 	}
+}
+
+/* ==========================================================================
+   Layout effects (SiteEffects.svelte, src/lib/design/effects/).
+   Owned by the effects module; keep additions inside this section.
+   ========================================================================== */
+
+/* --- G-code view: html[data-gcode='on'] turns page blocks into toolpath
+   outlines over a dimmed build plate. Text colours never change, and the
+   background only gets darker, so contrast can only go up. Focused
+   elements keep their own focus ring (:not(:focus-visible)). --- */
+html {
+	--gcode-panel-h: min(17rem, 34vh);
+}
+html[data-gcode='on'] {
+	--gcode-wall: color-mix(in srgb, var(--accent) 75%, transparent);
+	--gcode-inner: color-mix(in srgb, var(--color-text-muted) 55%, transparent);
+	--gcode-skin: color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+	/* Anchors and focus jumps stop above the fixed panel. */
+	scroll-padding-bottom: calc(var(--gcode-panel-h) + var(--space-4));
+}
+html[data-gcode='on'] body {
+	/* The fixed panel never covers the footer: the page grows by its height. */
+	padding-bottom: var(--gcode-panel-h);
+	/* Build-plate grid: one cell is 10 mm at the preview's 1px = 0.2mm. */
+	--plate-line: color-mix(in srgb, var(--color-border) 45%, transparent);
+	background:
+		linear-gradient(var(--plate-line) 1px, transparent 1px) 0 0 / 50px 50px,
+		linear-gradient(90deg, var(--plate-line) 1px, transparent 1px) 0 0 / 50px 50px,
+		var(--color-bg-sunken);
+}
+html[data-gcode='on'] main :is(h1, h2, h3, a.button, button.button):not(:focus-visible) {
+	outline: 1px dashed var(--gcode-wall);
+	outline-offset: 4px;
+}
+html[data-gcode='on'] main :is(article, figure, .card, blockquote, pre):not(:focus-visible) {
+	outline: 1px dashed var(--gcode-inner);
+	outline-offset: 2px;
+}
+html[data-gcode='on'] main p:not(:focus-visible) {
+	outline: 1px dotted var(--gcode-skin);
+	outline-offset: 2px;
+}
+/* !important: component styles (card covers, the About photo) set their own
+   `filter` with higher specificity; the plate look must win on every page. */
+html[data-gcode='on'] main img {
+	outline: 1px dashed var(--gcode-wall);
+	outline-offset: -1px;
+	filter: grayscale(1) brightness(0.65) contrast(1.1) !important;
+}
+@media (max-width: 600px) {
+	html {
+		--gcode-panel-h: 30vh;
+	}
+}
+
+/* --- Layer-print headings (printReveal.js). Only JS-armed headings are
+   clipped; the default, no-JS and reduced-motion state is fully visible. --- */
+.print-reveal {
+	clip-path: inset(100% -0.3em -0.35em -0.3em);
+}
+.print-reveal.print-reveal--printing {
+	animation: print-layers 600ms steps(8, jump-start) both;
+}
+.print-reveal--nozzle.print-reveal--printing {
+	position: relative;
+}
+/* The nozzle: a thin accent bead on the layer being printed, sweeping
+   across it once per layer. Sits inside the revealed band so the clip
+   does not hide it. */
+.print-reveal--nozzle.print-reveal--printing::after {
+	content: '';
+	position: absolute;
+	right: -0.3em;
+	left: -0.3em;
+	height: 2px;
+	border-radius: 1px;
+	background:
+		linear-gradient(90deg, transparent, var(--color-heading), transparent) no-repeat,
+		color-mix(in srgb, var(--accent) 70%, transparent);
+	background-size:
+		25% 100%,
+		100% 100%;
+	box-shadow: 0 0 6px var(--accent);
+	pointer-events: none;
+	animation:
+		print-nozzle-rise 600ms steps(8, jump-start) both,
+		print-nozzle-sweep 75ms linear 8;
+}
+@keyframes print-layers {
+	from {
+		clip-path: inset(100% -0.3em -0.35em -0.3em);
+	}
+	to {
+		clip-path: inset(-0.3em -0.3em -0.35em -0.3em);
+	}
+}
+@keyframes print-nozzle-rise {
+	from {
+		top: 100%;
+	}
+	to {
+		top: 0%;
+	}
+}
+@keyframes print-nozzle-sweep {
+	from {
+		background-position:
+			-40% 0,
+			0 0;
+	}
+	to {
+		background-position:
+			140% 0,
+			0 0;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.print-reveal {
+		clip-path: none !important;
+		animation: none !important;
+	}
+	.print-reveal::after {
+		content: none !important;
+	}
+}
+@media print {
+	.print-reveal {
+		clip-path: none !important;
+	}
+}
+
+/* --- Nozzle cursor (nozzleCursor.js): decorative overlay, never a target.
+   Above page content, below the sticky tab bar (40) and header (50). --- */
+.nozzle-cursor {
+	position: fixed;
+	inset: 0;
+	z-index: 35;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
 }

@@ -4,7 +4,8 @@
 
 	/**
 	 * Public GitHub activity, built from the committed snapshot
-	 * (src/lib/github/github.json, refreshed manually with `npm run github:refresh`).
+	 * (src/lib/github/github.json, refreshed by hand with
+	 * `npm run github:refresh:all`).
 	 * Every chart is server-rendered SVG with a text or table equivalent.
 	 */
 	/**
@@ -189,33 +190,33 @@
 	{#if data.isEmpty}
 		<EmptyState icon="⌥" title="No GitHub snapshot yet" headingLevel={h + 1}>
 			<p>
-				Public repository data has not been collected for this build. It is refreshed manually, so
-				nothing is shown rather than guessed.
+				Public repository data has not been collected for this build, so nothing is shown rather
+				than guessed.
 			</p>
 		</EmptyState>
 	{:else}
-		<dl class="kpis">
-			<div class="kpi">
-				<dt>Own public repositories</dt>
-				<dd class="value">{data.counts.own}</dd>
-				<dd class="note">created and maintained by {data.login}</dd>
+		<dl class="kpis stat-list boxed">
+			<div class="stat">
+				<dt class="stat-label">Own public repositories</dt>
+				<dd class="stat-value">{data.counts.own}</dd>
+				<dd class="stat-note">created and maintained by {data.login}</dd>
 			</div>
-			<div class="kpi">
-				<dt>Forks</dt>
-				<dd class="value">{data.counts.forks}</dd>
-				<dd class="note">of other projects, left out of the charts</dd>
+			<div class="stat">
+				<dt class="stat-label">Forks</dt>
+				<dd class="stat-value">{data.counts.forks}</dd>
+				<dd class="stat-note">of other projects, left out of the charts</dd>
 			</div>
-			<div class="kpi">
-				<dt>Commits counted</dt>
-				<dd class="value">{data.commits.toLocaleString('en-US')}</dd>
-				<dd class="note">attributed to {data.login} on default branches</dd>
+			<div class="stat">
+				<dt class="stat-label">Commits counted</dt>
+				<dd class="stat-value">{data.commits.toLocaleString('en-US')}</dd>
+				<dd class="stat-note">authored by me on default branches</dd>
 			</div>
-			<div class="kpi">
-				<dt>
+			<div class="stat">
+				<dt class="stat-label">
 					{data.top.languages.length > 1 ? 'Top languages' : 'Top language'}
 				</dt>
-				<dd class="value lang-value">{data.top.languages.join(' & ') || '—'}</dd>
-				<dd class="note">
+				<dd class="stat-value lang-value">{data.top.languages.join(' & ') || '—'}</dd>
+				<dd class="stat-note">
 					{#if data.top.languages.length > 1}
 						tied at {plural(data.top.repos, 'repo')} each, by primary language
 					{:else if data.top.languages.length === 1}
@@ -225,12 +226,12 @@
 					{/if}
 				</dd>
 			</div>
-			<div class="kpi">
-				<dt>Active years</dt>
-				<dd class="value">
+			<div class="stat">
+				<dt class="stat-label">Active years</dt>
+				<dd class="stat-value">
 					{#if data.span}{data.span.first}–{data.span.last}{:else}—{/if}
 				</dd>
-				<dd class="note">
+				<dd class="stat-note">
 					{#if data.span}commits in {data.span.activeYears} of {data.span.years} years{:else}no
 						commits counted{/if}
 				</dd>
@@ -240,7 +241,7 @@
 		<div class="panels">
 			<div class="col">
 				<!-- Commit activity: year × month grid -->
-				<figure class="panel activity" aria-labelledby={ids.activity}>
+				<figure class="chart-panel activity" aria-labelledby={ids.activity}>
 					<figcaption id={ids.activity}>
 						<svelte:element this={sub} class="panel-title">Commits by month</svelte:element>
 						<span class="panel-note"
@@ -337,9 +338,9 @@
 						</p>
 					{/if}
 
-					<details>
+					<details class="data-details">
 						<summary>Show as table</summary>
-						<table>
+						<table class="data-table">
 							<caption class="visually-hidden">Commits per year and the months they fall in</caption
 							>
 							<thead>
@@ -368,7 +369,7 @@
 				</figure>
 
 				<!-- Languages -->
-				<figure class="panel languages" aria-labelledby={ids.languages}>
+				<figure class="chart-panel languages" aria-labelledby={ids.languages}>
 					<figcaption id={ids.languages}>
 						<svelte:element this={sub} class="panel-title">Languages</svelte:element>
 						<span class="panel-note"
@@ -411,9 +412,9 @@
 						<p class="empty-note">No languages detected in own public repositories.</p>
 					{/if}
 					{#if data.languageBytes.length}
-						<details>
+						<details class="data-details">
 							<summary>Show byte breakdown</summary>
-							<table>
+							<table class="data-table">
 								<caption class="visually-hidden">Share of code bytes by language</caption>
 								<thead>
 									<tr
@@ -438,7 +439,7 @@
 			</div>
 			<div class="col">
 				<!-- Repositories created per year -->
-				<figure class="panel created" aria-labelledby={ids.created}>
+				<figure class="chart-panel created" aria-labelledby={ids.created}>
 					<figcaption id={ids.created}>
 						<svelte:element this={sub} class="panel-title">New repositories per year</svelte:element
 						>
@@ -482,9 +483,9 @@
 								>
 							{/each}
 						</svg>
-						<details>
+						<details class="data-details">
 							<summary>Show as table</summary>
-							<table>
+							<table class="data-table">
 								<caption class="visually-hidden">Own repositories created per year</caption>
 								<thead
 									><tr><th scope="col">Year</th><th scope="col" class="num">Repositories</th></tr
@@ -503,7 +504,7 @@
 				</figure>
 
 				<!-- Most active repositories -->
-				<section class="panel repos" aria-labelledby="{uid}-repos">
+				<section class="chart-panel repos" aria-labelledby="{uid}-repos">
 					<svelte:element this={sub} id="{uid}-repos" class="panel-title"
 						>Most active repositories</svelte:element
 					>
@@ -570,23 +571,7 @@
 
 <style>
 	.gh {
-		/* Language hues: GitHub-like, built only from shared tokens (direct, or
-		   color-mix of two tokens, like the --heat-* scale below). */
-		--lang-python: var(--graph-topic);
-		--lang-jupyter: var(--accent-diy);
-		--lang-javascript: color-mix(in srgb, var(--accent-diy) 55%, var(--color-heading));
-		--lang-typescript: color-mix(in srgb, var(--graph-topic) 60%, var(--graph-org));
-		--lang-svelte: var(--accent-sport);
-		--lang-html: var(--accent-coral-soft);
-		--lang-css: var(--graph-org);
-		--lang-tex: var(--graph-field);
-		--lang-java: color-mix(in srgb, var(--accent-coral) 55%, var(--color-border-strong));
-		--lang-cpp: color-mix(in srgb, var(--graph-org) 55%, var(--accent-sport));
-		--lang-c: color-mix(in srgb, var(--color-text) 70%, var(--color-text-muted));
-		--lang-shell: color-mix(in srgb, var(--graph-field) 60%, var(--accent-diy));
-		--lang-docker: color-mix(in srgb, var(--graph-topic) 70%, var(--graph-field));
-		--lang-other: var(--color-text-muted);
-
+		/* Language hues (--lang-*) live in tokens.css. Heatmap scale: */
 		--heat-0: var(--color-bg-elevated);
 		--heat-1: color-mix(in srgb, var(--accent-coral) 32%, var(--color-bg-elevated));
 		--heat-2: color-mix(in srgb, var(--accent-coral) 56%, var(--color-bg-elevated));
@@ -601,7 +586,7 @@
 	}
 	.title {
 		margin: 0 0 var(--space-3);
-		font-size: clamp(1.6rem, 3vw, 2.2rem);
+		font-size: var(--heading-card);
 	}
 	.meta {
 		max-width: 46rem;
@@ -611,52 +596,12 @@
 		line-height: 1.6;
 	}
 
-	/* ---------------------------------------------------------------- KPIs */
+	/* ------------------------------------------------- KPIs (.stat-list.boxed) */
 	.kpis {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
-		gap: var(--space-3);
-		margin: 0 0 var(--space-5);
+		margin-bottom: var(--space-5);
 	}
-	.kpi {
-		display: flex;
-		flex-direction: column;
-		min-width: 0;
-		padding: var(--space-4);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-lg);
-		background: var(--color-bg-raised);
-	}
-	.kpi dt {
-		order: 1;
-		color: var(--color-text-muted);
-		font-size: var(--text-xs);
-		font-weight: 700;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-	}
-	.kpi dd {
-		margin: 0;
-	}
-	.kpi .value {
-		order: 2;
-		margin-top: var(--space-2);
-		color: var(--color-heading);
-		font-family: var(--font-display);
-		font-size: var(--text-2xl);
-		line-height: 1.1;
-		font-variant-numeric: tabular-nums;
-		overflow-wrap: anywhere;
-	}
-	.kpi .lang-value {
+	.kpis .lang-value {
 		font-size: var(--text-xl);
-	}
-	.kpi .note {
-		order: 3;
-		margin-top: var(--space-2);
-		color: var(--color-text-muted);
-		font-size: var(--text-sm);
-		line-height: 1.4;
 	}
 
 	/* ---------------------------------------------------------------- panels */
@@ -676,14 +621,6 @@
 		gap: var(--space-4);
 		min-width: 0;
 	}
-	.panel {
-		min-width: 0;
-		margin: 0;
-		padding: clamp(var(--space-4), 3vw, var(--space-5));
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-lg);
-		background: var(--color-bg-raised);
-	}
 	figcaption {
 		margin-bottom: var(--space-4);
 	}
@@ -692,7 +629,7 @@
 		color: var(--color-heading);
 		font-family: var(--font-body);
 		font-size: var(--text-lg);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	.panel-note,
 	.footnote,
@@ -784,8 +721,8 @@
 		font-size: var(--text-xs);
 	}
 	.swatch {
-		width: 0.75rem;
-		height: 0.75rem;
+		width: var(--legend-swatch);
+		height: var(--legend-swatch);
 	}
 
 	/* ---------------------------------------------------------------- languages */
@@ -816,8 +753,8 @@
 	}
 	.dot {
 		flex: none;
-		width: 0.6rem;
-		height: 0.6rem;
+		width: var(--legend-dot);
+		height: var(--legend-dot);
 		border-radius: var(--radius-full);
 		background: var(--tone);
 	}
@@ -892,7 +829,7 @@
 	}
 	.repo-name {
 		min-width: 0;
-		font-weight: 650;
+		font-weight: 700;
 		overflow-wrap: anywhere;
 	}
 	.repo-commits {
@@ -927,7 +864,7 @@
 		font-family: var(--font-body);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.recent {
@@ -954,44 +891,13 @@
 		font-variant-numeric: tabular-nums;
 	}
 
-	/* ---------------------------------------------------------------- tables */
-	details {
+	/* ------------------------------------- tables (.data-details, .data-table) */
+	.data-details {
 		margin-top: var(--space-4);
-		font-size: var(--text-sm);
 	}
-	summary {
-		width: fit-content;
-		color: var(--link);
-		cursor: pointer;
-	}
-	table {
-		width: 100%;
-		margin-top: var(--space-3);
-		border-collapse: collapse;
-		font-variant-numeric: tabular-nums;
-	}
-	th,
-	td {
-		padding: var(--space-1) var(--space-2);
-		border-bottom: 1px solid var(--color-border);
-		text-align: left;
-		vertical-align: top;
+	/* Long repository names may break; column heads never break mid-word. */
+	.data-table :is(tbody th, td) {
 		overflow-wrap: anywhere;
-	}
-	thead th {
-		color: var(--color-text-muted);
-		font-size: var(--text-xs);
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-	tbody th {
-		color: var(--color-heading);
-		font-weight: 600;
-	}
-	th.num,
-	.num {
-		text-align: right;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

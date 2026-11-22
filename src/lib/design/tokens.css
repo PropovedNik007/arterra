@@ -31,6 +31,35 @@
 	--text-3xl: 2.441rem;
 	--text-4xl: 3.052rem;
 	--text-5xl: 3.815rem;
+	/* Long-form body copy: article prose, the About manifesto, the lead card. */
+	--text-md: 1.0625rem;
+
+	/* Heading scale by role, so one level never renders at five sizes.
+	   display: the big section statements (Home, About, Contact);
+	   section: a heading row above a group (.section-head, FAQ, charts);
+	   card: a heading inside a card or under a section heading;
+	   page-compact: the data-heavy Insights intro, kept short on purpose so
+	   the graph starts near the fold. */
+	--heading-display: clamp(2rem, 4vw, 3.25rem);
+	--heading-section: clamp(1.6rem, 3vw, 2.2rem);
+	--heading-card: clamp(1.3rem, 2vw, 1.7rem);
+	--heading-page-compact: clamp(2.2rem, 4.6vw, 3.6rem);
+
+	/* Letter-spacing for uppercase text: small labels (dt, th, card meta,
+	   chip meta) and the eyebrow above a heading. */
+	--tracking-label: 0.12em;
+	--tracking-eyebrow: 0.16em;
+
+	/* Motion: hovers and colour changes, and the entrance easing. */
+	--duration-fast: 160ms;
+	--duration-base: 200ms;
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--lift: -3px;
+
+	/* Small icons and chart legend markers. */
+	--icon-sm: 1rem;
+	--legend-dot: 0.6rem;
+	--legend-swatch: 0.75rem;
 
 	--color-bg: #151514;
 	--color-bg-raised: #1d1d1b;
@@ -49,20 +78,42 @@
 	--accent: var(--accent-coral);
 	--accent-contrast: #151514;
 	--link: #f09a7d;
-	--header-scrim: rgba(21, 21, 20, 0.88);
+	--header-scrim: color-mix(in srgb, var(--color-bg) 88%, transparent);
+	/* A faint light wash for hovered rows and buttons on dark panels. */
+	--color-hover: color-mix(in srgb, var(--color-heading) 6%, transparent);
 	--content-width: 76rem;
 	--reading-width: 46rem;
-	--shadow-card: 0 24px 70px -45px rgba(0, 0, 0, 0.9);
+	--shadow-card: 0 24px 70px -45px rgb(0 0 0 / 0.9);
+	--shadow-tooltip: 0 18px 40px -20px rgb(0 0 0 / 0.9);
+	/* Upward shadow for panels docked to the bottom of the viewport. */
+	--shadow-panel: 0 -1.5rem 3rem -1.5rem rgb(0 0 0 / 0.8);
+
+	/* Toolpath ornaments (ToolpathOrnament.svelte): --ornament-ink is the
+	   section's --ornament-section inside a [data-section], otherwise the hue of
+	   the month (ornaments/palette.js), mixed toward black by --ornament-shade
+	   and shown at --ornament-opacity. Every month and section ink keeps
+	   --color-text-muted and the section eyebrows at AA over it at 0.12
+	   (worst: the sport eyebrow over sport ink, 4.6:1; palette.test.js checks
+	   all of them). Raise opacity only where no text overlaps. */
+	--ornament-opacity: 0.12;
+	--ornament-shade: 72%;
 }
 
 [data-section='projects'] {
 	--accent: var(--accent-projects);
+	--ornament-section: var(--accent-projects);
 }
 [data-section='diy'] {
 	--accent: var(--accent-diy);
+	--ornament-section: var(--accent-diy);
 }
 [data-section='sport'] {
 	--accent: var(--accent-sport);
+	--ornament-section: var(--accent-sport);
+}
+/* Insights keeps the coral accent for links but draws in graph green. */
+[data-section='insights'] {
+	--ornament-section: var(--graph-field);
 }
 
 /* Knowledge graph palette. GraphView reads these at runtime (plain hex only),
@@ -74,6 +125,30 @@
 	--graph-topic: #8fa6bd;
 	--graph-edge: #57544c;
 	--graph-label: #ebe6dc;
+}
+
+/* Chart language palette, shared by the GitHub charts (GithubDashboard,
+   OrgActivity): GitHub-like hues built only from the tokens above (direct, or
+   a color-mix of two tokens). */
+:root {
+	--lang-python: var(--graph-topic);
+	--lang-jupyter: var(--accent-diy);
+	--lang-javascript: color-mix(in srgb, var(--accent-diy) 55%, var(--color-heading));
+	--lang-typescript: color-mix(in srgb, var(--graph-topic) 60%, var(--graph-org));
+	--lang-svelte: var(--accent-sport);
+	--lang-html: var(--accent-coral-soft);
+	--lang-css: var(--graph-org);
+	--lang-tex: var(--graph-field);
+	--lang-java: color-mix(in srgb, var(--accent-coral) 55%, var(--color-border-strong));
+	--lang-cpp: color-mix(in srgb, var(--graph-org) 55%, var(--accent-sport));
+	--lang-c: color-mix(in srgb, var(--color-text) 70%, var(--color-text-muted));
+	--lang-shell: color-mix(in srgb, var(--graph-field) 60%, var(--accent-diy));
+	--lang-docker: color-mix(in srgb, var(--graph-topic) 70%, var(--graph-field));
+	--lang-go: color-mix(in srgb, var(--graph-field) 75%, var(--color-heading));
+	--lang-rust: color-mix(in srgb, var(--accent-diy) 45%, var(--accent-sport));
+	--lang-jinja: color-mix(in srgb, var(--accent-sport) 40%, var(--color-text-muted));
+	--lang-powershell: color-mix(in srgb, var(--graph-topic) 50%, var(--color-border-strong));
+	--lang-other: var(--color-text-muted);
 }
 
 @media (max-width: 1040px) {

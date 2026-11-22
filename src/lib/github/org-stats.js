@@ -1,18 +1,21 @@
 /**
- * Pure helpers for the anonymised private-organisation snapshot
- * (src/lib/github/orgs.json, refreshed manually with `npm run github:orgs`).
+ * Pure helpers for the private-work snapshot (src/lib/github/orgs.json,
+ * refreshed by hand with `npm run github:refresh:all`; see
+ * scripts/build-github-orgs.mjs).
  *
- * The snapshot holds ONE merged aggregate over the private repositories:
- * repositories committed to, commits per month, pull-request totals and summed
- * language bytes. There is no breakdown, alias or organisation count, and no
- * organisation, repository or collaborator name, and nothing here may add any. Every function tolerates an empty or missing snapshot.
+ * The snapshot holds only combined totals over all work in private
+ * repositories: repositories contributed to, commits, pull requests, commits
+ * per month and the language mix. Nothing is kept per organisation (not even
+ * how many there are), and it never holds an organisation login, repository,
+ * collaborator, email, SHA or URL; nothing here may add any. Every function
+ * tolerates an empty or missing snapshot.
  */
-import { commitsByMonth as publicCommitsByMonth, formatDate } from './stats.js';
+import { MONTH_LABELS, commitsByMonth as publicCommitsByMonth, formatDate } from './stats.js';
 
 /**
  * @typedef {object} PrivateAggregate
- * @property {number} reposContributed repositories with at least one commit by the login
- * @property {number} commits commits by the login on default branches
+ * @property {number} reposContributed repositories with at least one commit by the owner
+ * @property {number} commits commits by the owner on default branches
  * @property {number} pullRequests pull requests opened by the login (any state)
  * @property {Record<string, number>} commitsByMonth YYYY-MM -> commits
  * @property {Record<string, number>} languageBytes language -> bytes (top 8 + Other)
@@ -25,7 +28,7 @@ import { commitsByMonth as publicCommitsByMonth, formatDate } from './stats.js';
  * @property {PrivateAggregate | null} private
  */
 
-/** The only keys of the private aggregate (see org-stats.test.js). */
+/** The only keys of the combined private aggregate (see org-stats.test.js). */
 export const PRIVATE_KEYS = Object.freeze([
 	'reposContributed',
 	'commits',
@@ -44,7 +47,8 @@ const MONTH_KEY = /^\d{4}-\d{2}$/;
  * @param {string | undefined | null} iso
  */
 function monthOf(iso) {
-	const date = new Date(iso ?? '');
+	if (!iso) return null;
+	const date = new Date(iso);
 	if (Number.isNaN(date.getTime())) return null;
 	return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
 }
@@ -95,14 +99,14 @@ export function languageMix(languageBytes) {
 }
 
 /**
- * Private commits per YYYY-MM (valid month keys, positive counts only).
- * @param {OrgSnapshot | null | undefined} snapshot
+ * Valid month keys with positive counts only.
+ * @param {Record<string, number> | null | undefined} byMonth
  * @returns {Record<string, number>}
  */
-export function privateCommitsByMonth(snapshot) {
+function cleanMonths(byMonth) {
 	/** @type {Record<string, number>} */
 	const months = {};
-	for (const [month, count] of Object.entries(snapshot?.private?.commitsByMonth ?? {})) {
+	for (const [month, count] of Object.entries(byMonth ?? {})) {
 		const value = Number(count) || 0;
 		if (MONTH_KEY.test(month) && value > 0) months[month] = value;
 	}
@@ -110,7 +114,16 @@ export function privateCommitsByMonth(snapshot) {
 }
 
 /**
- * Totals of the private aggregate (zeros when missing).
+ * Combined private commits per YYYY-MM.
+ * @param {OrgSnapshot | null | undefined} snapshot
+ * @returns {Record<string, number>}
+ */
+export function privateCommitsByMonth(snapshot) {
+	return cleanMonths(snapshot?.private?.commitsByMonth);
+}
+
+/**
+ * Totals of the combined private aggregate (zeros when missing).
  * @param {OrgSnapshot | null | undefined} snapshot
  */
 export function privateTotals(snapshot) {
@@ -137,31 +150,64 @@ export function privateMonths(snapshot) {
 }
 
 /**
- * Public and private commits per month for the combined chart: at least the
- * last `minMonths` months up to the snapshot month, extended back to the first
- * private month, never more than `maxMonths`.
+ * Last month a series can speak for: its snapshot month, else its latest
+ * active month.
+ * @param {string | null | undefined} generatedAt
+ * @param {Record<string, number>} byMonth
+ */
+function seriesEnd(generatedAt, byMonth) {
+	return monthOf(generatedAt) ?? (Object.keys(byMonth).sort().at(-1) || null);
+}
+
+/**
+ * Public and private commits for the `months` months ending with the later of
+ * the two snapshot months. A series is `null` (not collected) for months after
+ * its own snapshot, so a stale snapshot never reads as zero activity.
  * @param {OrgSnapshot | null | undefined} snapshot
  * @param {import('./stats.js').Snapshot | null | undefined} publicSnapshot
- * @param {{ minMonths?: number, maxMonths?: number }} [options]
- * @returns {{ month: string, public: number, private: number }[]}
+ * @param {{ months?: number }} [options]
+ * @returns {{ month: string, public: number | null, private: number | null }[]}
  */
-export function combinedMonths(snapshot, publicSnapshot, { minMonths = 12, maxMonths = 24 } = {}) {
-	const months = privateMonths(snapshot);
-	if (months.length === 0) return [];
-	const end = months.at(-1) ?? '';
-	const start = [months[0], shiftMonth(end, -(minMonths - 1))].sort()[0];
-	const window = monthRange(start, end).slice(-maxMonths);
+export function combinedMonths(snapshot, publicSnapshot, { months = 24 } = {}) {
 	const privateByMonth = privateCommitsByMonth(snapshot);
-	const publicByMonth = publicCommitsByMonth(publicSnapshot);
-	return window.map((month) => ({
+	const publicByMonth = cleanMonths(publicCommitsByMonth(publicSnapshot));
+	const hasPrivate = Object.keys(privateByMonth).length > 0;
+	const hasPublic = Object.keys(publicByMonth).length > 0;
+	if (!hasPrivate && !hasPublic) return [];
+	const privateEnd = hasPrivate ? seriesEnd(snapshot?.generatedAt, privateByMonth) : null;
+	const publicEnd = hasPublic ? seriesEnd(publicSnapshot?.generatedAt, publicByMonth) : null;
+	const end = [privateEnd, publicEnd]
+		.filter((m) => m != null)
+		.sort()
+		.at(-1);
+	if (!end) return [];
+	return monthRange(shiftMonth(end, -(months - 1)), end).map((month) => ({
 		month,
-		public: publicByMonth[month] ?? 0,
-		private: privateByMonth[month] ?? 0
+		public: publicEnd && month <= publicEnd ? (publicByMonth[month] ?? 0) : null,
+		private: privateEnd && month <= privateEnd ? (privateByMonth[month] ?? 0) : null
 	}));
 }
 
 /**
- * Everything the private-work panel renders, derived once on the server.
+ * The month a snapshot was taken in, with its date, when that month is still
+ * running (the snapshot is not from its last day): that month's counts are
+ * month-to-date, not a full month.
+ * @param {string | null | undefined} generatedAt
+ * @returns {{ month: string, through: string } | null}
+ */
+function partialMonth(generatedAt) {
+	const month = monthOf(generatedAt);
+	if (!month || !generatedAt) return null;
+	const date = new Date(generatedAt);
+	const next = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1));
+	if (next.getUTCMonth() !== date.getUTCMonth()) return null;
+	const day = date.getUTCDate();
+	const name = MONTH_LABELS[date.getUTCMonth()];
+	return { month, through: `${day} ${name}` };
+}
+
+/**
+ * Everything the GitHub activity panel renders, derived once on the server.
  * @param {OrgSnapshot | null | undefined} snapshot
  * @param {import('./stats.js').Snapshot | null | undefined} [publicSnapshot]
  */
@@ -169,9 +215,18 @@ export function orgActivity(snapshot, publicSnapshot) {
 	const active = Object.keys(privateCommitsByMonth(snapshot)).sort();
 	const totals = privateTotals(snapshot);
 	const combined = combinedMonths(snapshot, publicSnapshot);
+	const lastMonth = combined.at(-1)?.month ?? null;
+	// The newest column is month-to-date when the later snapshot is from it.
+	const latest = [snapshot?.generatedAt, publicSnapshot?.generatedAt]
+		.filter((iso) => iso && monthOf(iso) === lastMonth)
+		.sort()
+		.at(-1);
+	const partial = lastMonth ? partialMonth(latest) : null;
 	return {
 		asOf: formatDate(snapshot?.generatedAt),
 		asOfIso: snapshot?.generatedAt ?? '',
+		publicAsOf: formatDate(publicSnapshot?.generatedAt),
+		publicAsOfIso: publicSnapshot?.generatedAt ?? '',
 		isEmpty: totals.commits === 0 && totals.pullRequests === 0,
 		totals,
 		firstMonth: active[0] ?? null,
@@ -179,9 +234,10 @@ export function orgActivity(snapshot, publicSnapshot) {
 		languages: languageMix(snapshot?.private?.languageBytes),
 		combined,
 		combinedTotals: {
-			public: combined.reduce((sum, row) => sum + row.public, 0),
-			private: combined.reduce((sum, row) => sum + row.private, 0)
-		}
+			public: combined.reduce((sum, row) => sum + (row.public ?? 0), 0),
+			private: combined.reduce((sum, row) => sum + (row.private ?? 0), 0)
+		},
+		partial
 	};
 }
 

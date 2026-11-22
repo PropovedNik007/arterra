@@ -13,7 +13,7 @@
 	.empty {
 		padding: clamp(2.5rem, 7vw, 5rem) clamp(1.25rem, 4vw, 3rem);
 		border: 1px dashed var(--color-border-strong);
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-lg);
 		text-align: center;
 	}
 	.icon {
@@ -23,7 +23,7 @@
 	}
 	.title {
 		margin: var(--space-4) 0 var(--space-2);
-		font-size: clamp(1.6rem, 3vw, 2.2rem);
+		font-size: var(--heading-section);
 	}
 	.content {
 		max-width: 34rem;

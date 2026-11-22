@@ -1,6 +1,7 @@
 <script>
 	import { sitePath, staticPath } from '#lib/paths.js';
 	import Breadcrumb from './Breadcrumb.svelte';
+	import ToolpathOrnament from './ToolpathOrnament.svelte';
 	import GraphView from '#lib/graph/GraphView.svelte';
 	import { FIELD_TAGS } from '#lib/graph/taxonomy.js';
 	import { externalLinkLabel, formatNoteDate, showsDate, tagLabel } from '#lib/design/sections.js';
@@ -20,8 +21,11 @@
 	 *   parentHref: string,
 	 *   trail?: { label: string, href?: string }[],
 	 *   extraMeta?: string[],
-	 *   context?: ArticleContext
+	 *   context?: ArticleContext,
+	 *   afterBody?: import('svelte').Snippet
 	 * }}
+	 * afterBody: rendered right after the body and its aside, before the gallery,
+	 * related work and the graph (e.g. an interactive figure the text explains).
 	 */
 	let {
 		item,
@@ -29,7 +33,8 @@
 		parentHref,
 		trail = undefined,
 		extraMeta = [],
-		context = { fields: [], orgs: [], related: [], focusGraph: null }
+		context = { fields: [], orgs: [], related: [], focusGraph: null },
+		afterBody = undefined
 	} = $props();
 
 	let isProject = $derived(item.section === 'projects');
@@ -52,6 +57,9 @@
 </script>
 
 <article class="shell page" data-section={item.section}>
+	<div class="corner-ornament">
+		<ToolpathOrnament preset={item.section === 'projects' ? 'star' : 'corner'} align="right" />
+	</div>
 	<Breadcrumb items={crumbs} />
 	<header class="article-header">
 		<p class="eyebrow">{parentLabel}</p>
@@ -88,8 +96,10 @@
 				<ul class="chips">
 					{#each context.fields as field (field.id)}
 						<li>
-							<a class="chip field" href={sitePath(field.href)} title={`Projects in ${field.label}`}
-								>{field.label}</a
+							<a
+								class="tag-chip field"
+								href={sitePath(field.href)}
+								title={`Projects in ${field.label}`}>{field.label}</a
 							>
 						</li>
 					{/each}
@@ -119,22 +129,26 @@
 						<li>
 							{#if isProject}
 								<a
-									class="chip"
+									class="tag-chip"
 									href={sitePath(`/projects?tag=${encodeURIComponent(tag)}`)}
 									title={`Projects using ${tagLabel(tag)}`}>{tagLabel(tag)}</a
 								>
 							{:else}
-								<span class="chip">{tagLabel(tag)}</span>
+								<span class="tag-chip">{tagLabel(tag)}</span>
 							{/if}
 						</li>
 					{/each}
 				</ul>
 			{/if}
-			<a class="button back" href={sitePath(parentHref)}
+			<a class="button small" href={sitePath(parentHref)}
 				><span aria-hidden="true">←</span> Back to {parentLabel}</a
 			>
 		</aside>
 	</div>
+
+	{#if afterBody}
+		<div class="after-body">{@render afterBody()}</div>
+	{/if}
 
 	{#if item.gallery?.length}
 		<section class="gallery" aria-labelledby="gallery-title">
@@ -194,9 +208,31 @@
 </article>
 
 <style>
+	article {
+		position: relative;
+		isolation: isolate;
+	}
+	/* A small rosette in the header's free corner, tinted by the section accent. */
+	.corner-ornament {
+		position: absolute;
+		top: clamp(1.5rem, 4vw, 3rem);
+		right: 0;
+		width: min(21rem, 46vw);
+		aspect-ratio: 1;
+		pointer-events: none;
+	}
+	/* Phones: a smaller mark up in the breadcrumb gutter, its core clear of
+	   the title instead of sitting behind it. */
+	@media (max-width: 600px) {
+		.corner-ornament {
+			top: -1.25rem;
+			width: 7rem;
+		}
+	}
 	.article-header {
 		max-width: 55rem;
-		padding: clamp(1rem, 4vw, 3rem) 0 clamp(2rem, 5vw, 4rem);
+		/* Same start as PageIntro: the eyebrow follows the breadcrumb directly. */
+		padding: 0 0 clamp(2rem, 5vw, 4rem);
 	}
 	h1 {
 		margin-bottom: var(--space-5);
@@ -226,6 +262,7 @@
 		font-family: var(--font-mono);
 		font-size: var(--text-sm);
 	}
+	.after-body,
 	.gallery {
 		margin-top: clamp(3rem, 7vw, 6rem);
 	}
@@ -279,14 +316,14 @@
 	}
 	.prose {
 		min-width: 0;
-		font-size: 1.06rem;
+		font-size: var(--text-md);
 	}
 	.prose :global(h1:first-child) {
 		display: none;
 	}
 	.prose :global(h2) {
 		margin: 2.8rem 0 1rem;
-		font-size: 2rem;
+		font-size: var(--heading-section);
 	}
 	.prose :global(h3) {
 		margin: 2rem 0 0.8rem;
@@ -313,7 +350,7 @@
 	}
 	aside {
 		position: sticky;
-		top: 6rem;
+		top: calc(var(--header-h) + var(--space-5));
 		padding-left: var(--space-5);
 		border-left: 1px solid var(--color-border);
 	}
@@ -323,7 +360,7 @@
 		font-family: var(--font-body);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		line-height: 1.4;
 		text-transform: uppercase;
 	}
@@ -334,25 +371,6 @@
 		margin: 0 0 var(--space-6);
 		padding: 0;
 		list-style: none;
-	}
-	.chip {
-		display: inline-block;
-		padding: 0.3rem 0.65rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-full);
-		color: var(--color-text);
-		font-size: var(--text-xs);
-		line-height: 1.3;
-	}
-	.chip.field {
-		border-color: color-mix(in srgb, var(--accent) 45%, var(--color-border));
-		background: color-mix(in srgb, var(--accent) 10%, transparent);
-		color: var(--color-heading);
-	}
-	a.chip:hover {
-		border-color: var(--accent);
-		color: var(--color-heading);
-		text-decoration: none;
 	}
 	.orgs {
 		display: grid;
@@ -375,11 +393,6 @@
 	.orgs small {
 		color: var(--color-text-muted);
 		font-size: var(--text-xs);
-	}
-	.back {
-		min-height: 2.5rem;
-		padding: 0.5rem 1rem;
-		font-size: var(--text-sm);
 	}
 	.related {
 		margin-top: var(--space-9);
@@ -407,11 +420,11 @@
 		background: var(--color-bg-raised);
 		color: var(--color-text);
 		transition:
-			transform 180ms ease,
-			border-color 180ms ease;
+			transform var(--duration-base) ease,
+			border-color var(--duration-base) ease;
 	}
 	.related-list a:hover {
-		transform: translateY(-3px);
+		transform: translateY(var(--lift));
 		border-color: color-mix(in srgb, var(--accent) 55%, var(--color-border));
 		text-decoration: none;
 	}
@@ -439,9 +452,9 @@
 	}
 	.related-text small {
 		color: var(--accent);
-		font-size: 0.7rem;
+		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.08em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.related-text strong {

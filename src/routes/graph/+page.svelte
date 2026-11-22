@@ -19,6 +19,7 @@
 </svelte:head>
 
 <div class="shell page">
+	<p class="eyebrow">Moved</p>
 	<h1>The knowledge graph has moved</h1>
 	<p>It is now part of the <a href={target}>Insights page</a>.</p>
 </div>

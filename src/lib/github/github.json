@@ -1,5 +1,5 @@
 {
-	"generatedAt": "2026-11-21T12:00:00.000Z",
+	"generatedAt": "2026-11-22T16:10:20.810Z",
 	"login": "PropovedNik007",
 	"profileUrl": "https://github.com/PropovedNik007",
 	"repos": [
@@ -70,19 +70,19 @@
 			"fork": false,
 			"language": "Svelte",
 			"languages": {
-				"Svelte": 57396,
-				"JavaScript": 7476,
-				"CSS": 5171,
-				"HTML": 999,
-				"TypeScript": 934
+				"Svelte": 269010,
+				"JavaScript": 213611,
+				"HTML": 100675,
+				"CSS": 6607,
+				"TypeScript": 873
 			},
 			"stargazers_count": 0,
 			"forks_count": 0,
 			"created_at": "2024-08-10T15:27:24Z",
-			"pushed_at": "2026-07-09T23:48:33Z",
+			"pushed_at": "2026-11-22T10:37:42Z",
 			"topics": ["portfolio-website", "sveltekit"],
 			"archived": false,
-			"commitsByMonth": { "2024-08": 13, "2024-10": 3, "2025-04": 2, "2026-07": 4 }
+			"commitsByMonth": { "2024-08": 13, "2024-10": 3, "2025-04": 2, "2026-07": 30, "2026-11": 29 }
 		},
 		{
 			"name": "BlogReactRedux",
@@ -165,14 +165,21 @@
 			"html_url": "https://github.com/PropovedNik007/cv",
 			"fork": false,
 			"language": "TeX",
-			"languages": { "TeX": 46440, "Dockerfile": 42 },
+			"languages": { "TeX": 63684, "Dockerfile": 42 },
 			"stargazers_count": 0,
 			"forks_count": 0,
 			"created_at": "2024-05-15T13:32:29Z",
-			"pushed_at": "2025-10-29T22:52:00Z",
+			"pushed_at": "2026-11-22T10:35:50Z",
 			"topics": ["cv", "resume"],
 			"archived": false,
-			"commitsByMonth": { "2024-05": 2, "2024-07": 2, "2024-08": 2, "2024-10": 2, "2025-10": 1 }
+			"commitsByMonth": {
+				"2024-05": 2,
+				"2024-07": 2,
+				"2024-08": 2,
+				"2024-10": 2,
+				"2025-10": 1,
+				"2026-11": 3
+			}
 		},
 		{
 			"name": "dashboard",

@@ -93,15 +93,15 @@
 		background: var(--color-bg-raised);
 		color: var(--color-text);
 		transition:
-			transform 180ms ease,
-			border-color 180ms ease;
+			transform var(--duration-base) ease,
+			border-color var(--duration-base) ease;
 	}
 	.discipline-grid a.empty {
 		border-style: dashed;
 		background: transparent;
 	}
 	.discipline-grid a:hover {
-		transform: translateY(-4px);
+		transform: translateY(var(--lift));
 		border-color: var(--accent);
 		text-decoration: none;
 	}
@@ -114,7 +114,7 @@
 		color: var(--accent);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.08em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.empty .count {
@@ -122,7 +122,7 @@
 	}
 	h3 {
 		margin-bottom: var(--space-3);
-		font-size: clamp(1.6rem, 3vw, 2.2rem);
+		font-size: var(--heading-card);
 	}
 	.description {
 		margin: 0;
@@ -141,7 +141,7 @@
 		color: var(--color-text-muted);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.latest strong {
@@ -153,7 +153,7 @@
 	}
 	.arrow {
 		color: var(--accent);
-		transition: transform 180ms ease;
+		transition: transform var(--duration-base) ease;
 	}
 	.discipline-grid a:hover .arrow {
 		transform: translateX(4px);

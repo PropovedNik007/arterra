@@ -1,6 +1,8 @@
 <script>
 	import { sitePath } from '#lib/paths.js';
 	import LandingCanvas from '../components/LandingCanvas.svelte';
+	import ToolpathOrnament from '#lib/components/ui/ToolpathOrnament.svelte';
+	import heroToolpath from '#lib/design/ornaments/hero.json';
 	import ContentCard from '#lib/components/cards/ContentCard.svelte';
 	import GraphView from '#lib/graph/GraphView.svelte';
 	import SkillsRadar from '#lib/components/charts/SkillsRadar.svelte';
@@ -131,8 +133,11 @@
 </svelte:head>
 
 <div class="tab-flow">
-	<section class="landing">
+	<section class="landing" data-no-nozzle>
 		<LandingCanvas />
+		<div class="hero-ornament">
+			<ToolpathOrnament preset="hero" toolpath={heroToolpath} animate />
+		</div>
 		<div class="shell hero-inner">
 			<div class="name-header">
 				<p class="eyebrow">{cv.headline} · {cv.location}</p>
@@ -204,7 +209,7 @@
 					<div class="timeline-grid">
 						{#each cv.education as entry (entry.id)}
 							<article>
-								<span class="period">{entry.period}</span>
+								<span class="cv-period">{entry.period}</span>
 								<h3>{entry.degree}</h3>
 								<b>{entry.school}</b>
 								{#if entry.note}<p>{entry.note}</p>{/if}
@@ -223,7 +228,7 @@
 								{#if entry.current}
 									<span class="badge">Current</span>
 								{:else}
-									<span class="period">{entry.period}</span>
+									<span class="cv-period">{entry.period}</span>
 								{/if}
 								<h3>{entry.role ?? entry.org}</h3>
 								{#if entry.role}<b>{entry.org}</b>{/if}
@@ -244,7 +249,7 @@
 									<article>
 										<h3>{group}</h3>
 										<ul>
-											{#each values as value (value)}<li>{value}</li>{/each}
+											{#each values as value (value)}<li class="tag-chip md">{value}</li>{/each}
 										</ul>
 									</article>
 								{/each}
@@ -253,7 +258,7 @@
 								<h3>Languages</h3>
 								<ul>
 									{#each cv.languages as language (language.name)}
-										<li>{language.name} <span>{language.level}</span></li>
+										<li>{language.name} <span class="cv-level">{language.level}</span></li>
 									{/each}
 								</ul>
 							</div>
@@ -297,7 +302,7 @@
 		<div class="channel-grid">
 			{#each channels as channel (channel.path)}
 				<a href={sitePath(channel.path)}>
-					<span>{channel.number}</span>
+					<span class="index-num">{channel.number}</span>
 					<h3>{channel.title}</h3>
 					<p>{channel.text}</p>
 					<strong class="count">{channel.count}</strong>
@@ -314,6 +319,23 @@
 		position: relative;
 	}
 	.landing {
+		/* The hero's own cool palette over the space photo (fixed, like the
+		   image): name, role list and eyebrow. */
+		--hero-fg: #d4e0e6;
+		--hero-muted: #9fb0b9;
+		--hero-accent: #9cd9f9;
+		/* The name's type size and the hero's vertical padding, shared with the
+		   eternity sign so it can centre on the name. */
+		--name-size: clamp(4rem, 8vw, 7rem);
+		--hero-pad-top: clamp(6rem, 12vh, 8rem);
+		--hero-pad-bottom: clamp(2.5rem, 7vh, 5rem);
+		/* The sign's box: as tall as the hero, at most 60% of its width. */
+		--sign-size: min(1.02 * (100dvh - var(--tab-height)), 60vw);
+		/* Centred on the name: the shell's left edge plus half the width of
+		   "Sogomonyan" (5.72em), and the middle of the padded grid row. */
+		--disc-x: calc((100% - min(100% - 2rem, var(--content-width))) / 2 + 2.86 * var(--name-size));
+		--disc-y: calc((var(--hero-pad-top) + 100% - var(--hero-pad-bottom)) / 2);
+		--disc-r: calc(0.5 * var(--sign-size));
 		position: relative;
 		min-height: calc(100vh - var(--tab-height));
 		min-height: calc(100dvh - var(--tab-height));
@@ -331,6 +353,43 @@
 		background: linear-gradient(180deg, rgba(2, 7, 11, 0.08), rgba(2, 7, 11, 0.5));
 		pointer-events: none;
 	}
+	/* Arevakhach drawn as a printed layer, behind the hero text and above the
+	   photo and its scrim, framing the name beside the nebula rather than
+	   dissolving into it. */
+	.hero-ornament {
+		position: absolute;
+		top: var(--disc-y);
+		left: var(--disc-x);
+		z-index: 1;
+		width: var(--sign-size);
+		height: var(--sign-size);
+		translate: -50% -50%;
+		pointer-events: none;
+	}
+	.hero-ornament :global(.toolpath-ornament) {
+		--ornament-z: 0;
+		/* The month's ink, lighter and stronger than elsewhere, since only the
+		   eyebrow and the name sit on it. Over the brightest photo pixel there,
+		   a full stroke in the lightest month ink (May) still leaves the eyebrow
+		   at 4.9:1 and the name at 5.6:1 (1440×900); the role list and buttons sit outside
+		   the sign. */
+		--ornament-shade: 80%;
+		--ornament-opacity: 0.4;
+	}
+	/* One line texture per area: the network canvas fades to a hint inside
+	   the sign's disc and keeps full strength in the sky around it. */
+	.landing :global(#demo-canvas) {
+		-webkit-mask-image: radial-gradient(
+			circle at var(--disc-x) var(--disc-y),
+			rgb(0 0 0 / 0.3) 0 calc(var(--disc-r) * 0.85),
+			#000 calc(var(--disc-r) * 1.05)
+		);
+		mask-image: radial-gradient(
+			circle at var(--disc-x) var(--disc-y),
+			rgb(0 0 0 / 0.3) 0 calc(var(--disc-r) * 0.85),
+			#000 calc(var(--disc-r) * 1.05)
+		);
+	}
 	.hero-inner {
 		position: relative;
 		z-index: 2;
@@ -340,11 +399,11 @@
 		grid-template-columns: 1.15fr 0.85fr;
 		align-items: center;
 		gap: clamp(2rem, 7vw, 7rem);
-		padding: clamp(6rem, 12vh, 8rem) 0 clamp(2.5rem, 7vh, 5rem);
+		padding: var(--hero-pad-top) 0 var(--hero-pad-bottom);
 	}
 	.name-header,
 	.description > * {
-		animation: rise 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation: rise 650ms var(--ease-out) both;
 	}
 	.description > *:nth-child(2) {
 		animation-delay: 60ms;
@@ -367,18 +426,16 @@
 			transform: translateY(14px);
 		}
 	}
-	.eyebrow {
-		color: #9cd9f9;
-		font-size: 0.76rem;
-		font-weight: 700;
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
+	/* Only the hero eyebrow takes the hero's blue; section eyebrows below
+	   keep the global coral .eyebrow. */
+	.name-header .eyebrow {
+		color: var(--hero-accent);
 	}
 	h1 {
 		margin: 0;
-		color: #d4e0e6;
+		color: var(--hero-fg);
 		font-family: var(--font-body);
-		font-size: clamp(4rem, 8vw, 7rem);
+		font-size: var(--name-size);
 		font-weight: 700;
 		letter-spacing: -0.06em;
 		line-height: 0.88;
@@ -387,14 +444,14 @@
 		display: grid;
 		justify-items: center;
 		gap: 0.65rem;
-		color: #9fb0b9;
+		color: var(--hero-muted);
 	}
 	.description p {
 		margin: 0;
 		font-size: clamp(1rem, 1.5vw, 1.22rem);
 		transition:
-			color 220ms ease,
-			transform 220ms ease;
+			color var(--duration-base) ease,
+			transform var(--duration-base) ease;
 	}
 	.description p:hover {
 		color: white;
@@ -407,18 +464,15 @@
 		gap: 0.75rem;
 		margin-top: var(--space-5);
 	}
-	.hero-actions .button {
-		border-radius: 999px;
-	}
 	.button.light {
 		border-color: white;
 		background: white;
 		color: #101820;
 	}
 	.button.glass {
-		border-color: rgba(210, 235, 247, 0.35);
-		background: rgba(4, 11, 16, 0.35);
-		color: #dce8ee;
+		border-color: color-mix(in srgb, var(--hero-fg) 35%, transparent);
+		background: rgb(4 11 16 / 0.35);
+		color: var(--hero-fg);
 	}
 	.tab-menu {
 		position: sticky;
@@ -427,8 +481,8 @@
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
 		height: var(--tab-height);
-		background: rgba(8, 13, 16, 0.92);
-		box-shadow: 0 1rem 2.8rem rgba(0, 0, 0, 0.24);
+		background: color-mix(in srgb, var(--color-bg-sunken) 92%, transparent);
+		box-shadow: 0 1rem 2.8rem rgb(0 0 0 / 0.24);
 		backdrop-filter: blur(18px) saturate(140%);
 	}
 	.tab-anchor {
@@ -440,31 +494,32 @@
 		height: var(--tab-height);
 		padding: 0.5rem;
 		border: 0;
-		border-top: 1px solid rgba(156, 217, 249, 0.12);
-		border-right: 1px solid rgba(156, 217, 249, 0.08);
+		border-top: 1px solid var(--color-border);
+		border-right: 1px solid var(--color-border);
 		background: transparent;
-		color: #80949f;
+		color: var(--color-text-muted);
 		font-size: clamp(0.85rem, 1.4vw, 1.05rem);
 		cursor: pointer;
 		transition:
-			color 220ms ease,
-			background 220ms ease,
-			box-shadow 220ms ease;
+			color var(--duration-base) ease,
+			background var(--duration-base) ease,
+			box-shadow var(--duration-base) ease;
 	}
 	.tab-menu button:last-child {
 		border-right: 0;
 	}
-	.tab-menu button:hover,
+	.tab-menu button:hover {
+		color: var(--color-heading);
+		background: var(--color-bg-raised);
+	}
 	.tab-menu button:focus-visible {
-		color: white;
-		outline: 1px solid rgba(156, 217, 249, 0.78);
+		outline: 2px solid var(--accent);
 		outline-offset: -4px;
-		background: rgba(47, 72, 84, 0.26);
 	}
 	.tab-menu button.active {
-		color: white;
-		background: rgba(58, 78, 88, 0.62);
-		box-shadow: inset 0 -2px #9cd9f9;
+		color: var(--color-heading);
+		background: var(--color-bg-elevated);
+		box-shadow: inset 0 -2px var(--accent);
 	}
 	.tab-section[hidden] {
 		display: none;
@@ -474,7 +529,7 @@
 		min-height: calc(100dvh - 9.5rem);
 	}
 	.tab-content {
-		animation: reveal-tab 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation: reveal-tab 360ms var(--ease-out) both;
 	}
 	@keyframes reveal-tab {
 		from {
@@ -510,12 +565,6 @@
 		border-radius: var(--radius-lg);
 		background: var(--color-bg-raised);
 	}
-	.timeline-grid .period {
-		color: var(--accent);
-		font: 600 var(--text-xs) var(--font-mono);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
 	.timeline-grid h3,
 	.skill-grid h3 {
 		margin: var(--space-4) 0 var(--space-2);
@@ -537,31 +586,11 @@
 		margin-bottom: 0;
 		color: var(--color-text);
 	}
-	.badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.45rem;
-		padding: 0.2rem 0.6rem;
-		border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
-		border-radius: var(--radius-full);
-		color: var(--accent);
-		font: 600 var(--text-xs) var(--font-mono);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-	.badge::before {
-		content: '';
-		width: 0.45rem;
-		height: 0.45rem;
-		border-radius: 50%;
-		background: var(--accent);
-		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
-	}
 	.entry-link {
 		margin-top: auto;
 		padding-top: var(--space-4);
 		font-size: var(--text-sm);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	.skills-layout {
 		display: grid;
@@ -585,13 +614,6 @@
 		padding: 0;
 		list-style: none;
 	}
-	.skill-grid li {
-		padding: 0.35rem 0.65rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-full);
-		color: var(--color-text-muted);
-		font-size: var(--text-sm);
-	}
 	.languages {
 		display: flex;
 		flex-wrap: wrap;
@@ -614,11 +636,6 @@
 		padding: 0;
 		list-style: none;
 		color: var(--color-text);
-	}
-	.languages span {
-		margin-left: 0.3rem;
-		color: var(--accent);
-		font: 600 var(--text-xs) var(--font-mono);
 	}
 	.map-teaser {
 		border-top: 1px solid var(--color-border);
@@ -656,10 +673,6 @@
 		background: var(--color-bg-raised);
 		text-decoration: none;
 	}
-	.channel-grid span {
-		color: var(--accent);
-		font: 600 var(--text-xs) var(--font-mono);
-	}
 	.channel-grid h3 {
 		margin: var(--space-6) 0 var(--space-3);
 		color: var(--color-heading);
@@ -674,8 +687,8 @@
 		padding-top: var(--space-5);
 		padding-right: var(--space-5);
 		color: var(--color-heading);
-		font: 600 var(--text-xs) var(--font-mono);
-		letter-spacing: 0.06em;
+		font: 400 var(--text-xs) var(--font-mono);
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.channel-grid b {
@@ -693,6 +706,19 @@
 		}
 	}
 	@media (max-width: 900px) {
+		/* Single column: the sign rises from the bottom edge below the
+		   buttons, half of it showing, instead of sitting behind the text. It
+		   may pass under the role list here, so it keeps the darker ink that
+		   leaves that text above 4.5:1. */
+		.landing {
+			--sign-size: 100vw;
+			--disc-x: 50%;
+			--disc-y: calc(100% - 1rem);
+		}
+		.hero-ornament :global(.toolpath-ornament) {
+			--ornament-shade: 70%;
+			--ornament-opacity: 0.3;
+		}
 		.hero-inner {
 			grid-template-columns: 1fr;
 			align-content: center;
@@ -736,7 +762,7 @@
 			grid-template-columns: repeat(4, minmax(0, 1fr));
 		}
 		.tab-menu button {
-			font-size: 0.72rem;
+			font-size: var(--text-xs);
 			line-height: 1.2;
 		}
 		.project-grid,

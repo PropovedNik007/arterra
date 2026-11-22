@@ -118,10 +118,15 @@
 		padding-block: var(--space-7);
 		border-top: 1px solid var(--color-border);
 	}
+	/* The intro's woven border already divides the page from the first group. */
+	.faq-group:first-of-type {
+		padding-top: 0;
+		border-top: 0;
+	}
 	.faq-group h2 {
 		max-width: 12ch;
 		margin: 0;
-		font-size: clamp(1.6rem, 3vw, 2.2rem);
+		font-size: var(--heading-section);
 	}
 	.faq-list {
 		border-top: 1px solid var(--color-border);
@@ -138,7 +143,7 @@
 		padding: var(--space-5) 0;
 		color: var(--color-heading);
 		font-size: var(--text-lg);
-		font-weight: 650;
+		font-weight: 700;
 		line-height: 1.35;
 		list-style: none;
 		cursor: pointer;
@@ -164,7 +169,7 @@
 		width: 100%;
 		height: 2px;
 		background: var(--accent);
-		transition: transform 180ms ease;
+		transition: transform var(--duration-base) ease;
 	}
 	.marker::after {
 		transform: rotate(90deg);
@@ -188,7 +193,7 @@
 		padding: 0;
 		list-style: none;
 		font-size: var(--text-sm);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		.marker::before,

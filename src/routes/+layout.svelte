@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 	import Header from '#lib/components/layout/Header.svelte';
 	import Footer from '#lib/components/layout/Footer.svelte';
+	import SiteEffects from '#lib/components/effects/SiteEffects.svelte';
 	import { cv } from '#lib/content/cv.js';
 	import {
 		CITY,
@@ -113,6 +114,8 @@
 		{@render children()}
 	</main>
 	{#if !isRetro}<Footer />{/if}
+	<!-- G-code view, layer-print headings and nozzle cursor; never on /retro. -->
+	{#if !isRetro}<SiteEffects />{/if}
 </div>
 
 <style>

@@ -1,6 +1,7 @@
 <script>
 	import { sitePath } from '#lib/paths.js';
 	import Breadcrumb from '#lib/components/ui/Breadcrumb.svelte';
+	import ToolpathOrnament from '#lib/components/ui/ToolpathOrnament.svelte';
 	import GraphView from '#lib/graph/GraphView.svelte';
 	import WorkSankey from '#lib/components/charts/WorkSankey.svelte';
 	import SkillsRadar from '#lib/components/charts/SkillsRadar.svelte';
@@ -29,7 +30,10 @@
 		...(data.privateWork.isEmpty
 			? []
 			: [
-					{ value: data.summary.commitsAll.toLocaleString('en-US'), label: 'commits incl. private' }
+					{
+						value: data.summary.commitsAll.toLocaleString('en-US'),
+						label: 'commits, public + private'
+					}
 				])
 	]);
 </script>
@@ -38,27 +42,30 @@
 	<title>Insights — Artur Sogomonyan</title>
 	<meta
 		name="description"
-		content="Artur Sogomonyan's work as data: an interactive knowledge graph of projects, fields of work and organisations, a project flow chart, a self-assessed skills profile, and public GitHub activity plus anonymised totals from private organisation work."
+		content="Artur Sogomonyan's work as data: an interactive knowledge graph of projects, fields of work and organisations, a project flow chart, a self-assessed skills profile, and GitHub activity: public and private commits per month plus combined totals from work in private repositories."
 	/>
 </svelte:head>
 
-<div class="shell page insights-page">
+<div class="shell page">
 	<Breadcrumb items={[{ label: 'Insights' }]} />
 	<header class="intro">
+		<div class="intro-ornament">
+			<ToolpathOrnament preset="star" tone="field" align="right" opacity={0.18} />
+		</div>
 		<div>
 			<p class="eyebrow">Charts &amp; numbers</p>
 			<h1>Insights</h1>
 			<p class="lede">
 				The same work, seen as data: a map of how projects, fields of work and organisations
 				connect, where the projects sit across fields, how I rate my own skills, and what my code
-				history looks like, including anonymised totals from private organisation work.
+				history looks like, including work in private repositories.
 			</p>
 		</div>
-		<dl class="stats">
+		<dl class="stats stat-list">
 			{#each stats as stat (stat.label)}
-				<div>
-					<dt>{stat.label}</dt>
-					<dd>{stat.value}</dd>
+				<div class="stat">
+					<dt class="stat-label">{stat.label}</dt>
+					<dd class="stat-value">{stat.value}</dd>
 				</div>
 			{/each}
 		</dl>
@@ -69,7 +76,7 @@
 			{#each sections as section, index (section.id)}
 				<li>
 					<a href="#{section.id}"
-						><span class="jump-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span
+						><span class="index-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span
 						>{section.label}</a
 					>
 				</li>
@@ -126,30 +133,43 @@
 		<div class="section-head">
 			<h2 id="github-title">On GitHub</h2>
 			<p>
-				A manually refreshed snapshot of public repositories, plus anonymised totals from private
-				organisation work.
+				All my commits per month, public and private, then my work in private repositories as
+				combined totals, and my public repositories. Each snapshot carries its own date.
 			</p>
 		</div>
-		<GithubDashboard data={data.github} headingLevel={3} />
-		<OrgActivity data={data.privateWork} headingLevel={3} />
+		<div class="github-stack">
+			<OrgActivity data={data.privateWork} headingLevel={3} />
+			<GithubDashboard data={data.github} headingLevel={3} />
+		</div>
 	</section>
 </div>
 
 <style>
-	/* Short intro with the numbers on the right, so the graph starts near the fold. */
-	.insights-page {
-		padding-top: clamp(1.5rem, 4vw, 3rem);
-	}
+	/* Short intro with the numbers on the right, so the graph starts near the
+	   fold: the same page padding and breadcrumb as every page, with the
+	   compact page-title size (--heading-page-compact). */
 	.intro {
+		position: relative;
+		isolation: isolate;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto;
 		align-items: end;
 		gap: var(--space-5) var(--space-8);
 		margin: var(--space-5) 0 var(--space-6);
 	}
+	/* Star rosette in the empty corner above the stats, so the small stat
+	   labels sit on plain background; clear of text, it can be at 0.18. */
+	.intro-ornament {
+		position: absolute;
+		top: -5.5rem;
+		right: 0;
+		bottom: 4rem;
+		width: min(28rem, 100%);
+		pointer-events: none;
+	}
 	.intro h1 {
 		margin-bottom: var(--space-3);
-		font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+		font-size: var(--heading-page-compact);
 	}
 	.intro .lede {
 		max-width: 44rem;
@@ -159,30 +179,22 @@
 		.intro {
 			grid-template-columns: 1fr;
 		}
+		/* Stacked layout: a smaller rosette in the corner beside the short
+		   title, above the lede. */
+		.intro-ornament {
+			top: -2.75rem;
+			bottom: auto;
+			width: min(10rem, 45%);
+			aspect-ratio: 1;
+		}
 	}
+	/* Uppercase labels are wide: wrap the numbers into rows so the lede keeps
+	   its measure. */
 	.stats {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-3) var(--space-6);
-		margin: 0;
-	}
-	.stats div {
-		display: flex;
-		flex-direction: column-reverse;
-	}
-	.stats dd {
-		margin: 0;
-		color: var(--color-heading);
-		font-family: var(--font-display);
-		font-size: var(--text-2xl);
-		line-height: 1;
-		font-variant-numeric: tabular-nums;
-	}
-	.stats dt {
-		margin-top: var(--space-1);
-		color: var(--color-text-muted);
-		font-size: var(--text-xs);
-		letter-spacing: 0.04em;
+		max-width: 28rem;
+		gap: var(--space-4) var(--space-6);
 	}
 
 	.jump {
@@ -205,16 +217,10 @@
 		padding-block: var(--space-1);
 		color: var(--color-text);
 		font-size: var(--text-sm);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	.jump a:hover {
 		color: var(--color-heading);
-	}
-	.jump-index {
-		color: var(--accent);
-		font-size: var(--text-xs);
-		font-variant-numeric: tabular-nums;
-		letter-spacing: 0.08em;
 	}
 
 	.insight {
@@ -224,6 +230,12 @@
 	}
 	.insight + .insight {
 		margin-top: var(--space-9);
+	}
+
+	.github-stack {
+		display: grid;
+		gap: var(--space-8);
+		min-width: 0;
 	}
 
 	.skills-layout {
@@ -249,7 +261,7 @@
 	.entry-link {
 		display: inline-block;
 		font-size: var(--text-sm);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	@media (max-width: 860px) {
 		.skills-layout {

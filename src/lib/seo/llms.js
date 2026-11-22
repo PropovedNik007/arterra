@@ -39,7 +39,7 @@ export const LLMS_PAGES = [
 		path: '/insights',
 		title: 'Insights',
 		description:
-			'An interactive knowledge graph connecting projects, notes, fields of work, organisations, and shared tools; a chart of how projects flow through fields of work; a self-assessed skills profile; and public GitHub activity plus anonymised totals from private organisation work.'
+			'An interactive knowledge graph connecting projects, notes, fields of work, organisations, and shared tools; a chart of how projects flow through fields of work; a self-assessed skills profile; and public GitHub activity plus combined totals from work in private repositories.'
 	},
 	{
 		path: '/faq',

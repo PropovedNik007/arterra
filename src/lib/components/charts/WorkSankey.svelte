@@ -425,10 +425,10 @@
 
 		<p class="readout">{describe(active)}</p>
 
-		<details class="fallback">
+		<details class="fallback data-details">
 			<summary>Show as table</summary>
 			<div class="table-scroll">
-				<table>
+				<table class="data-table">
 					<caption
 						>Fields of work, top to bottom as in the chart; shares sum to {data.total}.{#if data.fields.some((field) => field.diyCount)}
 							Field links open the Projects list; DIY builds in a field are counted here but listed
@@ -475,7 +475,7 @@
 				</table>
 			</div>
 			<div class="table-scroll">
-				<table>
+				<table class="data-table">
 					<caption>Projects and DIY builds, top to bottom as in the chart</caption>
 					<thead>
 						<tr>
@@ -507,10 +507,13 @@
 </figure>
 
 <style>
+	/* The graph family (this flow chart and GraphView) draws on the darker
+	   --graph-bg; the labels' halo below matches it. Otherwise .chart-panel's
+	   padding and radius. */
 	.sankey {
 		container-type: inline-size;
 		margin: 0;
-		padding: clamp(var(--space-4), 3vw, var(--space-6));
+		padding: clamp(var(--space-4), 3vw, var(--space-5));
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-lg);
 		background: var(--graph-bg);
@@ -565,8 +568,8 @@
 		gap: var(--space-2);
 	}
 	.swatch {
-		width: 0.7rem;
-		height: 0.7rem;
+		width: var(--legend-swatch);
+		height: var(--legend-swatch);
 		border-radius: 2px;
 		background: var(--tone);
 	}
@@ -680,10 +683,10 @@
 
 	@media (prefers-reduced-motion: no-preference) {
 		.flow {
-			transition: stroke-opacity 160ms ease;
+			transition: stroke-opacity var(--duration-fast) ease;
 		}
 		.node {
-			transition: opacity 160ms ease;
+			transition: opacity var(--duration-fast) ease;
 		}
 	}
 
@@ -733,56 +736,26 @@
 	/* ------------------------------------------------------------- fallback */
 	.fallback {
 		margin-top: var(--space-4);
-		border-top: 1px solid var(--color-border);
-		padding-top: var(--space-3);
-	}
-	.fallback summary {
-		color: var(--link);
-		font-size: var(--text-sm);
-		cursor: pointer;
 	}
 	.table-scroll {
 		margin-top: var(--space-4);
 		overflow-x: auto;
 	}
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: var(--text-sm);
+	.data-table {
+		margin-top: 0;
 	}
 	caption {
 		margin-bottom: var(--space-2);
 		color: var(--color-text-muted);
 		text-align: left;
 	}
-	th,
-	td {
-		padding: var(--space-2) var(--space-3) var(--space-2) 0;
-		border-bottom: 1px solid var(--color-border);
-		text-align: left;
-		vertical-align: top;
-	}
-	thead th {
-		color: var(--color-text-muted);
-		font-weight: 500;
-	}
-	tbody th,
-	tfoot th {
-		color: var(--color-heading);
-		font-weight: 500;
-	}
 	tfoot th,
 	tfoot td {
 		border-bottom: 0;
 		color: var(--color-text-muted);
-	}
-	th:last-child,
-	td:last-child {
-		padding-right: 0;
+		font-weight: 500;
 	}
 	.num {
-		text-align: right;
-		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
 	}
 	table a {

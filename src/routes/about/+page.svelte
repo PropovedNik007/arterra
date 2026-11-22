@@ -43,18 +43,20 @@
 				makes me comfortable moving between research questions, system boundaries, and user-facing
 				details.
 			</p>
-			<dl class="facts">
-				<div>
-					<dt>{cv.location}</dt>
-					<dd>Based in Austria</dd>
+			<dl class="facts stat-list">
+				<div class="stat">
+					<dt class="stat-label">Based in</dt>
+					<dd class="stat-value">{cv.location}</dd>
+					<dd class="stat-note">Austria</dd>
 				</div>
-				<div>
-					<dt>MSc</dt>
-					<dd>Data Science · {msc.schoolShort} · {msc.period}</dd>
+				<div class="stat">
+					<dt class="stat-label">MSc Data Science</dt>
+					<dd class="stat-value">{msc.schoolShort}</dd>
+					<dd class="stat-note">{msc.period}</dd>
 				</div>
-				<div>
-					<dt>{cv.languages.length}</dt>
-					<dd>Languages spoken</dd>
+				<div class="stat">
+					<dt class="stat-label">Languages spoken</dt>
+					<dd class="stat-value">{cv.languages.length}</dd>
 				</div>
 			</dl>
 		</div>
@@ -69,7 +71,7 @@
 			{#each cv.experience as entry (entry.id)}
 				<li class:current={entry.current}>
 					<div class="when">
-						{#if entry.current}<span class="badge">Current</span>{:else}<span class="period"
+						{#if entry.current}<span class="badge">Current</span>{:else}<span class="cv-period"
 								>{entry.period}</span
 							>{/if}
 					</div>
@@ -101,7 +103,7 @@
 				<div>
 					<h3>{group}</h3>
 					<ul>
-						{#each values as value (value)}<li>{value}</li>{/each}
+						{#each values as value (value)}<li class="tag-chip md">{value}</li>{/each}
 					</ul>
 				</div>
 			{/each}
@@ -109,7 +111,9 @@
 				<h3>Languages</h3>
 				<ul class="languages">
 					{#each cv.languages as language (language.name)}
-						<li>{language.name} <span>{language.level}</span></li>
+						<li class="tag-chip md">
+							{language.name} <span class="cv-level">{language.level}</span>
+						</li>
 					{/each}
 				</ul>
 			</div>
@@ -197,30 +201,15 @@
 	.manifesto > p:not(.eyebrow) {
 		max-width: 42rem;
 		color: var(--color-text);
-		font-size: 1.08rem;
+		font-size: var(--text-md);
 	}
 	.facts {
-		margin-bottom: 0;
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: var(--space-4);
 		margin-top: var(--space-7);
 		padding-top: var(--space-5);
 		border-top: 1px solid var(--color-border);
-	}
-	.facts dt,
-	.facts dd {
-		display: block;
-		margin: 0;
-	}
-	.facts dt {
-		color: var(--color-heading);
-		font-size: var(--text-lg);
-	}
-	.facts dd {
-		margin-top: 0.2rem;
-		color: var(--color-text-muted);
-		font-size: var(--text-xs);
 	}
 	.resume-section {
 		display: grid;
@@ -245,33 +234,8 @@
 		padding: var(--space-5) 0;
 		border-bottom: 1px solid var(--color-border);
 	}
-	.period {
-		color: var(--accent);
-		font: 700 var(--text-xs) var(--font-body);
-		letter-spacing: 0.08em;
-	}
 	.when {
 		padding-top: 0.3rem;
-	}
-	.badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4rem;
-		padding: 0.15rem 0.55rem;
-		border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
-		border-radius: var(--radius-full);
-		color: var(--accent);
-		font: 700 var(--text-xs) var(--font-body);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-	.badge::before {
-		content: '';
-		width: 0.4rem;
-		height: 0.4rem;
-		border-radius: 50%;
-		background: var(--accent);
-		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
 	}
 	.timeline li.current h3 {
 		color: var(--color-heading);
@@ -280,7 +244,7 @@
 		display: inline-block;
 		margin-top: var(--space-3);
 		font-size: var(--text-sm);
-		font-weight: 650;
+		font-weight: 700;
 		overflow-wrap: anywhere;
 	}
 	.timeline h3 {
@@ -292,7 +256,7 @@
 	}
 	.timeline .place {
 		color: var(--color-text);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	.skill-groups {
 		display: grid;
@@ -312,19 +276,6 @@
 		margin: 0;
 		padding: 0;
 		list-style: none;
-	}
-	.skill-groups .languages span {
-		margin-left: 0.3rem;
-		color: var(--accent);
-		font-size: var(--text-xs);
-		font-weight: 700;
-	}
-	.skill-groups li {
-		padding: 0.42rem 0.72rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-full);
-		color: var(--color-text);
-		font-size: var(--text-sm);
 	}
 	.education {
 		padding-top: var(--space-9);
@@ -369,13 +320,32 @@
 		font-family: var(--font-body);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.16em;
+		letter-spacing: var(--tracking-eyebrow);
 		text-transform: uppercase;
 	}
 	@media (max-width: 760px) {
 		.profile-grid,
 		.resume-section {
 			grid-template-columns: 1fr;
+		}
+		/* Phones: period/badge above the role, the h2 on full width, and a
+		   tighter section rhythm. */
+		.timeline li {
+			grid-template-columns: 1fr;
+			gap: var(--space-2);
+		}
+		.when {
+			padding-top: 0;
+		}
+		.section-label h2 {
+			max-width: none;
+		}
+		.resume-section {
+			gap: var(--space-5);
+			padding-block: var(--space-7);
+		}
+		.education {
+			padding-top: var(--space-7);
 		}
 		.portrait {
 			max-width: 26rem;

@@ -5,6 +5,7 @@
 	import PageIntro from '#lib/components/ui/PageIntro.svelte';
 	import EmptyState from '#lib/components/ui/EmptyState.svelte';
 	import ContentCard from '#lib/components/cards/ContentCard.svelte';
+	import MountainsBackdrop from '#lib/components/ui/MountainsBackdrop.svelte';
 	import { DISCIPLINE_META } from '#lib/design/sections.js';
 	let { data } = $props();
 	let meta = $derived(DISCIPLINE_META[data.discipline]);
@@ -19,14 +20,17 @@
 >
 
 <div class="shell page" data-section="sport">
-	<Breadcrumb items={[{ label: 'Sport', href: '/sport' }, { label: meta.label }]} />
-	<PageIntro
-		eyebrow={`${meta.icon} Sport discipline`}
-		title={meta.label}
-		description={data.items.length
-			? `${meta.description} Published notes, newest first.`
-			: `${meta.description} This page stays empty until there is a real ${meta.label.toLowerCase()} note worth publishing.`}
-	/>
+	<div class="intro" class:hiking={data.discipline === 'hiking'}>
+		{#if data.discipline === 'hiking'}<MountainsBackdrop />{/if}
+		<Breadcrumb items={[{ label: 'Sport', href: '/sport' }, { label: meta.label }]} />
+		<PageIntro
+			eyebrow={`${meta.icon} Sport discipline`}
+			title={meta.label}
+			description={data.items.length
+				? `${meta.description} Published notes, newest first.`
+				: `${meta.description} This page stays empty until there is a real ${meta.label.toLowerCase()} note worth publishing.`}
+		/>
+	</div>
 	{#if data.discipline === 'boxing'}
 		<a class="club" href="https://unity-fight.club/feed" target="_blank" rel="noopener noreferrer"
 			><span>Training home</span><strong>Unity Fight Club</strong><small
@@ -59,7 +63,7 @@
 		<ul>
 			{#each others as [key, other] (key)}
 				<li>
-					<a href={sitePath(other.path)}
+					<a class="chip-toggle" href={sitePath(other.path)}
 						><span aria-hidden="true">{other.icon}</span> {other.label}</a
 					>
 				</li>
@@ -69,6 +73,14 @@
 </div>
 
 <style>
+	/* Hiking: Ararat (Sis and Masis) and Aragats stand behind the intro, their plain resting
+	   on the khachkar rule below it. */
+	.intro.hiking {
+		/* PageIntro's khachkar rule is 2.5rem tall: the plain stands on it. */
+		--mountains-offset: 2.5rem;
+		position: relative;
+		isolation: isolate;
+	}
 	.club {
 		display: flex;
 		flex-wrap: wrap;
@@ -91,7 +103,7 @@
 		color: color-mix(in srgb, var(--accent) 72%, var(--color-heading));
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.club strong {
@@ -116,7 +128,7 @@
 		color: var(--color-text-muted);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.others ul {
@@ -126,19 +138,5 @@
 		margin: 0;
 		padding: 0;
 		list-style: none;
-	}
-	.others a {
-		display: inline-flex;
-		gap: 0.4rem;
-		padding: 0.4rem 0.85rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-full);
-		color: var(--color-text);
-		font-size: var(--text-sm);
-	}
-	.others a:hover {
-		border-color: var(--accent);
-		color: var(--color-heading);
-		text-decoration: none;
 	}
 </style>

@@ -21,8 +21,9 @@ const orgSnapshot = /** @type {import('#lib/github/org-stats.js').OrgSnapshot} *
 
 /**
  * Charts over data the site already publishes: the knowledge graph (as a flow),
- * the self-assessed skills profile from the CV, a manual public GitHub snapshot and
- * anonymised aggregates from private organisation work.
+ * the self-assessed skills profile from the CV, the public GitHub snapshot and
+ * combined totals from work in private repositories (both refreshed by hand
+ * with `npm run github:refresh:all`).
  */
 export function load() {
 	const flow = buildSankeyData(graphData);
@@ -30,7 +31,7 @@ export function load() {
 	// per-repo language bytes and commit histories) would otherwise be serialised
 	// into the page's hydration data and __data.json.
 	const dashboard = githubDashboard(github);
-	// Aliases and aggregates only; public monthly commits feed the combined chart.
+	// Combined private totals only; public monthly commits feed the combined chart.
 	const privateWork = orgActivity(orgSnapshot, github);
 	return {
 		graphData,

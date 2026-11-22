@@ -47,6 +47,7 @@
 <div class="shell page">
 	<Breadcrumb items={[{ label: 'Contact' }]} />
 	<PageIntro
+		ornament="star"
 		eyebrow="Open channel"
 		title="Let’s make the problem concrete."
 		description="If you are working on an applied-AI product, a computer-vision pipeline, or a system that needs both model and interface thinking, send me the context."
@@ -57,21 +58,21 @@
 			<h2>Three details are enough.</h2>
 			<ol>
 				<li>
-					<span>01</span>
+					<span class="index-num">01</span>
 					<div>
 						<strong>The outcome</strong>
 						<p>What should work when we are done?</p>
 					</div>
 				</li>
 				<li>
-					<span>02</span>
+					<span class="index-num">02</span>
 					<div>
 						<strong>The current constraint</strong>
 						<p>Data, model quality, delivery, time, or something else?</p>
 					</div>
 				</li>
 				<li>
-					<span>03</span>
+					<span class="index-num">03</span>
 					<div>
 						<strong>The next decision</strong>
 						<p>What do you need to decide after our conversation?</p>
@@ -113,7 +114,7 @@
 	.message-card,
 	.channels {
 		border: 1px solid var(--color-border);
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-lg);
 		background: var(--color-bg-raised);
 	}
 	.message-card {
@@ -140,11 +141,6 @@
 		padding: var(--space-5) 0;
 		border-bottom: 1px solid var(--color-border);
 	}
-	li > span {
-		color: var(--accent);
-		font-size: var(--text-xs);
-		font-weight: 700;
-	}
 	li strong {
 		color: var(--color-heading);
 	}
@@ -164,7 +160,7 @@
 		padding: var(--space-5);
 		border-bottom: 1px solid var(--color-border);
 		color: var(--color-text);
-		transition: background 180ms ease;
+		transition: background var(--duration-base) ease;
 	}
 	.channels a:last-child {
 		border-bottom: 0;
@@ -186,7 +182,7 @@
 		color: var(--color-text-muted);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.09em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.channels strong {

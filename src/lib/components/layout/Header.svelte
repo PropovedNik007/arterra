@@ -5,6 +5,7 @@
 	import LinkedinIcon from '#lib/icons/LinkedinIcon.svelte';
 	import EnvelopeIcon from '#lib/icons/EnvelopeIcon.svelte';
 	import TelegramIcon from '#lib/icons/TelegramIcon.svelte';
+	import InitialsMark from '#lib/components/armenian/InitialsMark.svelte';
 
 	// The brand link is the home link (and every breadcrumb starts with Home),
 	// so the row stays focused on destinations. Retro lives in the footer.
@@ -25,6 +26,19 @@
 	let isHome = $derived(pathname === '/');
 	let overHero = $derived(isHome && scrollY < 48);
 
+	// The initials mark re-prints once when the brand link is hovered with a
+	// mouse or reached by keyboard; never for touch or reduced motion.
+	let reprinting = $state(false);
+
+	/** @param {'hover' | 'focus'} trigger @param {Element} link */
+	function reprint(trigger, link) {
+		if (reprinting || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		if (trigger === 'hover' && !window.matchMedia('(hover: hover) and (pointer: fine)').matches)
+			return;
+		if (trigger === 'focus' && !link.matches(':focus-visible')) return;
+		reprinting = true;
+	}
+
 	/** @param {string} href */
 	function isActive(href) {
 		const normalized = href.replace(/\/$/, '');
@@ -38,8 +52,15 @@
 
 <header class:over-hero={overHero} class:scrolled={scrollY >= 48 || !isHome} class="site-header">
 	<div class="shell bar">
-		<a class="brand" href={sitePath('/')} aria-current={isHome ? 'page' : undefined}
-			>Artur Sogomonyan</a
+		<a
+			class="brand"
+			href={sitePath('/')}
+			aria-current={isHome ? 'page' : undefined}
+			onpointerenter={(event) => reprint('hover', event.currentTarget)}
+			onfocus={(event) => reprint('focus', event.currentTarget)}
+			><InitialsMark printing={reprinting} onprinted={() => (reprinting = false)} /><span
+				>Artur Sogomonyan</span
+			></a
 		>
 
 		<nav class="nav" aria-label="Primary">
@@ -95,7 +116,7 @@
 		color: var(--accent-contrast);
 		font-weight: 700;
 		transform: translateY(-200%);
-		transition: transform 160ms ease;
+		transition: transform var(--duration-fast) ease;
 	}
 	.skip-link:focus,
 	.skip-link:focus-visible {
@@ -111,9 +132,9 @@
 		border-bottom: 1px solid transparent;
 		background: transparent;
 		transition:
-			background 220ms ease,
-			border-color 220ms ease,
-			backdrop-filter 220ms ease;
+			background var(--duration-base) ease,
+			border-color var(--duration-base) ease,
+			backdrop-filter var(--duration-base) ease;
 	}
 	.site-header.scrolled {
 		border-bottom-color: var(--color-border);
@@ -128,12 +149,16 @@
 		gap: var(--space-6);
 	}
 	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
 		color: var(--color-heading);
 		font: 500 1.08rem var(--font-display);
 		white-space: nowrap;
+		--mark-height: 2rem;
 		transition:
-			opacity 180ms ease,
-			transform 180ms ease;
+			opacity var(--duration-fast) ease,
+			transform var(--duration-fast) ease;
 	}
 	.brand:hover,
 	.nav-links a:hover {
@@ -161,8 +186,8 @@
 		display: block;
 		padding: 1.6rem 0;
 		color: var(--color-text-muted);
-		font-size: 0.82rem;
-		font-weight: 650;
+		font-size: var(--text-sm);
+		font-weight: 700;
 		letter-spacing: 0.045em;
 		white-space: nowrap;
 	}
@@ -187,7 +212,7 @@
 		height: 2px;
 		background: var(--accent);
 		transform: scaleX(0);
-		transition: transform 180ms ease;
+		transition: transform var(--duration-base) ease;
 	}
 	.nav-links a[aria-current='page'],
 	.nav-links a:hover,
@@ -205,7 +230,7 @@
 	}
 	.header-actions a {
 		display: inline-flex;
-		padding: 0.45rem;
+		padding: 0.5rem;
 		border-radius: var(--radius-full);
 		color: var(--color-text-muted);
 	}
@@ -213,8 +238,8 @@
 		color: var(--accent);
 	}
 	.header-actions :global(.icon) {
-		width: 1rem;
-		height: 1rem;
+		width: var(--icon-sm);
+		height: var(--icon-sm);
 	}
 	@media (max-width: 1040px) {
 		.bar {
@@ -255,11 +280,16 @@
 			display: none;
 		}
 		.brand {
+			gap: 0.5rem;
 			font-size: 1rem;
+			/* The first row is as tall as the icon buttons (2rem): stay inside it. */
+			--mark-height: 1.75rem;
 		}
 		.nav-links {
 			gap: 1.05rem;
 		}
+		/* Off the type scale on purpose: at 375px all six items must clear the
+		   fade at the right edge. */
 		.nav-links a {
 			font-size: 0.8rem;
 			letter-spacing: 0.02em;

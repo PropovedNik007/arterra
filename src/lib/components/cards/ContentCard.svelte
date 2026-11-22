@@ -84,8 +84,8 @@
 		<p class="excerpt">{item.excerpt}</p>
 		{#if fields.length || tools.length}
 			<ul class="chips" aria-label="Fields and tools">
-				{#each fields as field (field.id)}<li class="field">{field.label}</li>{/each}
-				{#each tools as tag (tag)}<li>{tagLabel(tag)}</li>{/each}
+				{#each fields as field (field.id)}<li class="tag-chip field">{field.label}</li>{/each}
+				{#each tools as tag (tag)}<li class="tag-chip">{tagLabel(tag)}</li>{/each}
 			</ul>
 		{/if}
 		<span class="read" aria-hidden="true">{cta} <span>→</span></span>
@@ -104,12 +104,12 @@
 		background: var(--color-bg-raised);
 		box-shadow: var(--shadow-card);
 		transition:
-			transform 220ms ease,
-			border-color 220ms ease;
+			transform var(--duration-base) ease,
+			border-color var(--duration-base) ease;
 	}
 	.card:hover,
 	.card:focus-within {
-		transform: translateY(-4px);
+		transform: translateY(var(--lift));
 		border-color: color-mix(in srgb, var(--accent) 55%, var(--color-border));
 	}
 	.cover {
@@ -166,7 +166,7 @@
 		color: var(--accent);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.08em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.kicker {
@@ -180,16 +180,13 @@
 		border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
 		border-radius: var(--radius-full);
 		color: var(--color-heading);
-		font-size: 0.68rem;
-		letter-spacing: 0.06em;
 	}
 	time {
 		color: var(--color-text-muted);
-		letter-spacing: 0.04em;
 	}
 	.title {
 		margin: var(--space-4) 0 var(--space-3);
-		font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+		font-size: var(--heading-card);
 	}
 	.stretched {
 		color: var(--color-heading);
@@ -218,7 +215,7 @@
 		margin: 0;
 		overflow: hidden;
 		color: var(--color-text);
-		font-size: 0.96rem;
+		font-size: var(--text-base);
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 4;
 		line-clamp: 4;
@@ -231,18 +228,6 @@
 		padding: 0;
 		list-style: none;
 	}
-	.chips li {
-		padding: 0.28rem 0.6rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-full);
-		color: var(--color-text-muted);
-		font-size: 0.72rem;
-	}
-	.chips li.field {
-		border-color: color-mix(in srgb, var(--accent) 45%, var(--color-border));
-		background: color-mix(in srgb, var(--accent) 10%, transparent);
-		color: var(--color-heading);
-	}
 	.read {
 		align-self: flex-start;
 		margin-top: auto;
@@ -253,7 +238,7 @@
 	}
 	.read span {
 		display: inline-block;
-		transition: transform 200ms ease;
+		transition: transform var(--duration-base) ease;
 	}
 	.card:hover .read span {
 		transform: translateX(4px);
@@ -261,8 +246,9 @@
 	.featured {
 		grid-column: span 2;
 	}
+	/* One step up from a card title, still below the section h2 above it. */
 	.featured .title {
-		font-size: clamp(1.6rem, 3vw, 2.3rem);
+		font-size: clamp(1.5rem, 2.6vw, 2rem);
 	}
 	.lead {
 		background:
@@ -278,7 +264,7 @@
 	}
 	.lead .excerpt {
 		max-width: 42rem;
-		font-size: 1.05rem;
+		font-size: var(--text-md);
 	}
 	@media (min-width: 761px) {
 		.featured:not(.lead) {

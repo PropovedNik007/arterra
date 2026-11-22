@@ -88,7 +88,7 @@
 	}
 </script>
 
-<figure class="radar">
+<figure class="radar chart-panel">
 	<figcaption id={captionId}>
 		<strong>{title}</strong>
 		<span>Self-assessed, 0–{radar.max}. Higher is further from the centre.</span>
@@ -98,7 +98,7 @@
 		{#each radar.series as series (series.id)}
 			<button
 				type="button"
-				class="toggle series-{series.id}"
+				class="chip-toggle toggle series-{series.id}"
 				aria-pressed={!hidden.has(series.id)}
 				onclick={() => toggle(series.id)}
 			>
@@ -205,22 +205,24 @@
 		{/if}
 	</p>
 
-	<details class="data">
+	<details class="data data-details">
 		<summary>Show as table</summary>
 		<div class="table-wrap">
-			<table>
+			<table class="data-table">
 				<caption class="visually-hidden">{title}, self-assessed 0–{radar.max}</caption>
 				<thead>
 					<tr>
 						<th scope="col">Area</th>
-						{#each radar.series as series (series.id)}<th scope="col">{series.label}</th>{/each}
+						{#each radar.series as series (series.id)}<th scope="col" class="num">{series.label}</th
+							>{/each}
 					</tr>
 				</thead>
 				<tbody>
 					{#each radar.axes as axis, index (axis)}
 						<tr>
 							<th scope="row">{axis}</th>
-							{#each radar.series as series (series.id)}<td>{series.values[index]}</td>{/each}
+							{#each radar.series as series (series.id)}<td class="num">{series.values[index]}</td
+								>{/each}
 						</tr>
 					{/each}
 				</tbody>
@@ -235,12 +237,6 @@
 		--series-interest: var(--graph-org);
 		display: grid;
 		gap: var(--space-4);
-		min-width: 0;
-		margin: 0;
-		padding: var(--space-5);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-lg);
-		background: var(--color-bg-raised);
 	}
 	figcaption {
 		display: grid;
@@ -249,7 +245,7 @@
 	figcaption strong {
 		color: var(--color-heading);
 		font-size: var(--text-lg);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	figcaption span {
 		color: var(--color-text-muted);
@@ -262,21 +258,9 @@
 		flex-wrap: wrap;
 		gap: var(--space-2);
 	}
+	/* Base pill: .chip-toggle in app.css; the swatch sits in the left padding. */
 	.toggle {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-2);
-		min-height: 2.25rem;
-		padding: 0.3rem 0.8rem 0.3rem 0.6rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-full);
-		background: transparent;
-		color: var(--color-text);
-		font-size: var(--text-sm);
-		cursor: pointer;
-		transition:
-			color 160ms ease,
-			border-color 160ms ease;
+		padding-left: 0.6rem;
 	}
 	.toggle:hover {
 		border-color: var(--series);
@@ -325,14 +309,14 @@
 	.spoke {
 		stroke: var(--color-border-strong);
 		stroke-width: 1;
-		transition: stroke 160ms ease;
+		transition: stroke var(--duration-fast) ease;
 	}
 	.spoke.active {
 		stroke: var(--color-heading);
 	}
 	.tick {
 		fill: var(--color-text-muted);
-		font: 500 11px var(--font-mono);
+		font: 400 11px var(--font-mono);
 	}
 	.series polygon {
 		fill: color-mix(in srgb, var(--series) 22%, transparent);
@@ -344,7 +328,7 @@
 		stroke-dasharray: 6 4;
 	}
 	.series {
-		transition: opacity 200ms ease;
+		transition: opacity var(--duration-base) ease;
 	}
 	.series.off {
 		opacity: 0;
@@ -355,7 +339,7 @@
 		stroke-width: 1.5;
 		transform-box: fill-box;
 		transform-origin: center;
-		transition: transform 160ms ease;
+		transition: transform var(--duration-fast) ease;
 	}
 	.vertex.active {
 		transform: scale(1.6);
@@ -365,7 +349,7 @@
 		font-family: var(--font-body);
 		font-size: var(--label-size);
 		font-weight: 500;
-		transition: fill 160ms ease;
+		transition: fill var(--duration-fast) ease;
 	}
 	.labels text.active {
 		fill: var(--color-heading);
@@ -413,6 +397,7 @@
 	.readout .value strong {
 		color: var(--series);
 		font-family: var(--font-mono);
+		font-weight: 400;
 	}
 	/* A hidden series stays readable: muted text at full opacity, struck through. */
 	.readout .value.off {
@@ -423,42 +408,9 @@
 		color: inherit;
 	}
 
-	/* ---------- table fallback */
-	.data summary {
-		width: fit-content;
-		color: var(--link);
-		font-size: var(--text-sm);
-		font-weight: 650;
-		cursor: pointer;
-	}
+	/* ---------- table fallback (.data-details, .data-table in app.css) */
 	.table-wrap {
 		overflow-x: auto;
-	}
-	table {
-		width: 100%;
-		margin-top: var(--space-3);
-		border-collapse: collapse;
-		font-size: var(--text-sm);
-	}
-	th,
-	td {
-		padding: 0.4rem 0.6rem;
-		border-bottom: 1px solid var(--color-border);
-		text-align: left;
-	}
-	thead th {
-		color: var(--color-text-muted);
-		font: 600 var(--text-xs) var(--font-mono);
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-	}
-	tbody th {
-		color: var(--color-heading);
-		font-weight: 500;
-	}
-	td {
-		font-family: var(--font-mono);
-		font-variant-numeric: tabular-nums;
 	}
 
 	@media (max-width: 620px) {

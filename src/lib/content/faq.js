@@ -291,7 +291,7 @@ export function buildFaq(featured) {
 			id: 'what-else-is-here',
 			group: 'site',
 			question: `What else is on ${name}’s site besides projects?`,
-			answer: `Besides projects, the site has DIY build notes; sport notes on ${list(disciplines)}; and an Insights page with an interactive knowledge graph that connects the notes, a chart of how projects flow through fields of work, a self-assessed skills profile, and public GitHub activity plus anonymised totals from private organisation work.`,
+			answer: `Besides projects, the site has DIY build notes; sport notes on ${list(disciplines)}; and an Insights page with an interactive knowledge graph that connects the notes, a chart of how projects flow through fields of work, a self-assessed skills profile, and public GitHub activity plus combined totals from work in private repositories.`,
 			links: [
 				{ label: 'DIY', href: '/diy' },
 				{ label: 'Sport', href: '/sport' },

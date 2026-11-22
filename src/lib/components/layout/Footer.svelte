@@ -6,6 +6,8 @@
 	import TelegramIcon from '#lib/icons/TelegramIcon.svelte';
 	import MediumIcon from '#lib/icons/MediumIcon.svelte';
 	import { cv } from '#lib/content/cv.js';
+	import ToolpathOrnament from '#lib/components/ui/ToolpathOrnament.svelte';
+	import { gcode, setGcode } from '#lib/design/effects/gcodeState.svelte.js';
 
 	const year = new Date().getFullYear();
 
@@ -32,6 +34,9 @@
 
 <footer class="site-footer">
 	<div class="shell footer-inner">
+		<div class="footer-band">
+			<ToolpathOrnament preset="footer-band" tone="muted" fit="slice" opacity={0.4} />
+		</div>
 		<div class="identity">
 			<p class="footer-name">Artur Sogomonyan</p>
 			<p>{cv.headline} in {cv.location.split(',')[0]}.</p>
@@ -74,24 +79,48 @@
 				</ul>
 			</div>
 		</nav>
-		<p class="copyright">
-			© {year} · Built from a public <a href={sitePath('/insights#graph')}>knowledge graph</a>.
-		</p>
+		<div class="footer-base">
+			<p class="copyright">
+				© {year} · Built from a public <a href={sitePath('/insights#graph')}>knowledge graph</a>.
+			</p>
+			<!-- Rendered only once the effects layer has mounted: no dead button without JS. -->
+			{#if gcode.ready}
+				<button
+					id="gcode-toggle"
+					type="button"
+					class="gcode-toggle"
+					aria-pressed={gcode.on}
+					aria-keyshortcuts="Alt+G"
+					title="G-code view (Alt+G)"
+					onclick={() => setGcode()}>G-code view<kbd aria-hidden="true">Alt G</kbd></button
+				>
+			{/if}
+		</div>
 	</div>
 </footer>
 
 <style>
+	/* No hairline on top: the woven border straddling the edge is the divider. */
 	.site-footer {
-		border-top: 1px solid var(--color-border);
 		background: var(--color-bg-sunken);
 	}
 	.footer-inner {
+		position: relative;
+		isolation: isolate;
 		display: grid;
 		grid-template-columns: minmax(0, 1.2fr) auto;
 		gap: var(--space-6) var(--space-8);
 		padding-block: var(--space-7) var(--space-6);
 		color: var(--color-text-muted);
 		font-size: var(--text-sm);
+	}
+	.footer-band {
+		position: absolute;
+		top: -0.75rem;
+		right: 0;
+		left: 0;
+		height: 1.5rem;
+		pointer-events: none;
 	}
 	p {
 		margin: 0.2rem 0;
@@ -121,8 +150,8 @@
 		color: var(--accent);
 	}
 	.social :global(.icon) {
-		width: 1.05rem;
-		height: 1.05rem;
+		width: var(--icon-sm);
+		height: var(--icon-sm);
 	}
 	nav {
 		display: flex;
@@ -133,7 +162,7 @@
 		color: var(--color-text);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	nav ul {
@@ -146,10 +175,58 @@
 	nav a:hover {
 		color: var(--color-heading);
 	}
-	.copyright {
+	.footer-base {
 		grid-column: 1 / -1;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-3) var(--space-5);
 		padding-top: var(--space-5);
 		border-top: 1px solid var(--color-border);
+	}
+	.gcode-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		min-height: 2.75rem;
+		padding: 0.4rem 0.5rem 0.4rem 0.9rem;
+		border: 1px dashed var(--color-border-strong);
+		border-radius: var(--radius-full);
+		background: transparent;
+		color: var(--color-text);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		cursor: pointer;
+	}
+	.gcode-toggle:hover {
+		border-color: var(--accent);
+		color: var(--color-heading);
+	}
+	.gcode-toggle[aria-pressed='true'] {
+		border-style: solid;
+		border-color: var(--accent);
+		color: var(--color-heading);
+	}
+	.gcode-toggle kbd {
+		display: inline-grid;
+		place-items: center;
+		min-width: 1.6rem;
+		padding-inline: 0.35rem;
+		height: 1.6rem;
+		border: 1px solid var(--color-border-strong);
+		border-radius: var(--radius-sm);
+		color: var(--color-text-muted);
+		font: inherit;
+	}
+	/* The shortcut hint only helps where there is likely a keyboard. */
+	@media (hover: none) {
+		.gcode-toggle kbd {
+			display: none;
+		}
+		.gcode-toggle {
+			padding-right: 0.9rem;
+		}
 	}
 	.copyright a {
 		color: var(--color-text);

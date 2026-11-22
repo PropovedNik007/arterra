@@ -1319,7 +1319,7 @@
 			{#each FILTERS.filter((f) => f.id in model.counts) as filter (filter.id)}
 				<button
 					type="button"
-					class="chip"
+					class="chip-toggle chip"
 					aria-pressed={!hidden[filter.id]}
 					onclick={() => toggleFilter(filter.id)}
 				>
@@ -1495,7 +1495,7 @@
 				<li class="keys">Ctrl/⌘-click opens in a new tab · Esc clears</li>
 			</ul>
 		{/if}
-		<details class="graph-list" bind:open={listOpen}>
+		<details class="graph-list data-details" bind:open={listOpen}>
 			<summary onclick={() => (listPinned = true)}>Browse as a list</summary>
 			<div class="list-groups">
 				{#each listGroups as group (group.id)}
@@ -1530,11 +1530,11 @@
 
 <style>
 	.graph {
-		--panel-bg: rgba(21, 21, 20, 0.94);
+		--panel-bg: color-mix(in srgb, var(--color-bg) 94%, transparent);
 		position: relative;
 		overflow: hidden;
 		border: 1px solid var(--color-border);
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-lg);
 		background: var(--graph-bg);
 		box-shadow: var(--shadow-card);
 	}
@@ -1552,12 +1552,12 @@
 	}
 	.graph-head h2 {
 		margin: 0;
-		font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+		font-size: var(--heading-section);
 	}
 	.full-link {
 		flex-shrink: 0;
 		font-size: var(--text-sm);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	.search {
 		position: relative;
@@ -1622,7 +1622,7 @@
 	}
 	.suggestions li.active,
 	.suggestions li:hover {
-		background: rgba(255, 255, 255, 0.06);
+		background: var(--color-hover);
 	}
 	.suggestions li.empty {
 		display: block;
@@ -1640,22 +1640,8 @@
 		gap: var(--space-2);
 		padding: 0 var(--space-6) var(--space-4);
 	}
-	.chip {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-2);
-		min-height: 2.2rem;
-		padding: 0.3rem 0.8rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-full);
-		background: transparent;
-		color: var(--color-heading);
-		font-size: var(--text-sm);
-		cursor: pointer;
-		transition:
-			color 160ms ease,
-			border-color 160ms ease;
-	}
+	/* Base pill: .chip-toggle in app.css. A node kind is shown when pressed
+	   and struck through when hidden, like the radar's series toggles. */
 	.chip:hover {
 		border-color: var(--tone, var(--color-text-muted));
 	}
@@ -1669,7 +1655,7 @@
 		border-color: var(--color-text-muted);
 	}
 	.chip .dot {
-		transition: opacity 160ms ease;
+		transition: opacity var(--duration-fast) ease;
 	}
 	.chip[aria-pressed='false'] .dot {
 		opacity: 0.3;
@@ -1682,8 +1668,8 @@
 	.dot {
 		display: inline-block;
 		flex-shrink: 0;
-		width: 0.6rem;
-		height: 0.6rem;
+		width: var(--legend-dot);
+		height: var(--legend-dot);
 		border-radius: 50%;
 		background: var(--tone);
 	}
@@ -1697,7 +1683,11 @@
 		position: relative;
 		height: clamp(34rem, 76vh, 54rem);
 		border-block: 1px solid var(--color-border);
-		background: radial-gradient(ellipse at 50% 45%, rgba(95, 191, 159, 0.05), transparent 62%);
+		background: radial-gradient(
+			ellipse at 50% 45%,
+			color-mix(in srgb, var(--graph-field) 5%, transparent),
+			transparent 62%
+		);
 	}
 	.stage:focus:not(:focus-visible) {
 		outline: none;
@@ -1768,7 +1758,7 @@
 		border-top: 1px solid var(--color-border);
 	}
 	.zoom button:hover {
-		background: rgba(255, 255, 255, 0.06);
+		background: var(--color-hover);
 	}
 	.zoom button:focus-visible {
 		outline-offset: -3px;
@@ -1789,7 +1779,7 @@
 		border: 1px solid var(--color-border-strong);
 		border-radius: var(--radius-md);
 		background: var(--panel-bg);
-		box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.9);
+		box-shadow: var(--shadow-tooltip);
 		pointer-events: none;
 		backdrop-filter: blur(6px);
 	}
@@ -1814,7 +1804,7 @@
 		margin: 0;
 		color: var(--color-heading);
 		font-family: var(--font-display);
-		font-size: 1.15rem;
+		font-size: var(--text-lg);
 		line-height: 1.2;
 	}
 	.tip-excerpt {
@@ -1832,7 +1822,7 @@
 		margin: var(--space-2) 0 0;
 		color: var(--link);
 		font-size: var(--text-xs);
-		font-weight: 650;
+		font-weight: 700;
 	}
 	.tags {
 		display: flex;
@@ -1844,10 +1834,10 @@
 	}
 	.tags li {
 		padding: 0.1rem 0.5rem;
-		border: 1px solid rgba(95, 191, 159, 0.35);
+		border: 1px solid color-mix(in srgb, var(--graph-field) 35%, transparent);
 		border-radius: var(--radius-full);
 		color: var(--graph-field);
-		font-size: 0.7rem;
+		font-size: var(--text-xs);
 	}
 
 	/* ---------- details panel */
@@ -1869,7 +1859,7 @@
 	}
 	.panel h3 {
 		margin: 0;
-		font-size: 1.45rem;
+		font-size: var(--heading-card);
 	}
 	.panel h3:focus {
 		outline: none;
@@ -1908,7 +1898,7 @@
 		cursor: pointer;
 	}
 	.close:hover {
-		background: rgba(255, 255, 255, 0.06);
+		background: var(--color-hover);
 		color: var(--color-heading);
 	}
 	.panel-actions {
@@ -1919,11 +1909,6 @@
 	}
 	.panel-actions:empty {
 		display: none;
-	}
-	.button.small {
-		min-height: 2.3rem;
-		padding: 0.45rem 0.95rem;
-		font-size: var(--text-sm);
 	}
 	.panel-count {
 		margin: var(--space-5) 0 0;
@@ -1939,7 +1924,7 @@
 		font-family: var(--font-body);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 	.panel-list {
@@ -1969,7 +1954,7 @@
 	}
 	.panel-list a:hover,
 	.panel-list button:hover {
-		background: rgba(255, 255, 255, 0.06);
+		background: var(--color-hover);
 		text-decoration: none;
 	}
 	.panel-list a:focus-visible,
@@ -1989,41 +1974,34 @@
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		color: var(--color-text-muted);
-		font-size: var(--text-xs);
+		color: var(--color-text);
+		font-size: var(--text-sm);
 	}
 	.legend li {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-2);
 	}
+	/* The keyboard hint stays small and quiet. */
 	.legend .keys {
 		margin-left: auto;
+		color: var(--color-text-muted);
+		font-size: var(--text-xs);
 	}
 	.line {
 		display: inline-block;
 		width: 1.4rem;
 		height: 2px;
 		border-radius: 2px;
-		background: rgba(235, 230, 220, 0.55);
+		background: color-mix(in srgb, var(--graph-label) 55%, transparent);
 	}
 	.line.faint {
 		height: 1px;
-		background: rgba(143, 166, 189, 0.45);
+		background: color-mix(in srgb, var(--graph-topic) 45%, transparent);
 	}
 	.graph-list {
 		margin-top: var(--space-4);
 		font-size: var(--text-sm);
-	}
-	.graph-list summary {
-		width: fit-content;
-		color: var(--link);
-		font-weight: 650;
-		cursor: pointer;
-	}
-	.graph-list summary:focus-visible {
-		outline: 2px solid var(--accent);
-		outline-offset: 4px;
 	}
 	.list-groups {
 		display: grid;
@@ -2064,7 +2042,7 @@
 		padding: var(--space-4) var(--space-5) var(--space-3);
 	}
 	.compact .graph-head h2 {
-		font-size: 1.45rem;
+		font-size: var(--heading-card);
 	}
 	.compact .stage {
 		height: 24rem;
