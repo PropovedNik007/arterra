@@ -1,10 +1,10 @@
 <script>
 	import { page } from '$app/state';
-	import { base } from '$app/paths';
-	import GithubIcon from '$lib/icons/GithubIcon.svelte';
-	import LinkedinIcon from '$lib/icons/LinkedinIcon.svelte';
-	import EnvelopeIcon from '$lib/icons/EnvelopeIcon.svelte';
-	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
+	import { sitePath } from '#lib/paths.js';
+	import GithubIcon from '#lib/icons/GithubIcon.svelte';
+	import LinkedinIcon from '#lib/icons/LinkedinIcon.svelte';
+	import EnvelopeIcon from '#lib/icons/EnvelopeIcon.svelte';
+	import TelegramIcon from '#lib/icons/TelegramIcon.svelte';
 
 	// The brand link is the home link (and every breadcrumb starts with Home),
 	// so the row stays focused on destinations. Retro lives in the footer.
@@ -20,6 +20,7 @@
 	let scrollY = $state(0);
 	// Use the route id, not url.pathname: with relative paths `base` is "." or ".."
 	// during prerender, so stripping it from the pathname is unreliable.
+	const base = sitePath('/').slice(0, -1);
 	let pathname = $derived(page.route.id ?? (page.url.pathname.replace(base, '') || '/'));
 	let isHome = $derived(pathname === '/');
 	let overHero = $derived(isHome && scrollY < 48);
@@ -37,13 +38,15 @@
 
 <header class:over-hero={overHero} class:scrolled={scrollY >= 48 || !isHome} class="site-header">
 	<div class="shell bar">
-		<a class="brand" href="{base}/" aria-current={isHome ? 'page' : undefined}>Artur Sogomonyan</a>
+		<a class="brand" href={sitePath('/')} aria-current={isHome ? 'page' : undefined}
+			>Artur Sogomonyan</a
+		>
 
 		<nav class="nav" aria-label="Primary">
 			<ul class="nav-links">
 				{#each navItems as item (item.href)}
 					<li>
-						<a href={`${base}${item.href}`} aria-current={isActive(item.href) ? 'page' : undefined}
+						<a href={sitePath(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}
 							>{item.label}</a
 						>
 					</li>

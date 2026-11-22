@@ -1,6 +1,6 @@
 <script>
-	import EmptyState from '$lib/components/ui/EmptyState.svelte';
-	import { MONTH_LABELS, formatMonth } from '$lib/github/stats.js';
+	import EmptyState from '#lib/components/ui/EmptyState.svelte';
+	import { MONTH_LABELS, formatMonth } from '#lib/github/stats.js';
 
 	/**
 	 * Anonymised commit and pull-request totals from private organisation work,
@@ -12,7 +12,7 @@
 	 *
 	 * data: orgActivity(snapshot, publicSnapshot), derived on the server.
 	 * headingLevel: level of this block's own heading (panels use the next one).
-	 * @type {{ data: import('$lib/github/org-stats.js').OrgActivityData, headingLevel?: number }}
+	 * @type {{ data: import('#lib/github/org-stats.js').OrgActivityData, headingLevel?: number }}
 	 */
 	let { data, headingLevel = 2 } = $props();
 

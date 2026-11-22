@@ -1,10 +1,10 @@
 <script>
-	import { base } from '$app/paths';
+	import { sitePath } from '#lib/paths.js';
 	import LandingCanvas from '../components/LandingCanvas.svelte';
-	import ContentCard from '$lib/components/cards/ContentCard.svelte';
-	import GraphView from '$lib/graph/GraphView.svelte';
-	import SkillsRadar from '$lib/components/charts/SkillsRadar.svelte';
-	import { cv, cvProjectPath } from '$lib/content/cv.js';
+	import ContentCard from '#lib/components/cards/ContentCard.svelte';
+	import GraphView from '#lib/graph/GraphView.svelte';
+	import SkillsRadar from '#lib/components/charts/SkillsRadar.svelte';
+	import { cv, cvProjectPath } from '#lib/content/cv.js';
 
 	let { data } = $props();
 
@@ -141,8 +141,8 @@
 			<div class="description">
 				{#each cv.focus as item (item)}<p>{item}</p>{/each}
 				<div class="hero-actions">
-					<a class="button light" href="{base}/projects">Explore projects</a>
-					<a class="button glass" href="{base}/contact">Get in touch</a>
+					<a class="button light" href={sitePath('/projects')}>Explore projects</a>
+					<a class="button glass" href={sitePath('/contact')}>Get in touch</a>
 					<a class="button glass" href={cv.pdf.href} target="_blank" rel="noopener noreferrer"
 						>{cv.pdf.label} ({cv.pdf.note}) <span aria-hidden="true">↗</span></a
 					>
@@ -190,9 +190,9 @@
 						<h2>{tab === 'Projects' ? 'Selected projects' : tab}</h2>
 					</div>
 					{#if tab === 'Projects'}
-						<a href="{base}/projects">All {data.counts.projects} projects →</a>
+						<a href={sitePath('/projects')}>All {data.counts.projects} projects →</a>
 					{:else}
-						<a href="{base}/about">Full profile →</a>
+						<a href={sitePath('/about')}>Full profile →</a>
 					{/if}
 				</div>
 
@@ -209,7 +209,7 @@
 								<b>{entry.school}</b>
 								{#if entry.note}<p>{entry.note}</p>{/if}
 								{#if entry.project}
-									<a class="entry-link" href="{base}{cvProjectPath(entry.project)}"
+									<a class="entry-link" href={sitePath(cvProjectPath(entry.project))}
 										>View the thesis project →</a
 									>
 								{/if}
@@ -229,7 +229,7 @@
 								{#if entry.role}<b>{entry.org}</b>{/if}
 								<p>{entry.summary}</p>
 								{#if entry.project}
-									<a class="entry-link" href="{base}{cvProjectPath(entry.project)}"
+									<a class="entry-link" href={sitePath(cvProjectPath(entry.project))}
 										>View project →</a
 									>
 								{/if}
@@ -296,7 +296,7 @@
 		</div>
 		<div class="channel-grid">
 			{#each channels as channel (channel.path)}
-				<a href={`${base}${channel.path}`}>
+				<a href={sitePath(channel.path)}>
 					<span>{channel.number}</span>
 					<h3>{channel.title}</h3>
 					<p>{channel.text}</p>
@@ -321,7 +321,7 @@
 		overflow: hidden;
 		background:
 			linear-gradient(90deg, rgba(2, 8, 13, 0.32), rgba(2, 8, 13, 0.2)),
-			url('$lib/images/space.jpg') center / cover;
+			url('../lib/images/space.jpg') center / cover;
 	}
 	.landing::after {
 		content: '';

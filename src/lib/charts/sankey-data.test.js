@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import graphData from '$lib/graphs/graph.json';
+import graphData from '#lib/graphs/graph.json';
 import {
 	buildHighlights,
 	buildSankeyData,
@@ -8,7 +8,7 @@ import {
 	spreadLabels
 } from './sankey-data.js';
 
-/** @typedef {import('$lib/graph/build.js').GraphData} GraphData */
+/** @typedef {import('#lib/graph/build.js').GraphData} GraphData */
 
 const graph = /** @type {GraphData} */ (/** @type {unknown} */ (graphData));
 

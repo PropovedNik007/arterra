@@ -3,11 +3,11 @@
  * index and detail pages. Keep them pure (no filesystem access) so they can be
  * unit-tested and reused from any `+page.server.js`.
  */
-import { FIELDS, DOMAINS, FIELD_TAGS, displayFields, fieldsFor } from '$lib/graph/taxonomy.js';
-import { focusSubgraph, relatedItems } from '$lib/graph/subgraph.js';
+import { FIELDS, DOMAINS, FIELD_TAGS, displayFields, fieldsFor } from '#lib/graph/taxonomy.js';
+import { focusSubgraph, relatedItems } from '#lib/graph/subgraph.js';
 
-/** @typedef {import('$lib/content/types.js').ContentItem} ContentItem */
-/** @typedef {import('$lib/graph/build.js').GraphData} GraphData */
+/** @typedef {import('#lib/content/types.js').ContentItem} ContentItem */
+/** @typedef {import('#lib/graph/build.js').GraphData} GraphData */
 
 /**
  * @typedef {object} CardItem
@@ -110,7 +110,7 @@ export function toolTags(items) {
 export function articleContext(graph, item) {
 	const byId = new Map(graph.nodes.map((node) => [node.id, node]));
 	const fields = displayFields(item.slug, fieldsFor(item)).map((id) => {
-		const field = /** @type {import('$lib/graph/taxonomy.js').Field} */ (
+		const field = /** @type {import('#lib/graph/taxonomy.js').Field} */ (
 			FIELDS.find((candidate) => candidate.id === id)
 		);
 		return { id, label: field.label, href: `/projects?field=${id}` };
@@ -122,7 +122,7 @@ export function articleContext(graph, item) {
 		.map((edge) => byId.get(edge.source === item.slug ? edge.target : edge.source))
 		.filter((node) => node?.kind === 'org')
 		.map((node) => {
-			const org = /** @type {import('$lib/graph/build.js').GraphNode} */ (node);
+			const org = /** @type {import('#lib/graph/build.js').GraphNode} */ (node);
 			return { id: org.id, label: org.label, subtitle: org.subtitle, external: org.external };
 		});
 	const related = relatedItems(graph, item.slug, 3).map((node) => ({

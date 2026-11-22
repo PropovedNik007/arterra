@@ -1,13 +1,13 @@
 <script>
 	import { onMount } from 'svelte';
-	import { base } from '$app/paths';
+	import { sitePath } from '#lib/paths.js';
 	import { goto } from '$app/navigation';
-	import { absoluteUrl } from '$lib/seo/site.js';
+	import { absoluteUrl } from '#lib/seo/site.js';
 
-	const target = `${base}/insights#graph`;
+	const target = sitePath('/insights#graph');
 
 	onMount(() => {
-		goto(target, { replaceState: true });
+		goto(target, { replace: true });
 	});
 </script>
 

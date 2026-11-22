@@ -1,13 +1,13 @@
 <script>
-	import { afterNavigate, replaceState } from '$app/navigation';
-	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
-	import PageIntro from '$lib/components/ui/PageIntro.svelte';
-	import FilterBar from '$lib/components/ui/FilterBar.svelte';
-	import EmptyState from '$lib/components/ui/EmptyState.svelte';
-	import ContentCard from '$lib/components/cards/ContentCard.svelte';
-	import GraphView from '$lib/graph/GraphView.svelte';
-	import { FIELDS, TAG_FIELDS } from '$lib/graph/taxonomy.js';
-	import { tagLabel } from '$lib/design/sections.js';
+	import { afterNavigate, goto } from '$app/navigation';
+	import Breadcrumb from '#lib/components/ui/Breadcrumb.svelte';
+	import PageIntro from '#lib/components/ui/PageIntro.svelte';
+	import FilterBar from '#lib/components/ui/FilterBar.svelte';
+	import EmptyState from '#lib/components/ui/EmptyState.svelte';
+	import ContentCard from '#lib/components/cards/ContentCard.svelte';
+	import GraphView from '#lib/graph/GraphView.svelte';
+	import { FIELDS, TAG_FIELDS } from '#lib/graph/taxonomy.js';
+	import { tagLabel } from '#lib/design/sections.js';
 
 	let { data } = $props();
 
@@ -95,7 +95,11 @@
 		ready = true;
 	}
 
-	afterNavigate(applyLocation);
+	// Shallow navigations are syncUrl() mirroring the filters; re-applying them
+	// would trim the search input while typing.
+	afterNavigate((navigation) => {
+		if (!navigation.shallow) applyLocation();
+	});
 
 	/** Mirror the filter state in the URL without adding history entries. */
 	function syncUrl() {
@@ -110,11 +114,9 @@
 			else url.searchParams.delete(/** @type {string} */ (key));
 		}
 		if (url.href === window.location.href) return;
-		try {
-			replaceState(url, {});
-		} catch {
+		goto(url, { shallow: true, replace: true }).catch(() => {
 			// Router not ready yet (very early input); the filter still applies.
-		}
+		});
 	}
 
 	function reset() {

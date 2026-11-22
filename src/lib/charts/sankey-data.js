@@ -4,15 +4,15 @@ import { sankey, sankeyJustify, sankeyLinkHorizontal } from 'd3-sankey';
  * Pure data shaping for the "How the work flows" Sankey chart.
  *
  * Everything is derived from the public knowledge graph (`graph.json`, built by
- * $lib/graph/build.js): domain → field edges, item → field edges, and the
+ * #lib/graph/build.js): domain → field edges, item → field edges, and the
  * item nodes of the `projects` and `diy` sections. Sport notes are skipped.
  * No quantities are invented: every project counts as exactly 1 and is split
  * evenly across the n fields it is tagged with (1/n each), so the chart sums to
  * the number of classified projects.
  */
 
-/** @typedef {import('$lib/graph/build.js').GraphData} GraphData */
-/** @typedef {import('$lib/graph/build.js').GraphNode} GraphNode */
+/** @typedef {import('#lib/graph/build.js').GraphData} GraphData */
+/** @typedef {import('#lib/graph/build.js').GraphNode} GraphNode */
 
 /**
  * @typedef {object} SankeyDomain

@@ -1,8 +1,8 @@
-import { loadContent } from '$lib/content/load.js';
-import { DISCIPLINES } from '$lib/content/types.js';
-import { DISCIPLINE_META, itemPath } from '$lib/design/sections.js';
-import { sectionSubgraph } from '$lib/graph/subgraph.js';
-import graph from '$lib/graphs/graph.json';
+import { loadContent } from '#lib/content/load.js';
+import { DISCIPLINES } from '#lib/content/types.js';
+import { DISCIPLINE_META, itemPath } from '#lib/design/sections.js';
+import { sectionSubgraph } from '#lib/graph/subgraph.js';
+import graph from '#lib/graphs/graph.json';
 
 export const prerender = true;
 
@@ -23,7 +23,7 @@ export async function load() {
 		disciplines,
 		total: items.length,
 		graphData: sectionSubgraph(
-			/** @type {import('$lib/graph/build.js').GraphData} */ (graph),
+			/** @type {import('#lib/graph/build.js').GraphData} */ (graph),
 			'sport'
 		)
 	};

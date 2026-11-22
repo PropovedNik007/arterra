@@ -1,5 +1,5 @@
-import { loadContent } from '$lib/content/load.js';
-import { buildSitemap } from '$lib/seo/sitemap.js';
+import { loadContent } from '#lib/content/load.js';
+import { buildSitemap } from '#lib/seo/sitemap.js';
 
 export const prerender = true;
 

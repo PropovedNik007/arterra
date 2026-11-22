@@ -1,9 +1,9 @@
 <script>
 	import '../app.css';
-	import { page } from '$app/stores';
-	import Header from '$lib/components/layout/Header.svelte';
-	import Footer from '$lib/components/layout/Footer.svelte';
-	import { cv } from '$lib/content/cv.js';
+	import { page } from '$app/state';
+	import Header from '#lib/components/layout/Header.svelte';
+	import Footer from '#lib/components/layout/Footer.svelte';
+	import { cv } from '#lib/content/cv.js';
 	import {
 		CITY,
 		COUNTRY_CODE,
@@ -11,11 +11,11 @@
 		SITE_URL,
 		absoluteUrl,
 		jsonLdScript
-	} from '$lib/seo/site.js';
+	} from '#lib/seo/site.js';
 
 	let { children } = $props();
 	// route.id is base-independent; `base` is relative ('.') during prerender.
-	let isRetro = $derived($page.route.id === '/retro');
+	let isRetro = $derived(page.route.id === '/retro');
 
 	const alumniOf = cv.education
 		.filter((entry) => entry.degree.startsWith('MSc') || entry.degree.startsWith('BSc'))

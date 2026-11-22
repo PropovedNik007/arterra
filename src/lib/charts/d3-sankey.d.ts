@@ -1,5 +1,5 @@
 // Minimal ambient types for d3-sankey@0.12 (the package ships no declarations).
-// Only the surface used by $lib/charts/sankey-data.js is described. Keep this
+// Only the surface used by #lib/charts/sankey-data.js is described. Keep this
 // file free of top-level import/export so it stays an ambient declaration.
 
 declare module 'd3-sankey' {

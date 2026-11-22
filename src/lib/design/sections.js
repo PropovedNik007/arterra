@@ -79,7 +79,7 @@ export function showsDate(section) {
 /**
  * Label for an item's primary external-link button, from the link's kind: a
  * write-up about the work, a live deployment, or a related site.
- * @param {{ externalKind?: import('$lib/content/types.js').ExternalKind, externalLive?: boolean }} item
+ * @param {{ externalKind?: import('#lib/content/types.js').ExternalKind, externalLive?: boolean }} item
  * @returns {string}
  */
 export function externalLinkLabel(item) {

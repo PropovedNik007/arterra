@@ -1,5 +1,5 @@
 <script>
-	import Article from '$lib/components/ui/Article.svelte';
+	import Article from '#lib/components/ui/Article.svelte';
 	let { data } = $props();
 	let extraMeta = $derived(
 		/** @type {string[]} */ ([data.item.printer, data.item.material].filter(Boolean))

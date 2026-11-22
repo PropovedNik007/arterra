@@ -1,11 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
-	import { base } from '$app/paths';
-	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
-	import PageIntro from '$lib/components/ui/PageIntro.svelte';
-	import { cv } from '$lib/content/cv.js';
-	import { FAQ_GROUPS } from '$lib/content/faq.js';
-	import { absoluteUrl, jsonLdScript } from '$lib/seo/site.js';
+	import { sitePath } from '#lib/paths.js';
+	import Breadcrumb from '#lib/components/ui/Breadcrumb.svelte';
+	import PageIntro from '#lib/components/ui/PageIntro.svelte';
+	import { cv } from '#lib/content/cv.js';
+	import { FAQ_GROUPS } from '#lib/content/faq.js';
+	import { absoluteUrl, jsonLdScript } from '#lib/seo/site.js';
 
 	let { data } = $props();
 
@@ -28,7 +28,7 @@
 	});
 
 	/** @param {string} href */
-	const resolve = (href) => (href.startsWith('/') ? `${base}${href}` : href);
+	const resolve = (href) => (href.startsWith('/') ? sitePath(href) : href);
 	/** @param {string} href */
 	const isExternal = (href) => href.startsWith('http');
 
@@ -72,7 +72,7 @@
 		<a class="button primary" href={cv.pdf.href} target="_blank" rel="noopener noreferrer"
 			>{cv.pdf.label} ({cv.pdf.note}) <span aria-hidden="true">↗</span></a
 		>
-		<a class="button" href="{base}/contact">Get in touch</a>
+		<a class="button" href={sitePath('/contact')}>Get in touch</a>
 	</PageIntro>
 
 	{#each groups as group (group.id)}

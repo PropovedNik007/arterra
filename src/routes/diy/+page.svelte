@@ -1,9 +1,9 @@
 <script>
-	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
-	import PageIntro from '$lib/components/ui/PageIntro.svelte';
-	import EmptyState from '$lib/components/ui/EmptyState.svelte';
-	import ContentCard from '$lib/components/cards/ContentCard.svelte';
-	import GraphView from '$lib/graph/GraphView.svelte';
+	import Breadcrumb from '#lib/components/ui/Breadcrumb.svelte';
+	import PageIntro from '#lib/components/ui/PageIntro.svelte';
+	import EmptyState from '#lib/components/ui/EmptyState.svelte';
+	import ContentCard from '#lib/components/cards/ContentCard.svelte';
+	import GraphView from '#lib/graph/GraphView.svelte';
 	let { data } = $props();
 </script>
 

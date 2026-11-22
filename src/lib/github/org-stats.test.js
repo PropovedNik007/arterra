@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { deniedWords } from '$lib/testing/denylist.js';
-import graphJson from '$lib/graphs/graph.json';
+import { deniedWords } from '#lib/testing/denylist.js';
+import graphJson from '#lib/graphs/graph.json';
 import orgsJson from './orgs.json';
 import githubJson from './github.json';
 import {

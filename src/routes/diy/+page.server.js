@@ -1,7 +1,7 @@
-import { loadContent } from '$lib/content/load.js';
-import { sectionSubgraph } from '$lib/graph/subgraph.js';
-import { cardItem } from '$lib/components/view-data.js';
-import graph from '$lib/graphs/graph.json';
+import { loadContent } from '#lib/content/load.js';
+import { sectionSubgraph } from '#lib/graph/subgraph.js';
+import { cardItem } from '#lib/components/view-data.js';
+import graph from '#lib/graphs/graph.json';
 
 export const prerender = true;
 
@@ -10,7 +10,7 @@ export async function load() {
 	return {
 		items,
 		graphData: sectionSubgraph(
-			/** @type {import('$lib/graph/build.js').GraphData} */ (graph),
+			/** @type {import('#lib/graph/build.js').GraphData} */ (graph),
 			'diy'
 		)
 	};

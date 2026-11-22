@@ -1,6 +1,6 @@
-import { loadContent } from '$lib/content/load.js';
-import { buildFaq, featuredProjects } from '$lib/content/faq.js';
-import { buildLlmsTxt } from '$lib/seo/llms.js';
+import { loadContent } from '#lib/content/load.js';
+import { buildFaq, featuredProjects } from '#lib/content/faq.js';
+import { buildLlmsTxt } from '#lib/seo/llms.js';
 
 export const prerender = true;
 

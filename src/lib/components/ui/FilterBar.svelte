@@ -1,5 +1,5 @@
 <script>
-	import { tagLabel } from '$lib/design/sections.js';
+	import { tagLabel } from '#lib/design/sections.js';
 	/**
 	 * Primary filter by field of work (grouped by domain), free-text search, and
 	 * a collapsed secondary filter by tool. State is owned by the caller through

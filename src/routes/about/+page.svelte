@@ -1,8 +1,8 @@
 <script>
-	import { base } from '$app/paths';
-	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
-	import PageIntro from '$lib/components/ui/PageIntro.svelte';
-	import { cv, cvProjectPath } from '$lib/content/cv.js';
+	import { sitePath, staticPath } from '#lib/paths.js';
+	import Breadcrumb from '#lib/components/ui/Breadcrumb.svelte';
+	import PageIntro from '#lib/components/ui/PageIntro.svelte';
+	import { cv, cvProjectPath } from '#lib/content/cv.js';
 
 	const msc = cv.education[0];
 </script>
@@ -24,12 +24,12 @@
 		<a class="button primary" href={cv.pdf.href} target="_blank" rel="noopener noreferrer"
 			>{cv.pdf.label} ({cv.pdf.note}) <span aria-hidden="true">↗</span></a
 		>
-		<a class="button" href="{base}/projects">See projects</a>
-		<a class="button" href="{base}/contact">Get in touch</a>
+		<a class="button" href={sitePath('/projects')}>See projects</a>
+		<a class="button" href={sitePath('/contact')}>Get in touch</a>
 	</PageIntro>
 
 	<section class="profile-grid">
-		<div class="portrait"><img src="{base}/images/profile.png" alt={cv.name} /></div>
+		<div class="portrait"><img src={staticPath('images/profile.png')} alt={cv.name} /></div>
 		<div class="manifesto">
 			<p class="eyebrow">How I work</p>
 			<h2>Technical depth without losing the shape of the problem.</h2>
@@ -78,7 +78,7 @@
 						{#if entry.role}<p class="place">{entry.org}</p>{/if}
 						<p>{entry.summary}</p>
 						{#if entry.project}
-							<a class="entry-link" href="{base}{cvProjectPath(entry.project)}"
+							<a class="entry-link" href={sitePath(cvProjectPath(entry.project))}
 								>View project <span aria-hidden="true">→</span></a
 							>
 						{/if}
@@ -92,7 +92,7 @@
 		<div class="section-label">
 			<p class="eyebrow">Toolkit</p>
 			<h2 id="about-toolkit">Built around problems, not buzzwords.</h2>
-			<a class="entry-link" href="{base}/insights#skills"
+			<a class="entry-link" href={sitePath('/insights#skills')}
 				>See the skills profile chart <span aria-hidden="true">→</span></a
 			>
 		</div>
@@ -125,7 +125,7 @@
 					<strong>{entry.degree}</strong><span>{entry.school} · {entry.period}</span>
 					{#if entry.note}<p>{entry.note}</p>{/if}
 					{#if entry.project}
-						<a class="entry-link" href="{base}{cvProjectPath(entry.project)}"
+						<a class="entry-link" href={sitePath(cvProjectPath(entry.project))}
 							>View the thesis project <span aria-hidden="true">→</span></a
 						>
 					{/if}
@@ -140,7 +140,7 @@
 					<strong>{award.title}</strong><span>{award.period}</span>
 					<p>{award.detail}</p>
 					{#if award.project}
-						<a class="entry-link" href="{base}{cvProjectPath(award.project)}"
+						<a class="entry-link" href={sitePath(cvProjectPath(award.project))}
 							>View project <span aria-hidden="true">→</span></a
 						>
 					{/if}

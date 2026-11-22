@@ -1,5 +1,5 @@
-import { loadContent } from '$lib/content/load.js';
-import { buildFaq, featuredProjects } from '$lib/content/faq.js';
+import { loadContent } from '#lib/content/load.js';
+import { buildFaq, featuredProjects } from '#lib/content/faq.js';
 
 export const prerender = true;
 

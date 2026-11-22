@@ -1,5 +1,5 @@
 <script>
-	import { base } from '$app/paths';
+	import { sitePath, staticPath } from '#lib/paths.js';
 </script>
 
 <svelte:head>
@@ -13,9 +13,11 @@
 </svelte:head>
 
 <!-- The archive renders without site chrome; this is the one way back out of it. -->
-<a class="exit" href="{base}/"><span aria-hidden="true">←</span> Back to current site</a>
+<a class="exit" href={sitePath('/')}><span aria-hidden="true">←</span> Back to current site</a>
 
-<iframe title="Original 2024 Artur Sogomonyan portfolio" src={`${base}/retro-archive/index.html`}
+<iframe
+	title="Original 2024 Artur Sogomonyan portfolio"
+	src={staticPath('retro-archive/index.html')}
 ></iframe>
 
 <style>

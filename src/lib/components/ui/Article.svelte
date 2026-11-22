@@ -1,21 +1,21 @@
 <script>
-	import { base } from '$app/paths';
+	import { sitePath, staticPath } from '#lib/paths.js';
 	import Breadcrumb from './Breadcrumb.svelte';
-	import GraphView from '$lib/graph/GraphView.svelte';
-	import { FIELD_TAGS } from '$lib/graph/taxonomy.js';
-	import { externalLinkLabel, formatNoteDate, showsDate, tagLabel } from '$lib/design/sections.js';
+	import GraphView from '#lib/graph/GraphView.svelte';
+	import { FIELD_TAGS } from '#lib/graph/taxonomy.js';
+	import { externalLinkLabel, formatNoteDate, showsDate, tagLabel } from '#lib/design/sections.js';
 
 	/**
 	 * @typedef {object} ArticleContext
 	 * @property {{ id: string, label: string, href: string }[]} fields
 	 * @property {{ id: string, label: string, subtitle?: string, external?: string }[]} orgs
 	 * @property {{ id: string, label: string, href: string | null, subtitle?: string, cover?: string, shared: string[] }[]} related
-	 * @property {import('$lib/graph/build.js').GraphData | null} focusGraph
+	 * @property {import('#lib/graph/build.js').GraphData | null} focusGraph
 	 */
 
 	/**
 	 * @type {{
-	 *   item: import('$lib/content/types.js').ContentItem,
+	 *   item: import('#lib/content/types.js').ContentItem,
 	 *   parentLabel: string,
 	 *   parentHref: string,
 	 *   trail?: { label: string, href?: string }[],
@@ -77,7 +77,7 @@
 	</header>
 
 	{#if item.cover}
-		<img class="hero-image" src={`${base}/${item.cover}`} alt="" />
+		<img class="hero-image" src={staticPath(item.cover)} alt="" />
 	{/if}
 
 	<div class="article-grid">
@@ -88,10 +88,8 @@
 				<ul class="chips">
 					{#each context.fields as field (field.id)}
 						<li>
-							<a
-								class="chip field"
-								href={`${base}${field.href}`}
-								title={`Projects in ${field.label}`}>{field.label}</a
+							<a class="chip field" href={sitePath(field.href)} title={`Projects in ${field.label}`}
+								>{field.label}</a
 							>
 						</li>
 					{/each}
@@ -122,7 +120,7 @@
 							{#if isProject}
 								<a
 									class="chip"
-									href={`${base}/projects?tag=${encodeURIComponent(tag)}`}
+									href={sitePath(`/projects?tag=${encodeURIComponent(tag)}`)}
 									title={`Projects using ${tagLabel(tag)}`}>{tagLabel(tag)}</a
 								>
 							{:else}
@@ -132,7 +130,7 @@
 					{/each}
 				</ul>
 			{/if}
-			<a class="button back" href={`${base}${parentHref}`}
+			<a class="button back" href={sitePath(parentHref)}
 				><span aria-hidden="true">←</span> Back to {parentLabel}</a
 			>
 		</aside>
@@ -144,7 +142,7 @@
 			<div class="gallery-grid">
 				{#each item.gallery as image (image.src)}
 					<figure>
-						<img src={`${base}/${image.src}`} alt={image.alt} loading="lazy" decoding="async" />
+						<img src={staticPath(image.src)} alt={image.alt} loading="lazy" decoding="async" />
 						{#if image.caption}<figcaption>{image.caption}</figcaption>{/if}
 					</figure>
 				{/each}
@@ -161,9 +159,9 @@
 			<ul class="related-list">
 				{#each context.related as related (related.id)}
 					<li>
-						<a href={related.href ? `${base}${related.href}` : undefined}>
+						<a href={related.href ? sitePath(related.href) : undefined}>
 							{#if related.cover}
-								<img src={`${base}/${related.cover}`} alt="" loading="lazy" decoding="async" />
+								<img src={staticPath(related.cover)} alt="" loading="lazy" decoding="async" />
 							{:else}
 								<span class="thumb" aria-hidden="true">↗</span>
 							{/if}

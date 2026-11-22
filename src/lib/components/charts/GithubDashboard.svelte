@@ -1,6 +1,6 @@
 <script>
-	import EmptyState from '$lib/components/ui/EmptyState.svelte';
-	import { MONTH_LABELS, formatDate, formatMonth } from '$lib/github/stats.js';
+	import EmptyState from '#lib/components/ui/EmptyState.svelte';
+	import { MONTH_LABELS, formatDate, formatMonth } from '#lib/github/stats.js';
 
 	/**
 	 * Public GitHub activity, built from the committed snapshot
@@ -12,7 +12,7 @@
 	 * (fork records, per-repo histories) never reaches the page payload; an empty
 	 * snapshot renders an empty state.
 	 * headingLevel: level of the dashboard's own heading (panels use the next one).
-	 * @type {{ data: import('$lib/github/stats.js').GithubDashboardData, headingLevel?: number }}
+	 * @type {{ data: import('#lib/github/stats.js').GithubDashboardData, headingLevel?: number }}
 	 */
 	let { data, headingLevel = 2 } = $props();
 

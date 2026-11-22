@@ -1,9 +1,9 @@
-import { loadContent, byFeatured } from '$lib/content/load.js';
-import { DISCIPLINE_META } from '$lib/design/sections.js';
-import { cardItem } from '$lib/components/view-data.js';
-import graph from '$lib/graphs/graph.json';
+import { loadContent, byFeatured } from '#lib/content/load.js';
+import { DISCIPLINE_META } from '#lib/design/sections.js';
+import { cardItem } from '#lib/components/view-data.js';
+import graph from '#lib/graphs/graph.json';
 
-/** @typedef {import('$lib/graph/build.js').GraphData} GraphData */
+/** @typedef {import('#lib/graph/build.js').GraphData} GraphData */
 
 export const prerender = true;
 

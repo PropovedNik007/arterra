@@ -2,11 +2,11 @@
 	// @ts-nocheck -- Sigma, graphology and d3-force are loaded only in the browser.
 	import { tick, untrack } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
+	import { sitePath, staticPath } from '#lib/paths.js';
 
 	/**
 	 * Interactive knowledge graph.
-	 * - graphData: GraphData from $lib/graph/build.js, already filtered by the caller.
+	 * - graphData: GraphData from #lib/graph/build.js, already filtered by the caller.
 	 * - compact: embedded mini map (no toolbar, page scroll is never hijacked).
 	 * - focus: node id to emphasise and centre (detail-page "How this connects").
 	 */
@@ -141,9 +141,9 @@
 
 	const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 	const plural = (count, noun) => `${count} ${noun}${count === 1 ? '' : 's'}`;
-	const hrefOf = (node) => (node?.href ? `${base}${node.href}` : null);
+	const hrefOf = (node) => (node?.href ? sitePath(node.href) : null);
 	const coverOf = (cover) =>
-		!cover || /^https?:/.test(cover) ? cover : `${base}/${cover.replace(/^\//, '')}`;
+		!cover || /^https?:/.test(cover) ? cover : staticPath(cover.replace(/^\//, ''));
 	const byLabel = (a, b) =>
 		Number(!!b.featured) - Number(!!a.featured) || a.label.localeCompare(b.label);
 
@@ -1256,7 +1256,7 @@
 		</div>
 		{#if compact}
 			{#if showFullLink}
-				<a class="full-link" href="{base}/insights#graph"
+				<a class="full-link" href={sitePath('/insights#graph')}
 					>Open full graph <span aria-hidden="true">→</span></a
 				>
 			{/if}

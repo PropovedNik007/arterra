@@ -1,17 +1,17 @@
 <script>
-	import { base } from '$app/paths';
+	import { sitePath } from '#lib/paths.js';
 	/** Trail after "Home": [{ label, href? }]; the last item is the current page. */
 	let { items = [] } = $props();
 </script>
 
 <nav class="breadcrumb" aria-label="Breadcrumb">
 	<ol>
-		<li><a href="{base}/">Home</a></li>
+		<li><a href={sitePath('/')}>Home</a></li>
 		{#each items as item, index (index)}
 			<li>
 				<span class="separator" aria-hidden="true">›</span>
 				{#if item.href && index < items.length - 1}
-					<a href={`${base}${item.href}`}>{item.label}</a>
+					<a href={sitePath(item.href)}>{item.label}</a>
 				{:else}
 					<span class="current" aria-current="page">{item.label}</span>
 				{/if}

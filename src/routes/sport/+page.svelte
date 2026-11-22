@@ -1,9 +1,9 @@
 <script>
-	import { base } from '$app/paths';
-	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
-	import PageIntro from '$lib/components/ui/PageIntro.svelte';
-	import GraphView from '$lib/graph/GraphView.svelte';
-	import { formatNoteDate } from '$lib/design/sections.js';
+	import { sitePath } from '#lib/paths.js';
+	import Breadcrumb from '#lib/components/ui/Breadcrumb.svelte';
+	import PageIntro from '#lib/components/ui/PageIntro.svelte';
+	import GraphView from '#lib/graph/GraphView.svelte';
+	import { formatNoteDate } from '#lib/design/sections.js';
 	let { data } = $props();
 </script>
 
@@ -34,7 +34,7 @@
 		<ul class="discipline-grid">
 			{#each data.disciplines as discipline (discipline.id)}
 				<li>
-					<a class:empty={!discipline.count} href={`${base}${discipline.path}`}>
+					<a class:empty={!discipline.count} href={sitePath(discipline.path)}>
 						<span class="icon" aria-hidden="true">{discipline.icon}</span>
 						<div class="text">
 							<p class="count">

@@ -1,11 +1,11 @@
 <script>
-	import { base } from '$app/paths';
-	import GithubIcon from '$lib/icons/GithubIcon.svelte';
-	import LinkedinIcon from '$lib/icons/LinkedinIcon.svelte';
-	import EnvelopeIcon from '$lib/icons/EnvelopeIcon.svelte';
-	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
-	import MediumIcon from '$lib/icons/MediumIcon.svelte';
-	import { cv } from '$lib/content/cv.js';
+	import { sitePath } from '#lib/paths.js';
+	import GithubIcon from '#lib/icons/GithubIcon.svelte';
+	import LinkedinIcon from '#lib/icons/LinkedinIcon.svelte';
+	import EnvelopeIcon from '#lib/icons/EnvelopeIcon.svelte';
+	import TelegramIcon from '#lib/icons/TelegramIcon.svelte';
+	import MediumIcon from '#lib/icons/MediumIcon.svelte';
+	import { cv } from '#lib/content/cv.js';
 
 	const year = new Date().getFullYear();
 
@@ -56,7 +56,7 @@
 				<p class="nav-label">Work</p>
 				<ul>
 					{#each work as link (link.href)}<li>
-							<a href={`${base}${link.href}`}>{link.label}</a>
+							<a href={sitePath(link.href)}>{link.label}</a>
 						</li>{/each}
 				</ul>
 			</div>
@@ -64,7 +64,7 @@
 				<p class="nav-label">Site</p>
 				<ul>
 					{#each site as link (link.href)}<li>
-							<a href={`${base}${link.href}`}>{link.label}</a>
+							<a href={sitePath(link.href)}>{link.label}</a>
 						</li>{/each}
 					<li>
 						<a href={cv.pdf.href} target="_blank" rel="noopener noreferrer"
@@ -75,7 +75,7 @@
 			</div>
 		</nav>
 		<p class="copyright">
-			© {year} · Built from a public <a href="{base}/insights#graph">knowledge graph</a>.
+			© {year} · Built from a public <a href={sitePath('/insights#graph')}>knowledge graph</a>.
 		</p>
 	</div>
 </footer>

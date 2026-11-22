@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deniedWords } from '$lib/testing/denylist.js';
+import { deniedWords } from '#lib/testing/denylist.js';
 import snapshotJson from './github.json';
 import {
 	activeSpan,

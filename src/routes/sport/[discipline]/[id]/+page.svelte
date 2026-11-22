@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck -- sport item discipline is validated in the matching server load
-	import Article from '$lib/components/ui/Article.svelte';
-	import { DISCIPLINE_META } from '$lib/design/sections.js';
+	import Article from '#lib/components/ui/Article.svelte';
+	import { DISCIPLINE_META } from '#lib/design/sections.js';
 	let { data } = $props();
 	let meta = $derived(DISCIPLINE_META[data.item.discipline]);
 	let extraMeta = $derived(

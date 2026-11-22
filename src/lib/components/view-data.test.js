@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { articleContext, cardItem, fieldGroups, toolTags } from './view-data.js';
 
-/** @typedef {import('$lib/content/types.js').ContentItem} ContentItem */
+/** @typedef {import('#lib/content/types.js').ContentItem} ContentItem */
 
 /** @param {Partial<ContentItem>} overrides @returns {ContentItem} */
 const item = (overrides) => ({
@@ -16,7 +16,7 @@ const item = (overrides) => ({
 	...overrides
 });
 
-/** @type {import('$lib/graph/build.js').GraphData} */
+/** @type {import('#lib/graph/build.js').GraphData} */
 const graph = {
 	nodes: [
 		{ id: 'hub-projects', label: 'Projects', kind: 'hub', tone: 'projects', href: '/projects' },

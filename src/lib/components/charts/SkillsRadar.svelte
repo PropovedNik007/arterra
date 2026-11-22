@@ -11,7 +11,7 @@
 	} from './radar.js';
 
 	/**
-	 * @typedef {import('$lib/content/cv.js').SkillRadar} SkillRadar
+	 * @typedef {import('#lib/content/cv.js').SkillRadar} SkillRadar
 	 */
 
 	/** @type {{ radar: SkillRadar, title?: string }} */

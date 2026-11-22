@@ -5,8 +5,8 @@
 	 * with d3-sankey so the prerendered HTML already contains the chart.
 	 *
 	 * Props:
-	 * - graphData: GraphData — the knowledge-graph object (`$lib/graphs/graph.json`,
-	 *   built by `$lib/graph/build.js`). Only domain → field and item → field edges
+	 * - graphData: GraphData — the knowledge-graph object (`#lib/graphs/graph.json`,
+	 *   built by `#lib/graph/build.js`). Only domain → field and item → field edges
 	 *   and project/DIY item nodes are read; sport notes are ignored.
 	 * - title?: string — short name shown at the start of the figcaption.
 	 *
@@ -19,15 +19,15 @@
 	 * keyboard focus on a node (hover on a ribbon) highlights its connected flows.
 	 * A table fallback sits in a <details> under the chart.
 	 */
-	import { base } from '$app/paths';
+	import { sitePath } from '#lib/paths.js';
 	import {
 		buildHighlights,
 		buildSankeyData,
 		layoutSankey,
 		spreadLabels
-	} from '$lib/charts/sankey-data.js';
+	} from '#lib/charts/sankey-data.js';
 
-	/** @type {{ graphData: import('$lib/graph/build.js').GraphData, title?: string }} */
+	/** @type {{ graphData: import('#lib/graph/build.js').GraphData, title?: string }} */
 	let { graphData, title = 'How the work flows' } = $props();
 
 	const uid = $props.id();
@@ -156,7 +156,7 @@
 	};
 	/**
 	 * Column headings placed at each column's x position, inside the SVG.
-	 * @param {import('$lib/charts/sankey-data.js').SankeyLayoutResult} layout
+	 * @param {import('#lib/charts/sankey-data.js').SankeyLayoutResult} layout
 	 * @param {'wide' | 'narrow'} variant
 	 */
 	function columnHeads(layout, variant) {
@@ -200,7 +200,7 @@
 	 * Where each node's label goes: its lines (narrow labels wrap when they would
 	 * run into the project column) and a y position that never overlaps a
 	 * neighbouring label in the same column, so small adjacent nodes stay legible.
-	 * @param {import('$lib/charts/sankey-data.js').SankeyLayoutResult} layout
+	 * @param {import('#lib/charts/sankey-data.js').SankeyLayoutResult} layout
 	 * @param {'wide' | 'narrow'} variant
 	 */
 	function labelPlan(layout, variant) {
@@ -258,7 +258,7 @@
 </script>
 
 {#snippet chart(
-	/** @type {import('$lib/charts/sankey-data.js').SankeyLayoutResult} */ layout,
+	/** @type {import('#lib/charts/sankey-data.js').SankeyLayoutResult} */ layout,
 	/** @type {'wide' | 'narrow'} */ variant
 )}
 	<svg
@@ -337,7 +337,7 @@
 					<a
 						class="node"
 						class:lit={isLit(node.id)}
-						href="{base}{node.href}"
+						href={sitePath(node.href)}
 						aria-label={nodeName(node)}
 						data-id={node.id}
 						onfocus={enter(node.id)}
@@ -408,7 +408,7 @@
 					<li>
 						<span class="key-number" aria-hidden="true">{index + 1}</span>
 						<a
-							href="{base}{project.href}"
+							href={project.href ? sitePath(project.href) : undefined}
 							class:lit={isLit(project.id)}
 							onpointerenter={enter(project.id)}
 							onpointerleave={leave(project.id)}
@@ -446,7 +446,7 @@
 						{#each data.fields as field (field.id)}
 							<tr>
 								<th scope="row">
-									{#if field.href}<a href="{base}{field.href}">{field.label}</a
+									{#if field.href}<a href={sitePath(field.href)}>{field.label}</a
 										>{:else}{field.label}{/if}
 								</th>
 								<td>{domainById.get(field.domainId)?.label}</td>
@@ -490,7 +490,7 @@
 							<tr>
 								<td class="num">{index + 1}</td>
 								<th scope="row">
-									<a href="{base}{project.href}">{project.label}</a>
+									<a href={project.href ? sitePath(project.href) : undefined}>{project.label}</a>
 									{#if project.section === 'diy'}<span class="tag">DIY</span>{/if}
 								</th>
 								<td>{fieldLabels(project.fieldIds)}</td>

@@ -1,11 +1,11 @@
 <script>
 	// @ts-nocheck -- discipline is validated in the matching server load
-	import { base } from '$app/paths';
-	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
-	import PageIntro from '$lib/components/ui/PageIntro.svelte';
-	import EmptyState from '$lib/components/ui/EmptyState.svelte';
-	import ContentCard from '$lib/components/cards/ContentCard.svelte';
-	import { DISCIPLINE_META } from '$lib/design/sections.js';
+	import { sitePath } from '#lib/paths.js';
+	import Breadcrumb from '#lib/components/ui/Breadcrumb.svelte';
+	import PageIntro from '#lib/components/ui/PageIntro.svelte';
+	import EmptyState from '#lib/components/ui/EmptyState.svelte';
+	import ContentCard from '#lib/components/cards/ContentCard.svelte';
+	import { DISCIPLINE_META } from '#lib/design/sections.js';
 	let { data } = $props();
 	let meta = $derived(DISCIPLINE_META[data.discipline]);
 	let others = $derived(Object.entries(DISCIPLINE_META).filter(([key]) => key !== data.discipline));
@@ -50,7 +50,7 @@
 	{:else}
 		<EmptyState icon={meta.icon} title={`No ${meta.label.toLowerCase()} notes yet.`}>
 			<p>The other sport notes are a click away.</p>
-			<a class="button" href="{base}/sport">Back to Sport</a>
+			<a class="button" href={sitePath('/sport')}>Back to Sport</a>
 		</EmptyState>
 	{/if}
 
@@ -59,7 +59,7 @@
 		<ul>
 			{#each others as [key, other] (key)}
 				<li>
-					<a href={`${base}${other.path}`}
+					<a href={sitePath(other.path)}
 						><span aria-hidden="true">{other.icon}</span> {other.label}</a
 					>
 				</li>

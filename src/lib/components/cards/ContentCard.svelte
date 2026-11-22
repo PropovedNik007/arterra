@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck -- item shape is normalized by the build-time content loader
-	import { base } from '$app/paths';
+	import { sitePath, staticPath } from '#lib/paths.js';
 	import {
 		itemPath,
 		DISCIPLINE_META,
@@ -8,7 +8,7 @@
 		formatNoteDate,
 		showsDate,
 		tagLabel
-	} from '$lib/design/sections.js';
+	} from '#lib/design/sections.js';
 	import {
 		FIELDS,
 		DOMAINS,
@@ -16,7 +16,7 @@
 		displayFields,
 		fieldsFor,
 		leadDomain
-	} from '$lib/graph/taxonomy.js';
+	} from '#lib/graph/taxonomy.js';
 
 	/**
 	 * One card, one link: the title link's ::after stretches over the whole card,
@@ -24,7 +24,7 @@
 	 */
 	let { item, featured = false, headingLevel = 2 } = $props();
 
-	let href = $derived(`${base}${itemPath(item)}`);
+	let href = $derived(sitePath(itemPath(item)));
 	let discipline = $derived(
 		item.section === 'sport' && item.discipline ? DISCIPLINE_META[item.discipline] : null
 	);
@@ -57,7 +57,7 @@
 	{#if !lead}
 		<div class="cover">
 			{#if item.cover}
-				<img src={`${base}/${item.cover}`} alt="" loading="lazy" decoding="async" />
+				<img src={staticPath(item.cover)} alt="" loading="lazy" decoding="async" />
 			{:else}
 				<div class="cover-fallback" aria-hidden="true">
 					<span>{discipline?.icon ?? (item.section === 'diy' ? '✦' : '↗')}</span>

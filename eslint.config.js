@@ -27,8 +27,9 @@ export default [
 			}
 		},
 		rules: {
-			// Internal links already use SvelteKit's base path explicitly so the
-			// static GitHub Pages build works under /arterra.
+			// Internal links go through `sitePath()` / `staticPath()` (#lib/paths.js),
+			// which wrap SvelteKit's `resolve()` / `asset()` so the static GitHub
+			// Pages build works under /arterra.
 			'svelte/no-navigation-without-resolve': 'off',
 			// HTML comes only from the build-time Markdown pipeline and JSON-LD is
 			// serialized from a local object, never from browser input.

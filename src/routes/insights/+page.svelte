@@ -1,12 +1,12 @@
 <script>
-	import { base } from '$app/paths';
-	import Breadcrumb from '$lib/components/ui/Breadcrumb.svelte';
-	import GraphView from '$lib/graph/GraphView.svelte';
-	import WorkSankey from '$lib/components/charts/WorkSankey.svelte';
-	import SkillsRadar from '$lib/components/charts/SkillsRadar.svelte';
-	import GithubDashboard from '$lib/components/charts/GithubDashboard.svelte';
-	import OrgActivity from '$lib/components/charts/OrgActivity.svelte';
-	import { cv } from '$lib/content/cv.js';
+	import { sitePath } from '#lib/paths.js';
+	import Breadcrumb from '#lib/components/ui/Breadcrumb.svelte';
+	import GraphView from '#lib/graph/GraphView.svelte';
+	import WorkSankey from '#lib/components/charts/WorkSankey.svelte';
+	import SkillsRadar from '#lib/components/charts/SkillsRadar.svelte';
+	import GithubDashboard from '#lib/components/charts/GithubDashboard.svelte';
+	import OrgActivity from '#lib/components/charts/OrgActivity.svelte';
+	import { cv } from '#lib/content/cv.js';
 
 	let { data } = $props();
 
@@ -112,7 +112,7 @@
 					Use the legend to show one series at a time. Hover an area, or focus the chart and use the
 					arrow keys, to read both scores — or open the table under the chart.
 				</p>
-				<a class="entry-link" href="{base}/about"
+				<a class="entry-link" href={sitePath('/about')}
 					>Experience and toolkit on the About page <span aria-hidden="true">→</span></a
 				>
 			</div>
