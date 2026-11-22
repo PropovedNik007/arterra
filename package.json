@@ -13,7 +13,7 @@
 		"test:watch": "vitest",
 		"lint": "prettier --check 'src/**/*.{js,ts,svelte,css}' 'scripts/**/*.mjs' '*.{js,ts,json}' && eslint .",
 		"format": "prettier --write .",
-		"deploy": "gh-pages -d build -t true",
+		"deploy": "gh-pages -d build -t",
 		"github:refresh": "node scripts/build-github.mjs",
 		"github:orgs": "node scripts/build-github-orgs.mjs"
 	},
