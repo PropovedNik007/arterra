@@ -5,7 +5,6 @@
 	import LinkedinIcon from '$lib/icons/LinkedinIcon.svelte';
 	import EnvelopeIcon from '$lib/icons/EnvelopeIcon.svelte';
 	import TelegramIcon from '$lib/icons/TelegramIcon.svelte';
-	import MediumIcon from '$lib/icons/MediumIcon.svelte';
 
 	// The brand link is the home link (and every breadcrumb starts with Home),
 	// so the row stays focused on destinations. Retro lives in the footer.
@@ -76,13 +75,6 @@
 				rel="noopener noreferrer"
 				aria-label="GitHub"
 				title="GitHub"><GithubIcon class="icon" /></a
-			>
-			<a
-				href="https://medium.com/@artur.sogomonyan"
-				target="_blank"
-				rel="noopener noreferrer"
-				aria-label="Medium"
-				title="Medium"><MediumIcon class="icon" /></a
 			>
 		</div>
 	</div>
