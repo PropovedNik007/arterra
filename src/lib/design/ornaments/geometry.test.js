@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
-	eternityArm,
+	eternityCircles,
 	eternitySign,
 	insetPolygon,
 	insideRegion,
@@ -192,111 +192,152 @@ describe.each(Object.entries(motifs))('%s toolpath', (name, build) => {
 });
 
 describe('eternitySign', () => {
-	it.each([8, 6])('has %i arms in rotational symmetry', (arms) => {
+	const RIM = 410;
+	// Outer perimeters sit half a bead plus half the gap inside the arm: (7 + 7) / 2.
+	const INSET = 7;
+	/** Each arm's loops (outermost first); the skirt island comes first. */
+	const armLoops = (/** @type {Toolpath} */ toolpath) =>
+		toolpath.perimeters.slice(1).map((d) => parsePath(d).map((sub) => sub.points));
+	const radial = (/** @type {Point} */ p) => Math.hypot(p.x - 500, p.y - 500);
+
+	it.each([8, 6])('has %i crescent arms in rotational symmetry', (arms) => {
 		const toolpath = eternitySign({ arms });
-		// Skirt and hub come first, then one island per arm.
-		expect(toolpath.perimeters).toHaveLength(arms + 2);
-		const outer = toolpath.perimeters.slice(2).flatMap((d) => parsePath(d)[0].points);
-		expect(invariantUnderRotation(outer, (2 * Math.PI) / arms, 2)).toBe(true);
-		expect(invariantUnderRotation(outer, Math.PI / 7, 2)).toBe(false);
+		expect(toolpath.perimeters).toHaveLength(arms + 1);
+		const outer = armLoops(toolpath).map((loops) => loops[0]);
+		const fill = toolpath.infill.map((d) => parsePath(d).flatMap((sub) => sub.points));
+		// Seams (and so the simplified vertices) differ from arm to arm: compare
+		// each arm, turned by one step, with the next arm as curves.
+		const drift = (
+			/** @type {Point[]} */ a,
+			/** @type {Point[]} */ b,
+			/** @type {number} */ angle
+		) => Math.max(...a.map((p) => loopGap([rotate(p, angle)], b)));
+		const step = (2 * Math.PI) / arms;
+		outer.forEach((loop, index) => {
+			expect(drift(loop, outer[(index + 1) % arms], step)).toBeLessThan(0.8);
+			expect(drift(loop, outer[(index + 1) % arms], step * 0.9)).toBeGreaterThan(10);
+		});
+		// The raster turns with its arm: the same lines, one step on.
+		fill.forEach((points, index) => {
+			const next = fill[(index + 1) % arms];
+			for (const p of points) {
+				const q = rotate(p, step);
+				expect(Math.min(...next.map((r) => Math.hypot(r.x - q.x, r.y - q.y)))).toBeLessThan(1);
+			}
+		});
 	});
 
-	it('nests the requested number of perimeters in each arm', () => {
-		const toolpath = eternitySign({ offsets: 3 });
-		for (const arm of toolpath.perimeters.slice(2)) {
-			const loops = parsePath(arm);
-			expect(loops).toHaveLength(3);
-			expect(loops.every((loop) => loop.closed)).toBe(true);
+	it.each([8, 6])(
+		'bounds every arm by two circular arcs, rim scallop included (%i arms)',
+		(arms) => {
+			const { r, centres } = eternityCircles({ cx: 500, cy: 500, radius: RIM, arms });
+			armLoops(eternitySign({ arms })).forEach(([outer], index) => {
+				const own = centres[index];
+				const neighbour = centres[(index - 1 + arms) % arms];
+				const onOwn = (/** @type {Point} */ p) =>
+					Math.abs(Math.hypot(p.x - own.x, p.y - own.y) - (r - INSET)) < 0.3;
+				const onNeighbour = (/** @type {Point} */ p) =>
+					Math.abs(Math.hypot(p.x - neighbour.x, p.y - neighbour.y) - (r + INSET)) < 0.3;
+				for (const p of outer) expect(onOwn(p) || onNeighbour(p)).toBe(true);
+				// The scallop on the rim belongs to the arm's own circle.
+				const rim = outer.filter((p) => radial(p) > RIM * 0.93);
+				expect(rim.length).toBeGreaterThan(4);
+				expect(rim.every(onOwn)).toBe(true);
+			});
+		}
+	);
+
+	it.each([8, 6])('meets at the centre and reaches the rim (%i arms)', (arms) => {
+		for (const [outer] of armLoops(eternitySign({ arms }))) {
+			const reach = outer.map(radial);
+			// An inset corner of angle 2π/arms retreats INSET / sin(π/arms) from the centre.
+			expect(Math.min(...reach)).toBeLessThan(INSET / Math.sin(Math.PI / arms) + 1);
+			expect(Math.max(...reach)).toBeGreaterThan(RIM - INSET - 0.5);
+			expect(Math.max(...reach)).toBeLessThan(RIM - INSET + 0.5);
 		}
 	});
 
-	it('fills each arm with concentric loops inside that arm', () => {
+	it('sweeps like the classic sign, and mirrors with turn: -1', () => {
+		// The first circle stands straight up from the centre; its arm is the part
+		// of that circle turned away from the previous circle (up-left), so it
+		// leans to the right, as in the reference construction.
+		const mean = (/** @type {Point[]} */ points) =>
+			points.reduce((sum, p) => sum + p.x, 0) / points.length;
+		expect(mean(armLoops(eternitySign())[0][0])).toBeGreaterThan(520);
+		expect(mean(armLoops(eternitySign({ turn: -1 }))[0][0])).toBeLessThan(480);
+		const outer = armLoops(eternitySign()).map((loops) => loops[0]);
+		const mirrored = armLoops(eternitySign({ turn: -1 })).flatMap((loops) => loops[0]);
+		const flipped = outer.map((loop) => loop.map((p) => ({ x: 1000 - p.x, y: p.y })));
+		/** Farthest any mirrored vertex lies from the curves in `loops`. */
+		const drift = (/** @type {Point[][]} */ loops) =>
+			Math.max(...mirrored.map((p) => Math.min(...loops.map((loop) => loopGap([p], loop)))));
+		expect(drift(flipped)).toBeLessThan(0.8);
+		expect(drift(outer)).toBeGreaterThan(10);
+	});
+
+	it.each([8, 6])(
+		'keeps a channel between neighbouring arms, never overlapping (%i arms)',
+		(arms) => {
+			const outer = armLoops(eternitySign({ arms })).map((loops) => loops[0]);
+			outer.forEach((a, index) => {
+				const b = outer[(index + 1) % arms];
+				const overlap = b.some((p) => insideRegion([a], p)) || a.some((p) => insideRegion([b], p));
+				expect(overlap).toBe(false);
+				// Bead centres 2 × INSET apart across the shared arc, less simplification.
+				expect(loopGap(a, b)).toBeGreaterThan(2 * INSET - 1.5);
+			});
+		}
+	);
+
+	it('nests the requested number of simple perimeters in each arm', () => {
+		for (const offsets of [2, 3]) {
+			for (const loops of armLoops(eternitySign({ offsets }))) {
+				expect(loops).toHaveLength(offsets);
+				for (const loop of loops) expect(selfIntersects(loop)).toBe(false);
+				// Each perimeter lies inside the one before it.
+				for (let index = 1; index < loops.length; index += 1) {
+					expect(loops[index].every((p) => insideRegion([loops[index - 1]], p))).toBe(true);
+				}
+			}
+		}
+	});
+
+	it('rasters each arm with a serpentine inside its innermost perimeter', () => {
 		const toolpath = eternitySign();
-		const arms = toolpath.perimeters.slice(2).map((d) => parsePath(d)[0].points);
-		const fills = toolpath.infill.slice(1); // the first fill is the hub spiral
-		expect(fills).toHaveLength(arms.length);
-		fills.forEach((fill, index) => {
-			const loops = parsePath(fill);
-			expect(loops.length).toBeGreaterThan(0);
-			expect(loops.every((loop) => loop.closed)).toBe(true);
-			for (const loop of loops) {
-				for (const p of samplesAlong(loop.points, 4)) {
-					expect(insideRegion([arms[index]], p)).toBe(true);
+		const arms = armLoops(toolpath);
+		expect(toolpath.infill).toHaveLength(arms.length);
+		toolpath.infill.forEach((fill, index) => {
+			const chains = parsePath(fill);
+			expect(chains.length).toBeGreaterThan(0);
+			expect(chains.some((chain) => chain.points.length > 6)).toBe(true);
+			for (const chain of chains) {
+				for (const p of samplesAlong(chain.points, 4)) {
+					expect(insideRegion([arms[index].at(-1) ?? []], p)).toBe(true);
 				}
 			}
 		});
 	});
 
-	it.each([8, 6])('keeps a channel between neighbouring arms (%i arms)', (arms) => {
+	it.each([8, 6])('travels arm to arm in short hops near the centre (%i arms)', (arms) => {
+		// Skirt → first arm, then arm to arm.
 		const toolpath = eternitySign({ arms });
-		const [a, b] = toolpath.perimeters.slice(2, 4).map((d) => parsePath(d)[0].points);
-		const overlap = b.some((p) => insideRegion([a], p)) || a.some((p) => insideRegion([b], p));
-		expect(overlap).toBe(false);
-		// Outer perimeters sit half a loop spacing inside the arm: channel 22.5 + 7.
-		expect(loopGap(a, b)).toBeGreaterThan(15);
-	});
-
-	it('packs the arms out to the rim with round tips', () => {
-		const toolpath = eternitySign();
-		const reach = toolpath.perimeters
-			.slice(2)
-			.flatMap((d) => parsePath(d)[0].points)
-			.map((p) => Math.hypot(p.x - 500, p.y - 500));
-		expect(Math.max(...reach)).toBeGreaterThan(395);
-		expect(Math.max(...reach)).toBeLessThan(411);
-	});
-
-	it.each([8, 6])(
-		'travels arm to arm in short hops near the hub, not radial spokes (%i arms)',
-		(arms) => {
-			// Skirt → hub and hub → first arm, then arm to arm.
-			const toolpath = eternitySign({ arms });
-			const radial = (/** @type {Point} */ p) => Math.hypot(p.x - 500, p.y - 500);
-			for (const d of toolpath.travel.slice(2)) {
-				const [a, b] = parsePath(d)[0].points;
-				const reach = Math.max(radial(a), radial(b));
-				// Both ends in the inner half of the sign (the rim is at 410) …
-				expect(reach).toBeLessThan(230);
-				// … and no longer than the chord between neighbouring arms there.
-				expect(Math.hypot(b.x - a.x, b.y - a.y)).toBeLessThan(
-					2 * reach * Math.sin(Math.PI / arms) + 10
-				);
-			}
-		}
-	);
-
-	it('ends every arm in a hook that curls back towards the hub', () => {
-		const arm = eternityArm({
-			radius: 410,
-			hub: 0.15,
-			lean: 0.35,
-			bend: 1.3,
-			curl: 4.6,
-			weight: 0.085,
-			tip: 0.3
-		});
-		const radial = (/** @type {number} */ u) => Math.hypot(arm.frame(u).p.x, arm.frame(u).p.y);
-		// The last 40% of the arm turns by well over a half turn …
-		expect(arm.heading(1) - arm.heading(0.6)).toBeGreaterThan(Math.PI * 1.25);
-		// … so the tip lies clearly inside the arm's outermost point.
-		const outermost = Math.max(...Array.from({ length: 101 }, (_, i) => radial(i / 100)));
-		expect(outermost - radial(1)).toBeGreaterThan(40);
-		// The hook keeps its eye open: the half-width stays under the radius of curvature.
-		for (let i = 0; i < 100; i += 1) {
-			const u = i / 100;
-			const du = 0.005;
-			const turn = arm.heading(u + du) - arm.heading(u);
-			const radiusOfCurvature = (arm.length * du) / turn;
-			expect(arm.half(u)).toBeLessThan(radiusOfCurvature);
+		for (const d of toolpath.travel.slice(1)) {
+			const [a, b] = parsePath(d)[0].points;
+			const reach = Math.max(radial(a), radial(b));
+			expect(reach).toBeLessThan(RIM / 4);
+			expect(Math.hypot(b.x - a.x, b.y - a.y)).toBeLessThan(
+				2 * reach * Math.sin(Math.PI / arms) + 10
+			);
 		}
 	});
 
-	it.each([8, 6])('draws each arm as one simple, non-self-intersecting loop (%i arms)', (arms) => {
-		const toolpath = eternitySign({ arms });
-		for (const d of toolpath.perimeters.slice(2)) {
-			const loop = parsePath(d)[0].points;
-			expect(selfIntersects(loop)).toBe(false);
-		}
+	it('draws the detail-page corner lighter than the hero', () => {
+		const corner = ornament('eternity', ORNAMENT_PRESETS.corner.options);
+		const hero = heroToolpath();
+		expect(corner.perimeters).toHaveLength(8);
+		for (const d of corner.perimeters) expect(parsePath(d)).toHaveLength(2);
+		expect(corner.infill.join('')).toBe('');
+		expect(hero.infill.join('').length).toBeGreaterThan(0);
 	});
 });
 

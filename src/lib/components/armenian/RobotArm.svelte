@@ -74,7 +74,7 @@
 		wrist: [ring(19), ring(12)]
 	};
 
-	/** Hub and arm outlines (the skirt is left out of the trace), in scene units. */
+	/** Arm outlines (the skirt is left out of the trace), in scene units. */
 	const TRACE_LOOPS = hero.outlines.slice(1).map((d) => parsePath(d)[0].points.map(toScene));
 	const SEAMS = hero.seams.map((p) => `M${p.x} ${p.y}h0`).join('');
 

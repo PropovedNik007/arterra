@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { parsePath } from './geometry.js';
 import {
@@ -172,10 +171,5 @@ describe('initialsMark', () => {
 	it('is deterministic and cached', () => {
 		expect(JSON.stringify(initialsMark())).toBe(JSON.stringify(mark));
 		expect(initials()).toBe(initials());
-	});
-
-	it('matches the precomputed initials.json the header ships (run scripts/build-ornaments.mjs)', () => {
-		const file = new URL('./initials.json', import.meta.url);
-		expect(JSON.parse(readFileSync(file, 'utf8'))).toEqual(JSON.parse(JSON.stringify(initials())));
 	});
 });

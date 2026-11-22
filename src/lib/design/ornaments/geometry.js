@@ -495,145 +495,117 @@ function root(f, lo, hi) {
 }
 
 /**
- * Half a circle of `count - 1` interior points around `centre`, from
- * `centre + n·radius` through `centre + t·radius` to `centre − n·radius`.
- * @param {Point} centre
- * @param {{ x: number, y: number }} n unit normal
- * @param {{ x: number, y: number }} t unit direction of the bulge
- * @param {number} radius
- * @param {number} count
+ * Construction of the classic Arevakhach: `arms` circles of radius r = radius/2
+ * whose centres lie evenly on a circle of the same radius r round the centre,
+ * so every circle passes through the centre and reaches out to `radius`. The
+ * first centre lies straight up from the sign's centre.
+ * @param {{ cx: number, cy: number, radius: number, arms: number, turn?: number }} options
+ *   `turn` 1 or -1 picks which way the arms sweep (a mirror image)
  */
-function halfTurn(centre, n, t, radius, count) {
-	return Array.from({ length: count - 1 }, (_, index) => {
-		const angle = (Math.PI * (index + 1)) / count;
-		return {
-			x: centre.x + (n.x * Math.cos(angle) + t.x * Math.sin(angle)) * radius,
-			y: centre.y + (n.y * Math.cos(angle) + t.y * Math.sin(angle)) * radius
-		};
+export function eternityCircles({ cx, cy, radius, arms, turn = 1 }) {
+	const r = radius / 2;
+	const step = TAU / arms;
+	const centres = Array.from({ length: arms }, (_, index) => {
+		const angle = -Math.PI / 2 + step * index;
+		return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
+	});
+	return { cx, cy, r, arms, turn: turn < 0 ? -1 : 1, centres };
+}
+
+/**
+ * Points on a circle from angle `from`, sweeping `sweep` radians (signed),
+ * about every `step` units of arc, both ends included.
+ * @param {Point} centre
+ * @param {number} radius
+ * @param {number} from
+ * @param {number} sweep
+ * @param {number} step
+ */
+function arcPoints(centre, radius, from, sweep, step) {
+	const count = Math.max(4, Math.ceil((Math.abs(sweep) * radius) / step));
+	return Array.from({ length: count + 1 }, (_, index) => {
+		const angle = from + (sweep * index) / count;
+		return { x: centre.x + radius * Math.cos(angle), y: centre.y + radius * Math.sin(angle) };
 	});
 }
 
-/** @param {number} t */
-const smoothstep = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
-
 /**
- * @typedef {object} ArmShape
- * @property {number} hub root radius of the arms, fraction of `radius`
- * @property {number} lean initial deflection of an arm from the radial, radians
- * @property {number} bend turning of the arm's body, radians
- * @property {number} curl extra turning packed into the hook at the tip, radians
- * @property {number} weight greatest half-width, fraction of the arm's length
- * @property {number} tip half-width at the very tip, fraction of `weight`
+ * Arm `index` of the Arevakhach, inset by `inset`: the crescent inside circle
+ * `index` and outside the circle before it in the sweep direction. Arms tile
+ * the sign exactly (every point of it lies in exactly one crescent), and its
+ * boundary is two circular arcs that meet at the centre and on the rim: the
+ * long arc of its own circle (along the neighbour, then out round the rim
+ * scallop) and the short arc of the neighbour's circle. Insetting a disc minus
+ * a disc is exact with circles: the own circle shrinks by `inset`, the
+ * neighbour's grows by it, and the two are re-intersected for the cusps.
+ * @param {ReturnType<typeof eternityCircles>} construction
+ * @param {number} index
+ * @param {number} inset
+ * @param {number} [step] sampling interval along the arcs
+ * @returns {Point[] | null} closed loop (no repeated point) starting at the
+ *   cusp nearest the centre, or null when the inset arm has vanished
  */
-
-/**
- * One Arevakhach arm as a centreline with a width profile, in units where the
- * sign's outer reach is `radius`. The centreline is a generalised clothoid:
- * its heading turns as θ(u) = lean + bend·u + curl·u⁶ along the normalised arc
- * length u, so the body is a gentle sweep and nearly all of `curl` is spent in
- * the last third, where the arm rolls over into a hook (a volute) instead of
- * ending as a blade. The half-width swells from a slender root, then tapers
- * into the curl and is held under 0.8× the local radius of curvature, so the
- * inner edge of the hook never folds over itself. The arc length is solved so
- * the arm's outer edge just reaches `radius`.
- * @param {ArmShape & { radius: number }} shape
- */
-export function eternityArm({ radius, hub, lean, bend, curl, weight, tip }) {
-	const power = 6;
-	const steps = 480;
-	const r0 = radius * hub;
-	/** @param {number} u */
-	const heading = (u) => lean + bend * u + curl * u ** power;
-	/** @param {number} u @param {number} length */
-	const curvature = (u, length) => (bend + power * curl * u ** (power - 1)) / length;
-	/** @param {number} u @param {number} length */
-	const halfWidth = (u, length) => {
-		const swell = 0.25 + 0.75 * Math.sin((Math.PI / 2) * Math.min(u / 0.45, 1));
-		const profile = weight * length * swell * (1 - (1 - tip) * smoothstep((u - 0.55) / 0.45));
-		const limit = 0.8 / curvature(u, length);
-		// Soft minimum: no kink where the curvature limit takes over.
-		return (profile * limit) / (profile ** 4 + limit ** 4) ** 0.25;
+export function eternityArm({ cx, cy, r, arms, turn, centres }, index, inset, step = 3) {
+	const own = centres[((index % arms) + arms) % arms];
+	const other = centres[(((index - turn) % arms) + arms) % arms];
+	const ra = r - inset;
+	const rb = r + inset;
+	const dx = other.x - own.x;
+	const dy = other.y - own.y;
+	const gap = Math.hypot(dx, dy);
+	const along = (ra * ra - rb * rb + gap * gap) / (2 * gap);
+	const across = ra * ra - along * along;
+	if (ra <= 0 || across <= 1) return null;
+	const h = Math.sqrt(across);
+	const ux = dx / gap;
+	const uy = dy / gap;
+	const base = { x: own.x + ux * along, y: own.y + uy * along };
+	const cusps = [
+		{ x: base.x - uy * h, y: base.y + ux * h },
+		{ x: base.x + uy * h, y: base.y - ux * h }
+	];
+	const centreDistance = (/** @type {Point} */ p) => Math.hypot(p.x - cx, p.y - cy);
+	if (centreDistance(cusps[1]) < centreDistance(cusps[0])) cusps.reverse();
+	const [hub, rim] = cusps;
+	const angleOf = (/** @type {Point} */ c, /** @type {Point} */ p) =>
+		Math.atan2(p.y - c.y, p.x - c.x);
+	/**
+	 * Signed sweep from `p` to `q` round circle `c`, picking the arc whose
+	 * midpoint passes `keep`.
+	 * @param {Point} c @param {number} radius @param {Point} p @param {Point} q
+	 * @param {(m: Point) => boolean} keep
+	 */
+	const sweepOf = (c, radius, p, q, keep) => {
+		const from = angleOf(c, p);
+		const ccw = (((angleOf(c, q) - from) % TAU) + TAU) % TAU;
+		const middle = from + ccw / 2;
+		const m = { x: c.x + radius * Math.cos(middle), y: c.y + radius * Math.sin(middle) };
+		return { from, sweep: keep(m) ? ccw : ccw - TAU };
 	};
-	/** Centreline table for an arm of `length` starting at angle 0 on the hub. */
-	const trace = (/** @type {number} */ length) => {
-		/** @type {Point[]} */
-		const points = [];
-		let x = r0;
-		let y = 0;
-		for (let index = 0; index <= steps; index += 1) {
-			points.push({ x, y });
-			const angle = heading((index + 0.5) / steps);
-			x += (Math.cos(angle) * length) / steps;
-			y += (Math.sin(angle) * length) / steps;
-		}
-		return points;
-	};
-	/** Farthest reach of either edge from the centre. */
-	const reach = (/** @type {number} */ length) =>
-		trace(length).reduce((best, p, index) => {
-			const u = index / steps;
-			const a = heading(u);
-			const h = halfWidth(u, length);
-			const nx = -Math.sin(a);
-			const ny = Math.cos(a);
-			return Math.max(
-				best,
-				Math.hypot(p.x + nx * h, p.y + ny * h),
-				Math.hypot(p.x - nx * h, p.y - ny * h)
-			);
-		}, 0);
-	let lo = 0;
-	let hi = radius * 4;
-	for (let step = 0; step < 40; step += 1) {
-		const mid = (lo + hi) / 2;
-		if (reach(mid) > radius) hi = mid;
-		else lo = mid;
-	}
-	const length = lo;
-	const table = trace(length);
-	return {
-		length,
-		/** @param {number} u */
-		half: (u) => halfWidth(u, length),
-		/**
-		 * Centreline point, unit tangent and unit normal at u, relative to the
-		 * centre, for an arm whose root lies on the positive x axis.
-		 * @param {number} u
-		 */
-		frame(u) {
-			const f = Math.min(Math.max(u, 0), 1) * steps;
-			const index = Math.min(steps - 1, Math.floor(f));
-			const k = f - index;
-			const a = table[index];
-			const b = table[index + 1];
-			const angle = heading(u);
-			return {
-				p: { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k },
-				t: { x: Math.cos(angle), y: Math.sin(angle) },
-				n: { x: -Math.sin(angle), y: Math.cos(angle) }
-			};
-		},
-		/** Heading of the centreline at u, radians. */
-		heading
-	};
+	// The own circle's arc that stays outside the neighbour …
+	const outer = sweepOf(own, ra, hub, rim, (m) => Math.hypot(m.x - other.x, m.y - other.y) > rb);
+	// … and the neighbour's arc that runs inside the own circle, back to the centre.
+	const inner = sweepOf(other, rb, rim, hub, (m) => Math.hypot(m.x - own.x, m.y - own.y) < ra);
+	return [
+		...arcPoints(own, ra, outer.from, outer.sweep, step),
+		...arcPoints(other, rb, inner.from, inner.sweep, step).slice(1, -1)
+	];
 }
 
 /**
- * Islands for an Arevakhach (eternity sign): `arms` copies of one hooked arm
- * (see `eternityArm`) round a hub, each turned by a full step of rotation.
- * The arm is slim enough that a channel stays open between neighbours and
- * between a hook and its own arm: when `channel` would be violated the width
- * is reduced until it is not. Perimeters are exact inward offsets of the arm
- * (same centreline, smaller half-width, round caps at root and tip); where the
- * arm is thinner than an offset (the slender root, the tip of the curl) that
- * loop closes early. The infill continues those offsets inward as concentric
- * loops, the way a slicer fills thin curved regions, and reads like the
- * fluting cut along carved arms.
- * @param {ArmShape & {
- *   cx: number, cy: number, radius: number, arms: number, channel: number,
- *   offsets: number, spacing: number, infill: boolean, infillSpacing: number,
- *   samples: number
- * }} options `channel` is a fraction of `radius`
+ * Islands for an Arevakhach: one crescent arm per construction circle (see
+ * `eternityArm`), each printed as its own island. Neighbouring arms share a
+ * boundary arc, so every perimeter is inset far enough (half a bead plus half
+ * the `gap`) that a clear channel opens between neighbours, the way a slicer
+ * keeps touching islands apart. Inner perimeters are the same crescent inset
+ * further; the infill is a serpentine raster across the arm (perpendicular to
+ * its horn-to-horn chord, so it turns with the arm), printed from the rim
+ * horn back to the centre so the next arm starts a short hop away.
+ * @param {{
+ *   cx: number, cy: number, radius: number, arms: number, turn: number,
+ *   offsets: number, spacing: number, gap: number,
+ *   infill: boolean, infillSpacing: number
+ * }} options
  * @returns {Island[]}
  */
 function eternityIslands({
@@ -641,183 +613,72 @@ function eternityIslands({
 	cy,
 	radius,
 	arms,
-	hub,
-	lean,
-	bend,
-	curl,
-	weight,
-	tip,
-	channel,
+	turn,
 	offsets,
 	spacing,
+	gap,
 	infill,
-	infillSpacing,
-	samples
+	infillSpacing
 }) {
-	const step = TAU / arms;
-	const gapWanted = radius * channel;
-	/** Outline points of a whole arm at rotation `angle`, coarse, for clearance checks. */
-	const outlineOf = (
-		/** @type {ReturnType<typeof eternityArm>} */ arm,
-		/** @type {number} */ angle
-	) => {
-		const cos = Math.cos(angle);
-		const sin = Math.sin(angle);
-		/** @type {(Point & { u: number, side: number })[]} */
-		const out = [];
-		for (let index = 0; index <= 160; index += 1) {
-			const u = index / 160;
-			const { p, n } = arm.frame(u);
-			const h = arm.half(u);
-			for (const side of [1, -1]) {
-				const x = p.x + n.x * h * side;
-				const y = p.y + n.y * h * side;
-				out.push({ x: x * cos - y * sin, y: x * sin + y * cos, u, side });
-			}
-		}
-		return out;
-	};
-	/** Narrowest channel to the neighbouring arm and from the hook to its own arm. */
-	const clearance = (/** @type {ReturnType<typeof eternityArm>} */ arm) => {
-		const own = outlineOf(arm, 0);
-		const next = outlineOf(arm, step);
-		let best = Infinity;
-		for (const p of own) {
-			for (const q of next) best = Math.min(best, distance(p, q));
-		}
-		// The hook against its own arm: edge points whose headings differ by
-		// more than a half turn face each other across the eye.
-		for (const p of own) {
-			for (const q of own) {
-				if (q.side !== -p.side && Math.abs(arm.heading(p.u) - arm.heading(q.u)) > Math.PI)
-					best = Math.min(best, distance(p, q));
-			}
-		}
-		return best;
-	};
-	let shape = { radius, hub, lean, bend, curl, weight, tip };
-	let arm = eternityArm(shape);
-	for (let attempt = 0; attempt < 12 && clearance(arm) < gapWanted; attempt += 1) {
-		shape = { ...shape, weight: shape.weight * 0.92 };
-		arm = eternityArm(shape);
-	}
-	const half = arm.half;
-	// The width profile rises to one peak and falls into the curl.
-	let peak = 0;
-	for (let index = 1; index <= 100; index += 1) {
-		if (half(index / 100) > half(peak)) peak = index / 100;
-	}
-
+	const construction = eternityCircles({ cx, cy, radius, arms, turn });
+	const first = (gap + spacing) / 2;
+	const centre = { x: cx, y: cy };
 	/** @type {Island[]} */
 	const islands = [];
 	for (let index = 0; index < arms; index += 1) {
-		const angle = -Math.PI / 2 + step * index;
-		const cos = Math.cos(angle);
-		const sin = Math.sin(angle);
-		/** @param {Point} p */
-		const place = (p) => ({ x: cx + p.x * cos - p.y * sin, y: cy + p.x * sin + p.y * cos });
-		/** @param {Point} v */
-		const turn = (v) => ({ x: v.x * cos - v.y * sin, y: v.x * sin + v.y * cos });
-		/** @param {number} u */
-		const frame = (u) => {
-			const local = arm.frame(u);
-			return { p: place(local.p), t: turn(local.t), n: turn(local.n) };
-		};
-		/**
-		 * Closed offset of the arm at `inset` from its edge, or null when the
-		 * arm is nowhere that wide. Both ends get a round cap.
-		 * @param {number} inset
-		 */
-		const loopAt = (inset) => {
-			if (half(peak) - inset <= Math.min(1, spacing * 0.15)) return null;
-			const u0 = half(0) > inset ? 0 : root((u) => half(u) - inset, 0, peak);
-			const u1 = half(1) > inset ? 1 : root((u) => half(u) - inset, peak, 1);
-			/** @type {Point[]} */
-			const left = [];
-			/** @type {Point[]} */
-			const right = [];
-			for (let index = 0; index <= samples; index += 1) {
-				// Denser near both ends, where the caps and the curl are.
-				const k = 0.5 - 0.5 * Math.cos((Math.PI * index) / samples);
-				const u = u0 + (u1 - u0) * k;
-				const { p, n } = frame(u);
-				const h = Math.max(0, half(u) - inset);
-				left.push({ x: p.x + n.x * h, y: p.y + n.y * h });
-				right.push({ x: p.x - n.x * h, y: p.y - n.y * h });
-			}
-			const loop = [...left];
-			const tipWidth = half(u1) - inset;
-			if (tipWidth > 0.5) {
-				const end = frame(u1);
-				loop.push(...halfTurn(end.p, end.n, end.t, tipWidth, Math.max(6, Math.ceil(tipWidth / 3))));
-			}
-			loop.push(...right.reverse());
-			const rootWidth = half(u0) - inset;
-			if (rootWidth > 0.5) {
-				const start = frame(u0);
-				const back = { x: -start.t.x, y: -start.t.y };
-				const flipped = { x: -start.n.x, y: -start.n.y };
-				loop.push(
-					...halfTurn(start.p, flipped, back, rootWidth, Math.max(4, Math.ceil(rootWidth / 3)))
-				);
-			}
-			return loop;
-		};
-
 		/** @type {Point[][]} */
 		const loops = [];
 		for (let offset = 0; offset < offsets; offset += 1) {
-			const loop = loopAt((offset + 0.5) * spacing);
+			const loop = eternityArm(construction, index, first + offset * spacing);
 			if (loop) loops.push(loop);
 		}
 		if (!loops.length) continue;
 		/** @type {Point[][]} */
-		const fillLoops = [];
-		if (infill) {
-			for (let ring = 1; ring < 12; ring += 1) {
-				const loop = loopAt((offsets - 0.5) * spacing + ring * infillSpacing);
-				if (!loop) break;
-				fillLoops.push(loop);
+		let fill = [];
+		const region = infill
+			? eternityArm(construction, index, first + (loops.length - 0.4) * spacing)
+			: null;
+		if (region) {
+			// Hatch across the arm: perpendicular to the chord from hub to rim cusp.
+			const rim = region.reduce((best, p) =>
+				distance(p, centre) > distance(best, centre) ? p : best
+			);
+			const chord = Math.atan2(rim.y - region[0].y, rim.x - region[0].x);
+			fill = serpentineFill([region], infillSpacing, (chord * 180) / Math.PI + 90, centre);
+			const start = fill[0]?.[0];
+			const end = fill.at(-1)?.at(-1);
+			if (start && end && distance(end, centre) > distance(start, centre)) {
+				fill = fill.map((chain) => chain.slice().reverse()).reverse();
 			}
 		}
-		islands.push({ loops, fillLoops });
+		islands.push({ loops, fill });
 	}
 	return islands;
 }
 
-/** Default arm shape of the Arevakhach, tuned for 8 arms. */
-const ARM = { hub: 0.15, lean: 0.35, bend: 1.3, curl: 4.6, weight: 0.085, tip: 0.3 };
-
 /**
- * Arevakhach, the Armenian eternity sign, as one printed layer: a skirt loop,
- * a hub with a spiral fill, then the hooked arms in rotation order. The arms
- * spring from the hub's outer loop; each arm ends its infill back at its root,
- * so the travel moves form a small ring round the hub instead of long spokes.
- * Defaults are tuned for 8 arms. With fewer arms each one gets wider, in
- * proportion to the wider angular step, as far as the channel allows.
+ * Arevakhach, the Armenian eternity sign, in its classic circle-arc form, as
+ * one printed layer: a skirt loop, then the crescent arms in rotation order.
+ * Each arm is two circular arcs from the centre to the rim (see
+ * `eternityCircles`); together the arms sweep one way like a pinwheel and
+ * their outer arcs form the scalloped rim. Arms meet at the centre, with no
+ * separate hub: the inset perimeters leave only a small open star there.
  * @param {{
- *   arms?: number, offsets?: number, spacing?: number,
- *   infill?: boolean, infillSpacing?: number, skirt?: boolean,
- *   channel?: number, hub?: number, samples?: number,
- *   lean?: number, bend?: number, curl?: number, weight?: number, tip?: number
- * }} [options] `bend` and `curl` are turning angles in radians
+ *   arms?: number, turn?: number, offsets?: number, spacing?: number, gap?: number,
+ *   infill?: boolean, infillSpacing?: number, skirt?: boolean
+ * }} [options] `turn` 1 or -1 mirrors the sweep; `gap` is the clear channel
+ *   between neighbouring arms' outer beads
  * @returns {Toolpath}
  */
 export function eternitySign({
 	arms = 8,
+	turn = 1,
 	offsets = 3,
 	spacing = 7,
+	gap = spacing,
 	infill = true,
 	infillSpacing = 9.5,
-	skirt = true,
-	channel = 0.055,
-	hub = ARM.hub,
-	samples = 64,
-	lean = ARM.lean,
-	bend = ARM.bend,
-	curl = ARM.curl,
-	weight = ARM.weight * Math.sqrt(8 / arms),
-	tip = ARM.tip
+	skirt = true
 } = {}) {
 	const size = 1000;
 	const cx = size / 2;
@@ -828,41 +689,18 @@ export function eternitySign({
 	if (skirt) {
 		islands.push({ loops: [circle(cx, cy, radius * 1.1, 96)] });
 	}
-	// Hub: its outer loop touches the arm roots; two loops, then a spiral in.
-	const hubRadius = radius * hub - 0.25 * spacing;
-	const hubLoops = [0, 1].map((offset) => circle(cx, cy, hubRadius - (offset + 0.5) * spacing, 40));
-	const spiralOuter = hubRadius - (2 + 0.25) * spacing;
-	/** @type {Point[]} */
-	const spiral = [];
-	if (spiralOuter > spacing) {
-		const coils = spiralOuter / spacing;
-		const steps = Math.ceil(coils * 24);
-		for (let index = 0; index <= steps; index += 1) {
-			const k = index / steps;
-			const r = spiralOuter * (1 - k);
-			const a = -Math.PI / 2 + TAU * coils * k;
-			spiral.push({ x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) });
-		}
-	}
-	islands.push({ loops: hubLoops, fill: spiral.length ? [spiral] : [] });
 	islands.push(
 		...eternityIslands({
 			cx,
 			cy,
 			radius,
 			arms,
-			hub,
-			lean,
-			bend,
-			curl,
-			weight,
-			tip,
-			channel,
+			turn,
 			offsets,
 			spacing,
+			gap,
 			infill,
-			infillSpacing,
-			samples
+			infillSpacing
 		})
 	);
 	return assemble(islands, size, size, 0.5);
@@ -1235,15 +1073,12 @@ export function starRosette({
 			cy,
 			radius: coreRadius - (offsets + 1) * spacing,
 			arms: points,
-			...ARM,
-			hub: 0.16,
-			weight: ARM.weight * Math.sqrt(8 / points),
-			channel: 0.05,
+			turn: 1,
 			offsets: 1,
 			spacing: 5,
+			gap: 5,
 			infill: false,
-			infillSpacing: 10,
-			samples: 40
+			infillSpacing: 10
 		})
 	);
 	return assemble(islands, size, size, 0.5);

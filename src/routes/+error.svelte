@@ -3,7 +3,6 @@
 	import { sitePath } from '#lib/paths.js';
 	import Breadcrumb from '#lib/components/ui/Breadcrumb.svelte';
 	import RobotArm from '#lib/components/armenian/RobotArm.svelte';
-	import InitialsMark from '#lib/components/armenian/InitialsMark.svelte';
 
 	let status = $derived(page.status);
 	let notFound = $derived(status === 404);
@@ -51,8 +50,7 @@
 		<figure class="scene" data-no-nozzle>
 			<RobotArm />
 			<figcaption>
-				<InitialsMark />
-				<span>Arevakhach, the Armenian eternity sign, as a robot arm would print it.</span>
+				Arevakhach, the Armenian eternity sign, as a robot arm would print it.
 			</figcaption>
 		</figure>
 	</div>
@@ -94,17 +92,10 @@
 		color: var(--color-text-muted);
 		font-size: var(--text-sm);
 		line-height: 1.5;
-		--mark-height: 2.75rem;
-		--mark-stroke: 1.1;
 	}
 	@media (max-width: 860px) {
 		.error-page {
 			grid-template-columns: minmax(0, 1fr);
-		}
-	}
-	@media (max-width: 520px) {
-		figcaption {
-			--mark-height: 2.25rem;
 		}
 	}
 </style>

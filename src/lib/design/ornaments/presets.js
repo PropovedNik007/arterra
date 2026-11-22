@@ -13,6 +13,10 @@ export const ORNAMENT_PRESETS = /** @type {const} */ ({
 	hero: { motif: 'eternity', options: {}, viewBox: '0 0 1000 1000' },
 	corner: {
 		motif: 'eternity',
+		/**
+		 * Lighter than the hero: two perimeters per crescent, no infill and no
+		 * skirt, so the clean double-line pinwheel still reads at corner size.
+		 */
 		options: { offsets: 2, spacing: 13, infill: false, skirt: false },
 		viewBox: '0 0 1000 1000'
 	},
