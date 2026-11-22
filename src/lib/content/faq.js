@@ -135,8 +135,8 @@ export function buildFaq(featured) {
 		([group, values]) => `${lowerFirst(group)} (${values.join(', ')})`
 	);
 	const awards = cv.awards.map((award) => {
-		const parts = awardParts(award.title);
-		return `${parts.place} place at the ${parts.event} (${award.period}; ${lowerFirst(withoutPeriod(award.detail))})`;
+		const [rank, event = rank] = award.title.split(' · ');
+		return `${rank} at the ${event} (${award.period}; ${lowerFirst(withoutPeriod(award.detail))})`;
 	});
 	const publications = cv.publications.map(
 		(publication) =>
@@ -242,7 +242,7 @@ export function buildFaq(featured) {
 			id: 'awards-and-publications',
 			group: 'work',
 			question: `What awards and publications does ${name} have?`,
-			answer: `${name} took ${list(awards, ';')}. He also co-authored ${list(publications, ';')}.`,
+			answer: `${name}’s competition results: ${list(awards, ';')}. He also co-authored ${list(publications, ';')}.`,
 			links: [
 				...cv.awards
 					.filter((award) => award.project)

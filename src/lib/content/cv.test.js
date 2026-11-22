@@ -28,7 +28,7 @@ describe('cv', () => {
 			expect(award.period, award.id).toMatch(
 				/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4}$/
 			);
-			expect(award.title, award.id).toMatch(/^\d+(st|nd|rd|th) place · \S/);
+			expect(award.title, award.id).toMatch(/^(\d+(st|nd|rd|th) place|Finalist) · \S/);
 			expect(award.title, award.id).not.toMatch(/\d{4}$/);
 		}
 		const periods = cv.awards.map((award) => order(award.period));

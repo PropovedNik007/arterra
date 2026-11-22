@@ -284,6 +284,13 @@ export const cv = {
 	// Newest first.
 	awards: [
 		{
+			id: 'novartis-datathon',
+			title: 'Finalist · Novartis Datathon',
+			period: 'Nov 2025',
+			detail:
+				'“TiRex vs Pharma” — machine-learning models that forecast post-generic drug erosion from sparse data, using CatBoost and the xLSTM-based TiRex model.'
+		},
+		{
 			id: 'ai-mission-hackathon-3',
 			title: '1st place · AI Mission Hackathon 3',
 			period: 'Oct 2025',
